@@ -26,13 +26,53 @@ const blogPosts = [
     author: "Revive Team",
   },
   {
-    slug: "failed-payment-recovery-for-saas",
-    title: "Failed Payment Recovery for SaaS: Smart Retries That Actually Work",
+    slug: "dunning-email-best-practices",
+    title: "Dunning Email Best Practices: Templates, Timing & Psychology",
     description:
-      "Most SaaS companies retry failed payments wrong. Discover the data-driven retry strategies that recover 94% of failed charges — without annoying customers.",
-    date: "February 4, 2026",
+      "Learn the proven dunning email strategies that recover 73% of failed payments. Includes templates, timing schedules, and psychological triggers that actually work.",
+    date: "February 5, 2026",
     readTime: "10 min read",
     category: "Payment Recovery",
+    author: "Revive Team",
+  },
+  {
+    slug: "failed-payment-recovery-strategies",
+    title: "Failed Payment Recovery Strategies: Complete Guide for SaaS",
+    description:
+      "Master the complete failed payment recovery playbook: smart retries, dunning automation, account updaters, and pre-billing prevention. Recover 94% of failed charges.",
+    date: "February 5, 2026",
+    readTime: "13 min read",
+    category: "Payment Recovery",
+    author: "Revive Team",
+  },
+  {
+    slug: "involuntary-churn-vs-voluntary-churn",
+    title: "Involuntary Churn vs Voluntary Churn: Differences & How to Fight Each",
+    description:
+      "Learn the critical differences between involuntary and voluntary churn, how to identify each type, and the specific strategies to reduce both in your SaaS business.",
+    date: "February 5, 2026",
+    readTime: "11 min read",
+    category: "Churn Reduction",
+    author: "Revive Team",
+  },
+  {
+    slug: "stripe-failed-payment-retry",
+    title: "Stripe Failed Payment Retry: Complete Technical Guide",
+    description:
+      "Master Stripe's payment retry system: how default retries work, decline codes, smart schedules, webhooks, and how to build custom retry logic that recovers 94% of failed payments.",
+    date: "February 5, 2026",
+    readTime: "14 min read",
+    category: "Technical Guide",
+    author: "Revive Team",
+  },
+  {
+    slug: "saas-revenue-recovery",
+    title: "SaaS Revenue Recovery: ROI of Payment Recovery Tools",
+    description:
+      "Calculate the true ROI of payment recovery tools for SaaS. Learn how automating failed payment recovery can save $50K-$500K annually with 10-50x return on investment.",
+    date: "February 5, 2026",
+    readTime: "12 min read",
+    category: "Business Strategy",
     author: "Revive Team",
   },
 ];
