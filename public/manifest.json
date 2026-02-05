@@ -1,0 +1,16 @@
+{
+  "name": "Revive — Failed Payment Recovery",
+  "short_name": "Revive",
+  "description": "Recover failed payments automatically with smart retries and dunning emails",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

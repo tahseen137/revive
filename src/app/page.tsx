@@ -11,7 +11,7 @@ const features = [
     ),
     title: "Smart Payment Retries",
     description:
-      "Intelligent retry logic that picks the optimal time and frequency. Not random retries — data-driven recovery.",
+      "Decline codes determine retry timing. Card declined? Retry in 4 hours. Insufficient funds? Wait for payday. Not random guessing — algorithmic recovery.",
   },
   {
     icon: (
@@ -22,7 +22,7 @@ const features = [
     ),
     title: "Dunning Email Sequences",
     description:
-      "Automated, personalized email sequences that nudge customers to update their payment method — without being annoying.",
+      "Personalized emails sent at optimal times with direct card update links. Professional templates that preserve your brand — and get customers to act.",
   },
   {
     icon: (
@@ -97,14 +97,12 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-slide-up">
-              Recover your lost revenue{" "}
-              <span className="gradient-text">on autopilot</span>
+              Stop losing 9% of your MRR to{" "}
+              <span className="gradient-text">failed payments</span>
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up">
-              Failed payments silently drain your MRR. Revive detects failed
-              charges, retries them with smart logic, and sends dunning emails
-              — recovering up to 94% of involuntary churn.
+              <strong className="text-zinc-300">$1 out of every $11 you earn disappears</strong> because of expired cards and insufficient funds. Revive recovers it automatically with intelligent retries and personalized dunning emails — <strong className="text-zinc-300">no code required.</strong>
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
@@ -245,17 +243,19 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-br from-brand-600/10 via-transparent to-purple-600/10" />
             <div className="relative">
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Stop leaving money on the table
+                Every day you wait is revenue you lose
               </h2>
-              <p className="text-zinc-400 text-lg max-w-xl mx-auto mb-8">
-                The average SaaS company loses 9% of MRR to failed payments. Revive
-                gets it back — starting today.
+              <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-3">
+                The average SaaS company loses <strong className="text-white">$8,300/month</strong> to failed payments. Revive recovers it automatically — starting in 3 minutes.
+              </p>
+              <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
+                Setup takes less time than reading this page. Connect Stripe, configure once, recover forever.
               </p>
               <Link
                 href="/pricing"
                 className="inline-flex items-center gap-2 bg-white text-zinc-900 font-semibold px-8 py-4 rounded-xl hover:bg-zinc-100 transition-all hover:shadow-lg hover:shadow-white/10"
               >
-                Start Your Free Trial
+                Start Recovering Revenue Now
                 <svg
                   width="16"
                   height="16"
@@ -270,7 +270,7 @@ export default function Home() {
                 </svg>
               </Link>
               <p className="text-xs text-zinc-600 mt-4">
-                14-day free trial • No credit card required • Cancel anytime
+                14-day free trial • No credit card required • Setup in 3 minutes
               </p>
             </div>
           </div>

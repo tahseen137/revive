@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <rect width="512" height="512" rx="128" fill="#6366f1"/>
+  
+  <!-- Rotating arrow (revival/recovery symbol) -->
+  <path d="M256 128C314.692 128 364.8 161.385 387.2 209.231M256 384C197.308 384 147.2 350.615 124.8 302.769M387.2 209.231L387.2 144M387.2 209.231L322.462 209.231M124.8 302.769L124.8 368M124.8 302.769L189.538 302.769" 
+        stroke="white" 
+        stroke-width="40" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Dollar sign in the middle -->
+  <path d="M256 200V312M276 220H246C237.163 220 230 227.163 230 236C230 244.837 237.163 252 246 252H266C274.837 252 282 259.163 282 268C282 276.837 274.837 284 266 284H236" 
+        stroke="white" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>
