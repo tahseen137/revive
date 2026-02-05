@@ -37,6 +37,12 @@ export default function Navbar() {
             Pricing
           </Link>
           <Link
+            href="/faq"
+            className="text-sm text-zinc-400 hover:text-white transition-colors"
+          >
+            FAQ
+          </Link>
+          <Link
             href="/changelog"
             className="text-sm text-zinc-400 hover:text-white transition-colors"
           >
@@ -108,6 +114,13 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
           >
             Pricing
+          </Link>
+          <Link
+            href="/faq"
+            className="block text-sm text-zinc-400 hover:text-white py-2"
+            onClick={() => setMobileOpen(false)}
+          >
+            FAQ
           </Link>
           <Link
             href="/changelog"
