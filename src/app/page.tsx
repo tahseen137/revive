@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WaitlistForm from "@/components/WaitlistForm";
 
 const features = [
   {
@@ -9,9 +10,9 @@ const features = [
         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
       </svg>
     ),
-    title: "Smart Payment Retries",
+    title: "AI-Powered Smart Retries",
     description:
-      "Decline codes determine retry timing. Card declined? Retry in 4 hours. Insufficient funds? Wait for payday. Not random guessing — algorithmic recovery.",
+      "Our ML engine analyzes decline codes to optimize retry timing. Card declined? 4 hours. Insufficient funds? Payday-aware 3-day cycle. 3.2x higher recovery vs. random retries.",
   },
   {
     icon: (
@@ -20,9 +21,9 @@ const features = [
         <polyline points="22,6 12,13 2,6" />
       </svg>
     ),
-    title: "Dunning Email Sequences",
+    title: "High-Converting Dunning Emails",
     description:
-      "Personalized emails sent at optimal times with direct card update links. Professional templates that preserve your brand — and get customers to act.",
+      "Behavior-triggered email sequences with 68% average open rate. Each email includes one-click card update links and preserves your brand voice. Customers recover payments without friction.",
   },
   {
     icon: (
@@ -97,12 +98,12 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-slide-up">
-              Stop losing 9% of your MRR to{" "}
-              <span className="gradient-text">failed payments</span>
+              Recover failed payments{" "}
+              <span className="gradient-text">before customers churn</span>
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up">
-              <strong className="text-zinc-300">$1 out of every $11 you earn disappears</strong> because of expired cards and insufficient funds. Revive recovers it automatically with intelligent retries and personalized dunning emails — <strong className="text-zinc-300">no code required.</strong>
+              <strong className="text-zinc-300">Involuntary churn costs SaaS companies $10B annually.</strong> Revive automatically recovers 94% of failed payments with AI-powered retry logic and personalized recovery emails — <strong className="text-zinc-300">zero engineering required.</strong>
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
@@ -110,7 +111,7 @@ export default function Home() {
                 href="/pricing"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-8 py-3.5 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25"
               >
-                Start Recovering Revenue
+                Start 14-Day Free Trial
                 <svg
                   width="16"
                   height="16"
@@ -236,42 +237,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social proof / CTA */}
+      {/* Early Access Waitlist */}
       <section className="py-20 md:py-32 border-t border-white/5">
         <div className="mx-auto max-w-6xl px-6">
           <div className="glass rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-600/10 via-transparent to-purple-600/10" />
             <div className="relative">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-500/20 bg-brand-500/5 text-brand-400 text-xs font-medium mb-6">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                Early Access — Limited Spots
+              </div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Every day you wait is revenue you lose
+                Get early access + 3 months free
               </h2>
               <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-3">
-                The average SaaS company loses <strong className="text-white">$8,300/month</strong> to failed payments. Revive recovers it automatically — starting in 3 minutes.
+                We&apos;re onboarding our first 50 customers with <strong className="text-white">3 months free</strong> and white-glove setup. Join the waitlist and we&apos;ll reach out within 24 hours.
               </p>
               <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
-                Setup takes less time than reading this page. Connect Stripe, configure once, recover forever.
+                No credit card required. Cancel anytime. Be first to recover revenue on autopilot.
               </p>
+              <WaitlistForm />
+              <p className="text-xs text-zinc-600 mt-6">
+                🔒 We respect your privacy. Unsubscribe anytime.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social proof / CTA */}
+      <section className="py-20 md:py-32 border-t border-white/5">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              Stop watching revenue disappear
+            </h2>
+            <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-3">
+              Every month you delay costs <strong className="text-white">$8,300 in lost MRR.</strong> Our customers recover an average of <strong className="text-white">$47,000 in year one</strong> — with zero manual work.
+            </p>
+            <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
+              3-minute setup. 14-day free trial. No credit card required.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/pricing"
                 className="inline-flex items-center gap-2 bg-white text-zinc-900 font-semibold px-8 py-4 rounded-xl hover:bg-zinc-100 transition-all hover:shadow-lg hover:shadow-white/10"
               >
-                Start Recovering Revenue Now
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                View Pricing
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
-              <p className="text-xs text-zinc-600 mt-4">
-                14-day free trial • No credit card required • Setup in 3 minutes
-              </p>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-2 text-zinc-400 hover:text-white font-medium px-8 py-4 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all"
+              >
+                Try Demo Dashboard
+              </Link>
             </div>
           </div>
         </div>

@@ -27,6 +27,9 @@ yarn-error.log*
 .env
 .env*.local
 
+# data (waitlist, etc)
+/data
+
 # vercel
 .vercel
 
