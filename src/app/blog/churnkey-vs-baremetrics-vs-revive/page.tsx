@@ -282,7 +282,7 @@ export default function BlogPost() {
                     <li>✅ Zero risk pricing (only pay on recovered revenue)</li>
                     <li>✅ Smart retry logic optimized by decline code</li>
                     <li>✅ 3-minute setup (literally)</li>
-                    <li>✅ Highest recovery rates (~94%)</li>
+                    <li>✅ Designed for maximum recovery rates</li>
                     <li>✅ Free tier for small businesses</li>
                   </ul>
                 </div>
@@ -368,7 +368,7 @@ export default function BlogPost() {
                       <td className="py-3 font-medium">Recovery Rate</td>
                       <td className="py-3">~85%</td>
                       <td className="py-3">~60%</td>
-                      <td className="py-3">~94%</td>
+                      <td className="py-3">High recovery rates</td>
                     </tr>
                     <tr className="border-b border-zinc-800/50">
                       <td className="py-3 font-medium">Payment Processors</td>
@@ -445,7 +445,7 @@ export default function BlogPost() {
                   <strong className="text-white">1. Zero-risk pricing</strong> — You only pay when revenue is recovered. No upfront fees, no monthly minimums. If it doesn't work, you pay nothing.
                 </li>
                 <li>
-                  <strong className="text-white">2. Highest recovery rate</strong> — Smart retry logic (based on decline codes) recovers ~94% of failed payments vs 60% for Baremetrics and 85% for Churnkey.
+                  <strong className="text-white">2. Smart recovery logic</strong> — Intelligent retry schedules based on decline codes help maximize recovery vs basic retry approaches used by other tools.
                 </li>
                 <li>
                   <strong className="text-white">3. Dead simple setup</strong> — Connect your Stripe account in one click and start recovering payments in 3 minutes. No complex onboarding or configuration.
@@ -460,7 +460,7 @@ export default function BlogPost() {
                   Stop Losing Revenue to Failed Payments
                 </h3>
                 <p className="text-zinc-400 mb-6">
-                  Revive recovers 94% of failed Stripe payments with smart retries and dunning emails. Setup takes 3 minutes. No credit card required.
+                  Revive helps recover failed Stripe payments with smart retries and dunning emails. Setup takes 3 minutes. No credit card required.
                 </p>
                 <Link
                   href="/pricing"

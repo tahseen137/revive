@@ -45,7 +45,7 @@ export default function BlogPost() {
             </h1>
 
             <p className="text-xl text-zinc-400 leading-relaxed">
-              Failed payments cost SaaS companies 9% of MRR. Payment recovery tools can save $50K-$500K annually with 10-50x ROI. Here's the complete ROI breakdown and how to calculate it for your business.
+              Failed payments cost SaaS companies 9% of MRR. Payment recovery tools can potentially save $50K-$500K annually with strong ROI. Here's the complete ROI breakdown and how to calculate it for your business.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export default function BlogPost() {
               </ul>
 
               <p>
-                The good news? <strong className="text-white">85-94% of these failed payments are recoverable</strong> with the right strategy. That's where payment recovery tools come in.
+                The good news? Industry research shows <strong className="text-white">85-94% of these failed payments are recoverable</strong> with the right strategy. That's where payment recovery tools come in.
               </p>
 
               <div className="glass rounded-xl p-6 my-8 border-l-4 border-brand-500">
@@ -349,60 +349,66 @@ export default function BlogPost() {
               </h2>
 
               <div className="glass rounded-xl p-8 my-8">
-                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Case Study #1</p>
+                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Hypothetical Example #1</p>
                 <p className="text-xl font-semibold text-white mb-4">
                   B2B SaaS Company: $150K MRR
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  <strong className="text-white">Before:</strong> Losing $13,500/month (9%) to failed payments. Stripe's default retries recovered 30% = $4,050/month recovered.
+                  <strong className="text-white">Scenario:</strong> Losing $13,500/month (9%) to failed payments. Stripe's default retries recover 30% = $4,050/month.
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  <strong className="text-white">After (with payment recovery tool):</strong> Recovering 92% = $12,420/month recovered.
+                  <strong className="text-white">Potential with smart recovery:</strong> If recovery improved to industry benchmark levels (85-94%), could recover $11,475-$12,690/month.
                 </p>
                 <ul className="space-y-2 ml-6 text-zinc-300">
-                  <li>✅ <strong className="text-white">Additional revenue:</strong> $8,370/month ($100,440/year)</li>
-                  <li>✅ <strong className="text-white">Tool cost:</strong> $2,400/year</li>
-                  <li>✅ <strong className="text-white">ROI:</strong> 4,085%</li>
-                  <li>✅ <strong className="text-white">Payback period:</strong> 9 days</li>
+                  <li>✅ <strong className="text-white">Potential additional revenue:</strong> $7,425-$8,640/month</li>
+                  <li>✅ <strong className="text-white">Typical tool cost:</strong> ~$2,400/year</li>
+                  <li>✅ <strong className="text-white">Projected ROI:</strong> Very high</li>
                 </ul>
+                <p className="text-sm text-zinc-400 mt-4 mb-0">
+                  <em>Note: These are illustrative projections based on industry benchmarks, not guaranteed results.</em>
+                </p>
               </div>
 
               <div className="glass rounded-xl p-8 my-8">
-                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Case Study #2</p>
+                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Hypothetical Example #2</p>
                 <p className="text-xl font-semibold text-white mb-4">
                   E-Commerce Subscription: $75K MRR
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  <strong className="text-white">Before:</strong> Losing $6,750/month (9%) to failed payments. Only 25% recovered = $1,688/month.
+                  <strong className="text-white">Scenario:</strong> Losing $6,750/month (9%) to failed payments. Only 25% recovered = $1,688/month.
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  <strong className="text-white">After:</strong> Recovering 88% = $5,940/month.
+                  <strong className="text-white">Potential improvement:</strong> Smart recovery could help achieve 85-94% recovery = $5,738-$6,345/month.
                 </p>
                 <ul className="space-y-2 ml-6 text-zinc-300">
-                  <li>✅ <strong className="text-white">Additional revenue:</strong> $4,252/month ($51,024/year)</li>
-                  <li>✅ <strong className="text-white">Tool cost:</strong> $1,800/year</li>
-                  <li>✅ <strong className="text-white">ROI:</strong> 2,735%</li>
-                  <li>✅ <strong className="text-white">Payback period:</strong> 13 days</li>
+                  <li>✅ <strong className="text-white">Potential additional revenue:</strong> $4,050-$4,657/month</li>
+                  <li>✅ <strong className="text-white">Typical tool cost:</strong> ~$1,800/year</li>
+                  <li>✅ <strong className="text-white">Projected ROI:</strong> Strong positive return</li>
                 </ul>
+                <p className="text-sm text-zinc-400 mt-4 mb-0">
+                  <em>Note: These are illustrative projections based on industry benchmarks, not guaranteed results.</em>
+                </p>
               </div>
 
               <div className="glass rounded-xl p-8 my-8">
-                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Case Study #3</p>
+                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Hypothetical Example #3</p>
                 <p className="text-xl font-semibold text-white mb-4">
                   Enterprise SaaS: $800K MRR
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  <strong className="text-white">Before:</strong> Losing $72,000/month (9%) to failed payments. Basic recovery: 35% = $25,200/month.
+                  <strong className="text-white">Scenario:</strong> Losing $72,000/month (9%) to failed payments. Basic recovery: 35% = $25,200/month.
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  <strong className="text-white">After:</strong> Recovering 94% = $67,680/month.
+                  <strong className="text-white">Potential improvement:</strong> With industry-leading recovery rates (85-94%), could recover $61,200-$67,680/month.
                 </p>
                 <ul className="space-y-2 ml-6 text-zinc-300">
-                  <li>✅ <strong className="text-white">Additional revenue:</strong> $42,480/month ($509,760/year)</li>
-                  <li>✅ <strong className="text-white">Tool cost:</strong> $6,000/year</li>
-                  <li>✅ <strong className="text-white">ROI:</strong> 8,396%</li>
-                  <li>✅ <strong className="text-white">Payback period:</strong> 4 days</li>
+                  <li>✅ <strong className="text-white">Potential additional revenue:</strong> $36,000-$42,480/month</li>
+                  <li>✅ <strong className="text-white">Typical tool cost:</strong> ~$6,000/year</li>
+                  <li>✅ <strong className="text-white">Projected ROI:</strong> Exceptionally high</li>
                 </ul>
+                <p className="text-sm text-zinc-400 mt-4 mb-0">
+                  <em>Note: These are illustrative projections based on industry benchmarks, not guaranteed results.</em>
+                </p>
               </div>
 
               <h2 className="text-2xl font-bold text-white mt-12 mb-4">
@@ -543,20 +549,20 @@ export default function BlogPost() {
 
               <ul className="space-y-2 ml-6 text-zinc-300">
                 <li>💡 Failed payments cost the average SaaS company 9% of MRR monthly</li>
-                <li>💡 Payment recovery tools typically deliver 10-50x ROI ($26-$107 returned per $1 spent)</li>
-                <li>💡 Payback period is usually 7-14 days for most SaaS companies</li>
+                <li>💡 Payment recovery tools can deliver strong ROI when they help achieve industry benchmark recovery rates</li>
+                <li>💡 Payback periods can be very short when recovery rates improve significantly</li>
                 <li>💡 Beyond revenue, you get higher LTV, lower CAC, and better valuations</li>
                 <li>💡 Building in-house costs 3-30x more than using a specialized tool</li>
                 <li>💡 ROI compounds over time as you retain customers longer</li>
               </ul>
 
               <p className="mt-8">
-                The bottom line: <strong className="text-white">Payment recovery is the highest-ROI investment you can make in your SaaS business</strong>. It pays for itself in days, saves thousands to millions annually, and frees your team to focus on growth instead of churn firefighting.
+                The bottom line: <strong className="text-white">Payment recovery can be a high-ROI investment for your SaaS business</strong>. When implemented effectively based on industry best practices, it can save thousands to millions annually and free your team to focus on growth instead of churn firefighting.
               </p>
 
               <div className="mt-12 pt-8 border-t border-zinc-800">
                 <p className="text-sm text-zinc-500">
-                  <strong className="text-zinc-400">About Revive:</strong> We help SaaS companies recover 85-94% of failed payments with automated smart retries and dunning emails. Most customers achieve 10-50x ROI within 30 days. Connect your Stripe account in 3 minutes and start recovering revenue today.
+                  <strong className="text-zinc-400">About Revive:</strong> We help SaaS companies recover failed payments with automated smart retries and dunning emails designed to achieve industry-leading recovery rates. Connect your Stripe account in 3 minutes and start recovering revenue today.
                 </p>
               </div>
             </div>

@@ -45,7 +45,7 @@ export default function BlogPost() {
             </h1>
 
             <p className="text-xl text-zinc-400 leading-relaxed">
-              Failed payments drain 9% of MRR from the average SaaS company. This is your complete playbook for recovering 94% of those charges through smart retries, dunning automation, and prevention.
+              Failed payments drain 9% of MRR from the average SaaS company. This is your complete playbook for recovering the majority of those charges through smart retries, dunning automation, and prevention (industry studies show 85-94% recovery is achievable).
             </p>
           </div>
 
@@ -70,10 +70,10 @@ export default function BlogPost() {
               <div className="glass rounded-xl p-6 my-8 border-l-4 border-brand-500">
                 <p className="text-sm text-zinc-400 mb-2 font-medium uppercase tracking-wide">The Recovery Opportunity</p>
                 <p className="text-lg font-semibold text-white mb-2">
-                  With the right strategy, you can recover 85-94% of failed payments — turning lost revenue into saved MRR.
+                  With the right strategy, industry research shows 85-94% of failed payments are recoverable — turning lost revenue into saved MRR.
                 </p>
                 <p className="text-sm text-zinc-400 mb-0">
-                  For that $100K/month business, effective recovery saves <strong className="text-white">$7,650/month</strong> or <strong className="text-white">$91,800/year</strong>.
+                  For that $100K/month business, effective recovery could potentially save <strong className="text-white">$7,650/month</strong> or <strong className="text-white">$91,800/year</strong>.
                 </p>
               </div>
 
@@ -376,22 +376,22 @@ export default function BlogPost() {
               </h2>
 
               <div className="glass rounded-xl p-8 my-8">
-                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Case Study</p>
+                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Hypothetical Example</p>
                 <p className="text-xl font-semibold text-white mb-4">
-                  B2B SaaS Company Recovers $91K in 12 Months
+                  How This Framework Could Help a $105K MRR SaaS
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  A project management SaaS with $105K MRR was losing $9,450/month (9%) to failed payments. After implementing this framework:
+                  Consider a project management SaaS with $105K MRR losing $9,450/month (9%) to failed payments. After implementing this framework, they could potentially:
                 </p>
                 <ul className="space-y-2 ml-6 text-zinc-300">
-                  <li>✅ <strong className="text-white">Recovery rate improved from 31% to 94%</strong></li>
-                  <li>✅ <strong className="text-white">Saved $8,883/month in recovered MRR</strong></li>
-                  <li>✅ <strong className="text-white">Total recovered: $91,440 in the first year</strong></li>
-                  <li>✅ <strong className="text-white">Involuntary churn dropped from 9% to 0.54%</strong></li>
-                  <li>✅ <strong className="text-white">Customer lifetime value increased by 18%</strong> (customers stay subscribed longer)</li>
+                  <li>✅ <strong className="text-white">Dramatically improve recovery rates</strong> (industry benchmarks show 85-94% is achievable vs 30% baseline)</li>
+                  <li>✅ <strong className="text-white">Save thousands per month</strong> in recovered MRR</li>
+                  <li>✅ <strong className="text-white">Recover substantial revenue</strong> over the first year</li>
+                  <li>✅ <strong className="text-white">Significantly reduce involuntary churn</strong></li>
+                  <li>✅ <strong className="text-white">Increase customer lifetime value</strong> (customers stay subscribed longer)</li>
                 </ul>
                 <p className="text-sm text-zinc-400 mt-6 mb-0">
-                  <strong className="text-zinc-300">Setup time:</strong> 5 minutes. <strong className="text-zinc-300">Monthly maintenance:</strong> Zero (fully automated).
+                  <strong className="text-zinc-300">Note:</strong> These are illustrative projections based on industry benchmarks, not guaranteed results.
                 </p>
               </div>
 
@@ -472,7 +472,7 @@ export default function BlogPost() {
                     <tr className="border-b border-zinc-800/50">
                       <td className="py-3">Recovery rate</td>
                       <td className="py-3">70-85%</td>
-                      <td className="py-3 text-green-400">85-94%</td>
+                      <td className="py-3 text-green-400">Designed for high recovery</td>
                     </tr>
                     <tr>
                       <td className="py-3">ROI</td>
@@ -522,8 +522,8 @@ export default function BlogPost() {
               </h2>
 
               <ul className="space-y-2 ml-6 text-zinc-300">
-                <li>💡 Failed payments cost the average SaaS company 9% of MRR — but 85-94% can be recovered</li>
-                <li>💡 Smart retry logic (based on decline codes) increases recovery by 40-60% vs basic retries</li>
+                <li>💡 Failed payments cost the average SaaS company 9% of MRR — but industry research shows 85-94% can be recovered</li>
+                <li>💡 Smart retry logic (based on decline codes) can increase recovery by 40-60% vs basic retries</li>
                 <li>💡 Dunning emails should be sent within 1 hour, escalating over 7 days</li>
                 <li>💡 Prevention (card updater, network tokens, pre-billing alerts) reduces failures before they happen</li>
                 <li>💡 Track recovery rate, total recovered MRR, and time to recovery to optimize performance</li>
@@ -531,7 +531,7 @@ export default function BlogPost() {
               </ul>
 
               <p className="mt-8">
-                The bottom line: <strong className="text-white">Failed payment recovery is the highest-ROI churn reduction strategy</strong>. With the right framework, you can save thousands in MRR every month while improving customer experience.
+                The bottom line: <strong className="text-white">Failed payment recovery is the highest-ROI churn reduction strategy</strong>. With the right framework, industry benchmarks suggest you can save thousands in MRR every month while improving customer experience.
               </p>
 
               <div className="mt-12 pt-8 border-t border-zinc-800">

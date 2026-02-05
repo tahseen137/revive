@@ -155,7 +155,7 @@ export default function BlogPost() {
               </h3>
 
               <p>
-                The good news: <strong className="text-white">Involuntary churn is highly fixable</strong>. These strategies can recover 85-94% of failed payments:
+                The good news: <strong className="text-white">Involuntary churn is highly fixable</strong>. Industry research shows these strategies can help recover 85-94% of failed payments:
               </p>
 
               <div className="glass rounded-xl p-6 my-6">
@@ -411,7 +411,7 @@ export default function BlogPost() {
                     </tr>
                     <tr className="border-b border-zinc-800/50">
                       <td className="py-3 font-medium">Recoverability</td>
-                      <td className="py-3 text-green-400">85-94%</td>
+                      <td className="py-3 text-green-400">85-94% (industry benchmark)</td>
                       <td className="py-3 text-yellow-400">15-30%</td>
                     </tr>
                     <tr className="border-b border-zinc-800/50">
@@ -442,14 +442,14 @@ export default function BlogPost() {
               </p>
 
               <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Higher recovery rate:</strong> 85-94% vs 15-30% for voluntary churn</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Higher recovery rate:</strong> Industry studies show 85-94% for involuntary vs 15-30% for voluntary churn</li>
                 <li className="text-zinc-400">✅ <strong className="text-zinc-300">Faster to implement:</strong> Automation vs product changes</li>
                 <li className="text-zinc-400">✅ <strong className="text-zinc-300">Immediate ROI:</strong> Recovered revenue shows up this month</li>
                 <li className="text-zinc-400">✅ <strong className="text-zinc-300">Low effort:</strong> One-time setup, then runs automatically</li>
               </ul>
 
               <p>
-                Once you've automated involuntary churn recovery (and are saving 90%+ of those customers), <em>then</em> tackle voluntary churn with product improvements and customer success initiatives.
+                Once you've automated involuntary churn recovery (and are achieving strong recovery rates), <em>then</em> tackle voluntary churn with product improvements and customer success initiatives.
               </p>
 
               <div className="glass rounded-xl p-6 my-8 border-l-4 border-yellow-500">

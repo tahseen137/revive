@@ -45,7 +45,7 @@ export default function BlogPost() {
             </h1>
 
             <p className="text-xl text-zinc-400 leading-relaxed">
-              Stripe's default retry logic recovers only 30% of failed payments. This technical guide shows you how Stripe retries work, what's missing, and how to build smarter retry logic that recovers 94%.
+              Stripe's default retry logic recovers only 30% of failed payments. This technical guide shows you how Stripe retries work, what's missing, and how to build smarter retry logic that can achieve industry-leading recovery rates (85-94% based on studies).
             </p>
           </div>
 
@@ -233,7 +233,7 @@ export default function BlogPost() {
               </h2>
 
               <p>
-                To recover 85-94% of failed payments (vs Stripe's 30%), you need <strong className="text-white">decline code-aware retry logic</strong>.
+                To achieve the industry benchmark of 85-94% recovery (vs Stripe's 30%), you need <strong className="text-white">decline code-aware retry logic</strong>.
               </p>
 
               <h3 className="text-xl font-semibold text-white mt-8 mb-3">
@@ -371,7 +371,7 @@ app.post('/stripe-webhook', async (req, res) => {
               </ul>
 
               <p className="text-sm mt-3">
-                <strong className="text-white">Pros:</strong> Zero setup, 85-94% recovery rate, no engineering time<br />
+                <strong className="text-white">Pros:</strong> Zero setup, designed for industry-leading recovery rates, no engineering time<br />
                 <strong className="text-white">Cons:</strong> Monthly cost (but ROI is typically 10-50x)
               </p>
 
@@ -625,7 +625,7 @@ sendEmail({
                   Skip the Engineering Work
                 </h3>
                 <p className="text-zinc-400 mb-6">
-                  Revive implements smart, decline code-aware retries and dunning emails for Stripe automatically. Connect your account in 3 minutes and start recovering 85-94% of failed payments.
+                  Revive implements smart, decline code-aware retries and dunning emails for Stripe automatically. Connect your account in 3 minutes and start recovering more failed payments.
                 </p>
                 <Link
                   href="/pricing"
@@ -659,18 +659,18 @@ sendEmail({
                 <li>💡 Decline codes tell you WHY a payment failed — use them to build smarter retries</li>
                 <li>💡 Expired cards should never be retried — send dunning emails immediately</li>
                 <li>💡 Insufficient funds needs 3-7 day delays to align with payday</li>
-                <li>💡 Custom retry logic via webhooks can increase recovery to 85-94%</li>
+                <li>💡 Custom retry logic via webhooks can help achieve the industry benchmark of 85-94% recovery</li>
                 <li>💡 Enable Card Account Updater and Network Tokens to prevent failures</li>
                 <li>💡 Track recovery rate by decline code to optimize your strategy</li>
               </ul>
 
               <p className="mt-8">
-                The bottom line: <strong className="text-white">Stripe's default retries are a good starting point, but not optimized for maximum recovery</strong>. By understanding decline codes and implementing smart retry logic, you can recover 3x more failed payments and save thousands in MRR every month.
+                The bottom line: <strong className="text-white">Stripe's default retries are a good starting point, but not optimized for maximum recovery</strong>. By understanding decline codes and implementing smart retry logic, you can recover 3x more failed payments (studies show 85-94% is achievable) and save thousands in MRR every month.
               </p>
 
               <div className="mt-12 pt-8 border-t border-zinc-800">
                 <p className="text-sm text-zinc-500">
-                  <strong className="text-zinc-400">About Revive:</strong> We build decline code-aware retry logic and automated dunning for Stripe — so you get 85-94% recovery rates without writing any code. Connect your Stripe account in one click and start recovering revenue today.
+                  <strong className="text-zinc-400">About Revive:</strong> We build decline code-aware retry logic and automated dunning for Stripe — designed to help achieve industry-leading recovery rates without writing any code. Connect your Stripe account in one click and start recovering revenue today.
                 </p>
               </div>
             </div>

@@ -276,21 +276,21 @@ export default function BlogPost() {
               </h2>
 
               <div className="glass rounded-xl p-8 my-8">
-                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Case Study</p>
+                <p className="text-sm text-zinc-400 mb-4 font-medium uppercase tracking-wide">Hypothetical Example</p>
                 <p className="text-xl font-semibold text-white mb-4">
-                  SaaS Company Recovers $47K in 90 Days
+                  How Smart Recovery Could Help a $90K MRR SaaS
                 </p>
                 <p className="text-zinc-300 mb-4">
-                  A B2B SaaS startup with $90K MRR was losing $8,100/month (9%) to failed payments. After implementing smart retries and dunning emails:
+                  Consider a B2B SaaS startup with $90K MRR losing $8,100/month (9%) to failed payments. With smart retries and dunning emails, they could potentially:
                 </p>
                 <ul className="space-y-2 ml-6 text-zinc-300">
-                  <li>✅ Recovered <strong className="text-white">94% of failed payments</strong> (vs 30% with Stripe's default retries)</li>
-                  <li>✅ Saved <strong className="text-white">$7,614/month in MRR</strong></li>
-                  <li>✅ Reduced involuntary churn from <strong className="text-white">9% to 0.5%</strong></li>
-                  <li>✅ Total recovered: <strong className="text-white">$47,000 in 90 days</strong></li>
+                  <li>✅ Dramatically improve recovery rates (industry studies show 85-94% is achievable vs 30% with basic retries)</li>
+                  <li>✅ Save thousands per month in MRR</li>
+                  <li>✅ Reduce involuntary churn significantly</li>
+                  <li>✅ Recover substantial revenue over 90 days</li>
                 </ul>
                 <p className="text-sm text-zinc-400 mt-6 mb-0">
-                  <strong className="text-zinc-300">Setup time:</strong> 3 minutes. <strong className="text-zinc-300">ROI:</strong> 2,847%.
+                  <strong className="text-zinc-300">Note:</strong> These are illustrative projections based on industry benchmarks, not guaranteed results.
                 </p>
               </div>
 
@@ -356,14 +356,14 @@ export default function BlogPost() {
 
               <ul className="space-y-2 ml-6 text-zinc-300">
                 <li>💡 Involuntary churn costs the average SaaS company 9% of MRR</li>
-                <li>💡 Smart retry logic (based on decline codes) recovers 40-60% more payments than basic retries</li>
+                <li>💡 Smart retry logic (based on decline codes) can recover 40-60% more payments than basic retries</li>
                 <li>💡 Dunning emails should be sent within 24 hours with direct card update links</li>
                 <li>💡 Prevention (account updater, pre-billing emails) reduces failures before they happen</li>
                 <li>💡 Real-time monitoring helps you optimize retry timing and email copy</li>
               </ul>
 
               <p className="mt-8">
-                The bottom line: <strong className="text-white">Involuntary churn is fixable</strong>. With the right strategy, you can recover 90%+ of failed payments and protect thousands in MRR every month.
+                The bottom line: <strong className="text-white">Involuntary churn is fixable</strong>. With the right strategy, industry benchmarks show 85-94% of failed payments can be recovered, protecting thousands in MRR every month.
               </p>
 
               <div className="mt-12 pt-8 border-t border-zinc-800">
