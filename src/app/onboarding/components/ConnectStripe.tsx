@@ -15,12 +15,12 @@ export default function ConnectStripe({ onNext, onBack }: ConnectStripeProps) {
     setConnecting(true);
     setError(null);
     
-    // Store that we're in onboarding flow so we can redirect back here
+    // Store that we're in onboarding flow
     localStorage.setItem("onboarding_flow", "true");
     localStorage.setItem("onboarding_step", "2");
     
-    // Redirect to Stripe Connect
-    window.location.href = "/api/connect";
+    // Redirect to Stripe Connect with return parameter
+    window.location.href = "/api/connect?return=onboarding";
   };
 
   return (

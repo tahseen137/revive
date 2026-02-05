@@ -11,18 +11,19 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
   const error = searchParams.get("error");
+  const state = searchParams.get("state") || "dashboard"; // Get return destination
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://revive-seven-eosin.vercel.app";
 
   if (error) {
     console.error("[Connect] OAuth error:", error);
     return NextResponse.redirect(
-      `${appUrl}/dashboard?connect_error=${encodeURIComponent(error)}`
+      `${appUrl}/${state}?connect_error=${encodeURIComponent(error)}`
     );
   }
 
   if (!code) {
     return NextResponse.redirect(
-      `${appUrl}/dashboard?connect_error=no_code`
+      `${appUrl}/${state}?connect_error=no_code`
     );
   }
 
@@ -64,14 +65,15 @@ export async function GET(request: NextRequest) {
       // Continue without analysis — account is still connected
     }
 
+    // Redirect to the return destination (onboarding or dashboard)
     return NextResponse.redirect(
-      `${appUrl}/dashboard?connected=true&account=${connectedAccountId}${analysisParams}`
+      `${appUrl}/${state}?connected=true&account=${connectedAccountId}${analysisParams}`
     );
   } catch (err: unknown) {
     console.error("[Connect] Token exchange error:", err);
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.redirect(
-      `${appUrl}/dashboard?connect_error=${encodeURIComponent(message)}`
+      `${appUrl}/${state}?connect_error=${encodeURIComponent(message)}`
     );
   }
 }
