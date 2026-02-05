@@ -46,7 +46,26 @@ interface Payment {
   recoveredAt: string | null;
 }
 
-// ============ Status Colors ============
+// ============ Utility Functions ============
+
+const maskEmail = (email: string): string => {
+  if (!email || !email.includes('@')) return email;
+  const [local, domain] = email.split('@');
+  if (local.length <= 2) return `${local[0]}***@${domain}`;
+  return `${local[0]}***@${domain}`;
+};
+
+const getStatusIcon = (status: string): string => {
+  const icons: Record<string, string> = {
+    recovered: '✅',
+    retrying: '🔄',
+    pending: '🔄',
+    dunning: '📧',
+    failed: '❌',
+    expired_card: '❌',
+  };
+  return icons[status] || '⏸️';
+};
 
 const statusColors: Record<string, string> = {
   recovered: "text-emerald-400 bg-emerald-400/10",
@@ -66,14 +85,50 @@ const statusLabels: Record<string, string> = {
   expired_card: "Expired Card",
 };
 
-// ============ Retry Schedule Display ============
+// ============ Demo Data Generator ============
 
-const retrySchedule = [
-  { attempt: "Attempt 1", delay: "4 hours", strategy: "Soft retry" },
-  { attempt: "Attempt 2", delay: "24 hours", strategy: "Retry + Failed notice email" },
-  { attempt: "Attempt 3", delay: "72 hours", strategy: "Retry + Card update reminder" },
-  { attempt: "Attempt 4", delay: "7 days", strategy: "Final retry + Urgent warning" },
-];
+const generateDemoData = () => {
+  const demoStats: DashboardStats = {
+    totalRecovered: 47320.50,
+    recoveryRate: 68,
+    activeRetries: 23,
+    dunningCount: 8,
+    failedThisMonth: 34,
+    recoveredThisMonth: 23,
+    pendingRetries: 23,
+    mrrSaved: 12840.00,
+    churnPrevented: 15,
+    totalPayments: 156,
+  };
+
+  const demoTrend: DailyTrend[] = Array.from({ length: 30 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() - (29 - i));
+    const recovered = Math.floor(Math.random() * 8) + 1;
+    const failed = Math.floor(Math.random() * 4);
+    return {
+      date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      recovered,
+      failed,
+      amount: recovered * 149.99 + failed * 79.99,
+    };
+  });
+
+  const demoPayments: Payment[] = [
+    { id: '1', stripeInvoiceId: 'in_1', customer: 'Sarah Johnson', email: 'sarah.j@techcorp.com', amount: 149.99, currency: 'usd', status: 'recovered', failureReason: 'insufficient_funds', failureReasonDisplay: 'Insufficient funds', retries: 2, maxRetries: 4, nextRetryAt: null, emailsSent: 1, lastEmailType: 'payment_failed', date: '2 days ago', createdAt: new Date().toISOString(), recoveredAt: new Date().toISOString() },
+    { id: '2', stripeInvoiceId: 'in_2', customer: 'Michael Chen', email: 'mchen@startup.io', amount: 299.00, currency: 'usd', status: 'retrying', failureReason: 'card_declined', failureReasonDisplay: 'Card declined', retries: 1, maxRetries: 4, nextRetryAt: new Date(Date.now() + 86400000).toISOString(), emailsSent: 1, lastEmailType: 'payment_failed', date: '1 day ago', createdAt: new Date().toISOString(), recoveredAt: null },
+    { id: '3', stripeInvoiceId: 'in_3', customer: 'Emily Rodriguez', email: 'emily.r@company.com', amount: 79.99, currency: 'usd', status: 'dunning', failureReason: 'expired_card', failureReasonDisplay: 'Expired card', retries: 0, maxRetries: 0, nextRetryAt: null, emailsSent: 2, lastEmailType: 'card_update_reminder', date: '3 days ago', createdAt: new Date().toISOString(), recoveredAt: null },
+    { id: '4', stripeInvoiceId: 'in_4', customer: 'James Wilson', email: 'jwilson@enterprise.com', amount: 499.00, currency: 'usd', status: 'retrying', failureReason: 'insufficient_funds', failureReasonDisplay: 'Insufficient funds', retries: 3, maxRetries: 4, nextRetryAt: new Date(Date.now() + 172800000).toISOString(), emailsSent: 3, lastEmailType: 'final_warning', date: '5 days ago', createdAt: new Date().toISOString(), recoveredAt: null },
+    { id: '5', stripeInvoiceId: 'in_5', customer: 'Lisa Anderson', email: 'landerson@saas.co', amount: 149.99, currency: 'usd', status: 'recovered', failureReason: 'card_declined', failureReasonDisplay: 'Card declined', retries: 1, maxRetries: 4, nextRetryAt: null, emailsSent: 1, lastEmailType: 'payment_failed', date: '4 hours ago', createdAt: new Date().toISOString(), recoveredAt: new Date().toISOString() },
+    { id: '6', stripeInvoiceId: 'in_6', customer: 'David Martinez', email: 'dmartinez@tech.com', amount: 199.99, currency: 'usd', status: 'retrying', failureReason: 'insufficient_funds', failureReasonDisplay: 'Insufficient funds', retries: 2, maxRetries: 4, nextRetryAt: new Date(Date.now() + 259200000).toISOString(), emailsSent: 2, lastEmailType: 'card_update_reminder', date: '1 day ago', createdAt: new Date().toISOString(), recoveredAt: null },
+    { id: '7', stripeInvoiceId: 'in_7', customer: 'Jennifer Lee', email: 'jlee@startup.com', amount: 99.00, currency: 'usd', status: 'failed', failureReason: 'card_declined', failureReasonDisplay: 'Card declined', retries: 4, maxRetries: 4, nextRetryAt: null, emailsSent: 4, lastEmailType: 'final_warning', date: '2 weeks ago', createdAt: new Date().toISOString(), recoveredAt: null },
+    { id: '8', stripeInvoiceId: 'in_8', customer: 'Robert Taylor', email: 'rtaylor@corp.io', amount: 249.00, currency: 'usd', status: 'recovered', failureReason: 'insufficient_funds', failureReasonDisplay: 'Insufficient funds', retries: 2, maxRetries: 4, nextRetryAt: null, emailsSent: 2, lastEmailType: 'card_update_reminder', date: '3 days ago', createdAt: new Date().toISOString(), recoveredAt: new Date().toISOString() },
+    { id: '9', stripeInvoiceId: 'in_9', customer: 'Amanda White', email: 'awhite@business.com', amount: 149.99, currency: 'usd', status: 'retrying', failureReason: 'card_declined', failureReasonDisplay: 'Card declined', retries: 1, maxRetries: 4, nextRetryAt: new Date(Date.now() + 86400000).toISOString(), emailsSent: 1, lastEmailType: 'payment_failed', date: '12 hours ago', createdAt: new Date().toISOString(), recoveredAt: null },
+    { id: '10', stripeInvoiceId: 'in_10', customer: 'Christopher Brown', email: 'cbrown@agency.com', amount: 399.00, currency: 'usd', status: 'dunning', failureReason: 'expired_card', failureReasonDisplay: 'Expired card', retries: 0, maxRetries: 0, nextRetryAt: null, emailsSent: 1, lastEmailType: 'card_update_reminder', date: '6 hours ago', createdAt: new Date().toISOString(), recoveredAt: null },
+  ];
+
+  return { demoStats, demoTrend, demoPayments };
+};
 
 // ============ Dashboard Content ============
 
@@ -98,7 +153,7 @@ function DashboardContent() {
     try {
       const [statsRes, paymentsRes] = await Promise.all([
         fetch("/api/dashboard/stats"),
-        fetch("/api/dashboard/payments?limit=20"),
+        fetch("/api/dashboard/payments?limit=10"),
       ]);
 
       if (statsRes.ok) {
@@ -112,8 +167,23 @@ function DashboardContent() {
         const paymentsData = await paymentsRes.json();
         setPayments(paymentsData.payments || []);
       }
+
+      // If no real data, use demo data
+      if (!statsRes.ok || !paymentsRes.ok) {
+        const { demoStats, demoTrend, demoPayments } = generateDemoData();
+        setStats(demoStats);
+        setTrend(demoTrend);
+        setPayments(demoPayments);
+        setDbType("demo");
+      }
     } catch (err) {
       console.error("Failed to fetch dashboard data:", err);
+      // Fallback to demo data
+      const { demoStats, demoTrend, demoPayments } = generateDemoData();
+      setStats(demoStats);
+      setTrend(demoTrend);
+      setPayments(demoPayments);
+      setDbType("demo");
     } finally {
       setLoading(false);
     }
@@ -131,7 +201,8 @@ function DashboardContent() {
     window.location.href = "/api/connect";
   };
 
-  const maxTrendValue = Math.max(...trend.map((d) => d.recovered + d.failed), 1);
+  const maxTrendValue = Math.max(...trend.map((d) => d.amount), 1);
+  const moneySavedThisMonth = (stats?.mrrSaved || 0);
 
   return (
     <main className="min-h-screen bg-[#09090b]">
@@ -171,8 +242,8 @@ function DashboardContent() {
 
           <div className="pt-6 border-t border-white/5">
             <div className="flex items-center gap-2 text-xs text-zinc-600">
-              <div className={`h-2 w-2 rounded-full ${dbType === "upstash-redis" ? "bg-emerald-500" : "bg-amber-500"}`} />
-              {dbType === "upstash-redis" ? "Redis Connected" : "Demo Mode (In-Memory)"}
+              <div className={`h-2 w-2 rounded-full ${dbType === "upstash-redis" ? "bg-emerald-500" : dbType === "demo" ? "bg-amber-500" : "bg-amber-500"}`} />
+              {dbType === "upstash-redis" ? "Redis Connected" : dbType === "demo" ? "Demo Mode" : "Demo Mode (In-Memory)"}
             </div>
           </div>
         </aside>
@@ -202,7 +273,7 @@ function DashboardContent() {
           </header>
 
           {/* Dashboard Content */}
-          <div className="p-6 lg:p-8 space-y-8">
+          <div className="p-6 lg:p-8 space-y-6">
             {/* Connection Analysis Banner */}
             {connected && lostAmount && (
               <div className="bg-gradient-to-r from-brand-600/10 via-brand-500/5 to-purple-600/10 border border-brand-500/20 rounded-2xl p-6">
@@ -248,211 +319,242 @@ function DashboardContent() {
               </div>
             )}
 
-            {/* Stats Grid */}
+            {/* Enhanced Metrics Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="glass rounded-xl p-6">
-                <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Total Recovered</div>
-                <div className="text-2xl font-bold text-emerald-400">
+              <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Total Revenue Recovered</div>
+                  <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                    <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-emerald-400 mb-1">
                   {loading ? "—" : `$${(stats?.totalRecovered || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                 </div>
-                <div className="text-xs text-zinc-500 mt-1">
-                  {stats?.recoveredThisMonth || 0} payments this month
+                <div className="text-xs text-zinc-500">
+                  All time • {stats?.recoveredThisMonth || 0} payments recovered
                 </div>
               </div>
 
-              <div className="glass rounded-xl p-6">
-                <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Recovery Rate</div>
-                <div className="text-2xl font-bold text-white">
+              <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Recovery Rate</div>
+                  <div className="h-8 w-8 rounded-lg bg-brand-500/10 flex items-center justify-center group-hover:bg-brand-500/20 transition-colors">
+                    <svg className="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-white mb-1">
                   {loading ? "—" : `${stats?.recoveryRate || 0}%`}
                 </div>
-                <div className="w-full bg-zinc-800 rounded-full h-1.5 mt-3">
+                <div className="w-full bg-zinc-800 rounded-full h-2 mt-2">
                   <div
-                    className="bg-brand-500 h-1.5 rounded-full transition-all duration-1000"
+                    className="bg-gradient-to-r from-brand-500 to-brand-400 h-2 rounded-full transition-all duration-1000"
                     style={{ width: `${Math.min(stats?.recoveryRate || 0, 100)}%` }}
                   />
                 </div>
               </div>
 
-              <div className="glass rounded-xl p-6">
-                <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Active Retries</div>
-                <div className="text-2xl font-bold text-amber-400">
+              <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Active Failed Payments</div>
+                  <div className="h-8 w-8 rounded-lg bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+                    <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-amber-400 mb-1">
                   {loading ? "—" : stats?.activeRetries || 0}
                 </div>
-                <div className="text-xs text-zinc-500 mt-1">
-                  {stats?.dunningCount || 0} in dunning
+                <div className="text-xs text-zinc-500">
+                  Currently being retried • {stats?.dunningCount || 0} in dunning
                 </div>
               </div>
 
-              <div className="glass rounded-xl p-6">
-                <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Churn Prevented</div>
-                <div className="text-2xl font-bold text-brand-400">
-                  {loading ? "—" : `${stats?.churnPrevented || 0}%`}
+              <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Money Saved This Month</div>
+                  <div className="h-8 w-8 rounded-lg bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
+                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
                 </div>
-                <div className="text-xs text-zinc-500 mt-1">
-                  ${(stats?.mrrSaved || 0).toLocaleString()} MRR saved
+                <div className="text-3xl font-bold text-purple-400 mb-1">
+                  {loading ? "—" : `$${moneySavedThisMonth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                </div>
+                <div className="text-xs text-zinc-500">
+                  MRR saved • {stats?.churnPrevented || 0}% churn prevented
                 </div>
               </div>
             </div>
 
-            {/* Chart + Retry Schedule */}
+            {/* Timeline Chart + Quick Actions */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Recovery Trend Chart */}
+              {/* Recovery Timeline Chart */}
               <div className="lg:col-span-2 glass rounded-xl p-6">
-                <h3 className="font-medium mb-6">Recovery Trend (Last 30 Days)</h3>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-medium">Recovery Timeline (Last 30 Days)</h3>
+                  <div className="flex items-center gap-4 text-xs text-zinc-500">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded bg-gradient-to-t from-emerald-500/60 to-emerald-400/40" />
+                      Recovered
+                    </div>
+                  </div>
+                </div>
                 <div className="h-64 flex items-end gap-1">
                   {trend.length > 0 ? (
                     trend.map((day, i) => {
-                      const total = day.recovered + day.failed;
-                      const height = total > 0 ? (total / maxTrendValue) * 100 : 2;
-                      const recoveredPercent = total > 0 ? (day.recovered / total) * 100 : 0;
+                      const height = day.amount > 0 ? (day.amount / maxTrendValue) * 100 : 2;
                       return (
                         <div
                           key={i}
-                          className="flex-1 rounded-t-sm transition-all hover:opacity-80 relative group cursor-pointer"
+                          className="flex-1 rounded-t transition-all hover:opacity-80 relative group cursor-pointer"
                           style={{
                             height: `${Math.max(height, 2)}%`,
-                            background: total > 0
-                              ? `linear-gradient(to top, rgba(52, 211, 153, 0.5) ${recoveredPercent}%, rgba(239, 68, 68, 0.3) ${recoveredPercent}%)`
-                              : "rgba(63, 63, 70, 0.2)",
+                            background: day.amount > 0
+                              ? 'linear-gradient(to top, rgba(52, 211, 153, 0.6), rgba(52, 211, 153, 0.3))'
+                              : 'rgba(63, 63, 70, 0.2)',
                           }}
                         >
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-800 text-xs text-white px-2 py-1 rounded whitespace-nowrap z-10">
-                            {day.date}: {day.recovered}↑ {day.failed}↓
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-800 text-xs text-white px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-xl border border-white/10">
+                            <div className="font-medium mb-1">{day.date}</div>
+                            <div className="text-emerald-400">${day.amount.toFixed(2)} recovered</div>
+                            <div className="text-zinc-400">{day.recovered} payments</div>
                           </div>
                         </div>
                       );
                     })
                   ) : (
-                    // Empty state placeholder
                     Array.from({ length: 30 }, (_, i) => (
                       <div
                         key={i}
-                        className="flex-1 rounded-t-sm bg-zinc-800/20"
+                        className="flex-1 rounded-t bg-zinc-800/20"
                         style={{ height: "2%" }}
                       />
                     ))
                   )}
                 </div>
-                <div className="flex items-center gap-6 mt-4 text-xs text-zinc-500">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-emerald-400/50" />
-                    Recovered
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-red-400/30" />
-                    Failed
-                  </div>
+                <div className="mt-4 text-xs text-zinc-500 text-center">
+                  Hover over bars for details
                 </div>
               </div>
 
-              {/* Retry Schedule */}
+              {/* Quick Actions Panel */}
               <div className="glass rounded-xl p-6">
-                <h3 className="font-medium mb-4">Smart Retry Schedule</h3>
-                <div className="space-y-4">
-                  {retrySchedule.map((retry, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="mt-1 h-2 w-2 rounded-full bg-brand-500 shrink-0" />
-                      <div>
-                        <div className="text-sm font-medium">{retry.attempt}</div>
-                        <div className="text-xs text-zinc-500">
-                          +{retry.delay} — {retry.strategy}
+                <h3 className="font-medium mb-4">Quick Actions</h3>
+                <div className="space-y-3">
+                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-brand-500/10 border border-brand-500/20 hover:bg-brand-500/20 hover:border-brand-500/30 text-brand-400 transition-all duration-200 group">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-sm font-medium">Retry All Failed</span>
+                  </button>
+                  
+                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-500/30 text-purple-400 transition-all duration-200 group">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-sm font-medium">Send Dunning Emails</span>
+                  </button>
+                  
+                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 hover:border-emerald-500/30 text-emerald-400 transition-all duration-200 group">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-sm font-medium">Export CSV</span>
+                  </button>
+                </div>
+                
+                <div className="mt-6 pt-4 border-t border-white/5">
+                  <div className="text-xs text-zinc-500 space-y-2">
+                    <p>💡 <span className="text-zinc-400">Retry failed payments in bulk</span></p>
+                    <p>📧 <span className="text-zinc-400">Send payment reminders to customers</span></p>
+                    <p>📊 <span className="text-zinc-400">Export data for analysis</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Activity Feed */}
+            <div className="glass rounded-xl overflow-hidden">
+              <div className="p-6 border-b border-white/5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-medium">Recent Activity</h3>
+                    <p className="text-xs text-zinc-500 mt-1">
+                      Last 10 payment recovery attempts
+                    </p>
+                  </div>
+                  {payments.length > 0 && (
+                    <button
+                      onClick={fetchData}
+                      className="text-xs text-brand-400 hover:text-brand-300 transition-colors flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Refresh
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {payments.length > 0 ? (
+                <div className="divide-y divide-white/5">
+                  {payments.map((payment) => (
+                    <div
+                      key={payment.id}
+                      className="p-6 hover:bg-white/[0.02] transition-colors"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="text-2xl flex-shrink-0 mt-1">
+                          {getStatusIcon(payment.status)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-4 mb-2">
+                            <div>
+                              <div className="font-medium text-white">{payment.customer}</div>
+                              <div className="text-sm text-zinc-500">{maskEmail(payment.email)}</div>
+                            </div>
+                            <div className="text-right flex-shrink-0">
+                              <div className="font-mono font-semibold text-white">${payment.amount.toFixed(2)}</div>
+                              <div className="text-xs text-zinc-500">{payment.date}</div>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-3 text-xs">
+                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full font-medium ${statusColors[payment.status] || "text-zinc-400 bg-zinc-400/10"}`}>
+                              {statusLabels[payment.status] || payment.status}
+                            </span>
+                            <span className="text-zinc-500">
+                              {payment.failureReasonDisplay}
+                            </span>
+                            <span className="text-zinc-600">•</span>
+                            <span className="text-zinc-400">
+                              {payment.retries > 0 ? `${payment.retries} ${payment.retries === 1 ? 'retry' : 'retries'}` : 'No retries yet'}
+                            </span>
+                            {payment.emailsSent > 0 && (
+                              <>
+                                <span className="text-zinc-600">•</span>
+                                <span className="text-zinc-400">
+                                  📧 {payment.emailsSent} {payment.emailsSent === 1 ? 'email' : 'emails'} sent
+                                </span>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-4 border-t border-white/5 text-xs text-zinc-500">
-                  <p>📧 Expired cards skip retries → dunning emails only</p>
-                  <p className="mt-1">💳 Insufficient funds get longer gaps (payday cycles)</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Payments Table */}
-            <div className="glass rounded-xl overflow-hidden">
-              <div className="p-6 border-b border-white/5 flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">Recent Failed Payments</h3>
-                  <p className="text-xs text-zinc-500 mt-1">
-                    {payments.length > 0
-                      ? `Showing ${payments.length} most recent recovery attempts`
-                      : "No payments tracked yet — connect Stripe to start"}
-                  </p>
-                </div>
-                {payments.length > 0 && (
-                  <button
-                    onClick={fetchData}
-                    className="text-xs text-brand-400 hover:text-brand-300 transition-colors"
-                  >
-                    Refresh ↻
-                  </button>
-                )}
-              </div>
-
-              {payments.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-white/5">
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Customer</th>
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Amount</th>
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Reason</th>
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Status</th>
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Retries</th>
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Emails</th>
-                        <th className="text-left text-xs text-zinc-500 font-medium px-6 py-3">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {payments.map((payment) => (
-                        <tr
-                          key={payment.id}
-                          className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors"
-                        >
-                          <td className="px-6 py-4">
-                            <div className="font-medium">{payment.customer}</div>
-                            <div className="text-xs text-zinc-500">{payment.email}</div>
-                          </td>
-                          <td className="px-6 py-4 font-mono">
-                            ${payment.amount.toFixed(2)}
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className="text-xs text-zinc-400">{payment.failureReasonDisplay}</span>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[payment.status] || "text-zinc-400 bg-zinc-400/10"}`}>
-                              {statusLabels[payment.status] || payment.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-zinc-400">
-                            {payment.retries}/{payment.maxRetries}
-                          </td>
-                          <td className="px-6 py-4 text-zinc-400">
-                            {payment.emailsSent > 0 ? (
-                              <span className="text-xs">
-                                📧 {payment.emailsSent}
-                              </span>
-                            ) : (
-                              <span className="text-zinc-600">—</span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 text-zinc-500 text-xs">
-                            {payment.date}
-                            {payment.nextRetryAt && (
-                              <div className="text-brand-400">
-                                Next: {new Date(payment.nextRetryAt).toLocaleDateString()}
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
               ) : (
                 <div className="p-12 text-center">
                   <div className="text-4xl mb-4">💳</div>
-                  <h4 className="font-medium mb-2">No payments yet</h4>
+                  <h4 className="font-medium mb-2">No activity yet</h4>
                   <p className="text-sm text-zinc-500 max-w-sm mx-auto">
                     Connect your Stripe account and Revive will automatically detect and recover failed payments.
                   </p>
@@ -464,34 +566,6 @@ function DashboardContent() {
                   </button>
                 </div>
               )}
-            </div>
-
-            {/* Email Templates Preview */}
-            <div className="glass rounded-xl p-6">
-              <h3 className="font-medium mb-4">Dunning Email Templates</h3>
-              <p className="text-xs text-zinc-500 mb-4">Preview the automated emails sent during the recovery process.</p>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                {[
-                  { type: "payment_failed", label: "Payment Failed", icon: "⚠️" },
-                  { type: "card_update_reminder", label: "Card Update", icon: "💳" },
-                  { type: "final_warning", label: "Final Warning", icon: "🚨" },
-                  { type: "payment_recovered", label: "Recovered", icon: "✅" },
-                ].map((template) => (
-                  <a
-                    key={template.type}
-                    href={`/api/email/preview?type=${template.type}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-3 rounded-lg border border-white/5 hover:border-brand-500/20 hover:bg-white/[0.02] transition-all text-sm"
-                  >
-                    <span>{template.icon}</span>
-                    <span className="text-zinc-300">{template.label}</span>
-                    <svg className="w-3 h-3 ml-auto text-zinc-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </a>
-                ))}
-              </div>
             </div>
           </div>
         </div>
