@@ -277,92 +277,46 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social Proof - Testimonials */}
+      {/* Built For SaaS */}
       <section className="py-20 md:py-32 border-t border-white/5">
         <div className="mx-auto max-w-6xl px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Trusted by SaaS Founders
+              Built for SaaS Founders Who Hate Losing Money
             </h2>
-            <p className="text-zinc-400 text-sm">
-              Placeholder testimonials — real customer stories coming soon
+            <p className="text-zinc-400 text-sm max-w-2xl mx-auto">
+              Every failed payment is revenue walking out the door. Revive brings it back — automatically, intelligently, and only charges when it works.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                quote:
-                  "Failed payments were silently draining our MRR. Smart retry logic and dunning emails are exactly what we needed. Setup took literally 4 minutes.",
-                author: "Sarah Chen",
-                role: "Founder",
-                company: "DataFlow Analytics",
-                stars: 5,
+                icon: "🔍",
+                title: "Smart Detection",
+                desc: "Instantly categorizes every failed payment by decline code and applies the optimal recovery strategy.",
               },
               {
-                quote:
-                  "The AI retry logic is insane. It waits for payday on insufficient funds declines. Our recovery rate went from 61% to 93%.",
-                author: "Marcus Rodriguez",
-                role: "CEO",
-                company: "CloudSync Pro",
-                stars: 5,
+                icon: "⚡",
+                title: "Zero Risk Pricing",
+                desc: "Pay nothing upfront. We only earn when we recover your money. If we don't recover, you don't pay.",
               },
               {
-                quote:
-                  "Best ROI of any tool we use. Paid for itself in week one. The dunning emails are so well-written our customers actually thank us.",
-                author: "Emily Nakamura",
-                role: "Head of Growth",
-                company: "Workflow Studio",
-                stars: 5,
+                icon: "📧",
+                title: "Dunning That Works",
+                desc: "Personalized recovery emails sent at the right time. Not generic reminders — smart, empathetic messages customers actually respond to.",
               },
-            ].map((testimonial, idx) => (
+            ].map((item, idx) => (
               <div
                 key={idx}
                 className="glass rounded-2xl p-8 flex flex-col hover:border-brand-500/20 transition-all"
               >
-                {/* Star rating */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.stars)].map((_, i) => (
-                    <svg
-                      key={i}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="text-yellow-500"
-                    >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
-                  ))}
-                </div>
-
-                {/* Quote */}
-                <p className="text-zinc-300 text-sm leading-relaxed mb-6 flex-grow">
-                  &quot;{testimonial.quote}&quot;
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
-                    {testimonial.author.split(" ").map(n => n[0]).join("")}
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-white">
-                      {testimonial.author}
-                    </div>
-                    <div className="text-xs text-zinc-500">
-                      {testimonial.role}, {testimonial.company}
-                    </div>
-                  </div>
-                </div>
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
-
-          {/* Example disclaimer */}
-          <p className="text-center text-xs text-zinc-600 mt-8 italic">
-            * Example testimonials for demonstration purposes
-          </p>
         </div>
       </section>
 
