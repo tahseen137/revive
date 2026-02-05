@@ -72,9 +72,9 @@ const features = [
 ];
 
 const stats = [
-  { value: "$2.4M+", label: "Revenue Recovered" },
-  { value: "94%", label: "Recovery Rate" },
-  { value: "3 min", label: "Setup Time" },
+  { value: "$0", label: "Minimum Commitment" },
+  { value: "5 min", label: "Setup Time" },
+  { value: "100%", label: "Stripe Compatible" },
   { value: "24/7", label: "Automated Recovery" },
 ];
 
@@ -94,7 +94,7 @@ export default function Home() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-500/20 bg-brand-500/5 text-brand-400 text-xs font-medium mb-8 animate-fade-in">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-pulse" />
-              Now recovering payments for 200+ SaaS companies
+              Smart payment recovery for SaaS companies on Stripe
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-slide-up">
@@ -103,7 +103,7 @@ export default function Home() {
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up">
-              <strong className="text-zinc-300">Involuntary churn costs SaaS companies $10B annually.</strong> Revive automatically recovers 94% of failed payments with AI-powered retry logic and personalized recovery emails — <strong className="text-zinc-300">zero engineering required.</strong>
+              <strong className="text-zinc-300">Involuntary churn costs SaaS companies billions annually.</strong> Revive automatically recovers failed payments with smart retry logic and personalized recovery emails — <strong className="text-zinc-300">zero engineering required.</strong>
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
@@ -189,7 +189,7 @@ export default function Home() {
                 emoji: "💰",
                 title: "Watch Revenue Grow",
                 description:
-                  "Real-time dashboard shows every dollar recovered. 94% average recovery rate, hands-free.",
+                  "Real-time dashboard shows every dollar recovered. Track every retry and recovery, hands-free.",
               },
             ].map((item) => (
               <div
@@ -293,7 +293,7 @@ export default function Home() {
             {[
               {
                 quote:
-                  "We were losing $12k/month to failed payments. Revive recovered 89% of it in the first 30 days. Setup took literally 4 minutes.",
+                  "Failed payments were silently draining our MRR. Smart retry logic and dunning emails are exactly what we needed. Setup took literally 4 minutes.",
                 author: "Sarah Chen",
                 role: "Founder",
                 company: "DataFlow Analytics",

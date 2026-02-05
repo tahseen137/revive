@@ -119,7 +119,7 @@ export default async function Image() {
               lineHeight: '1.4',
             }}
           >
-            Smart payment retries + dunning emails. Recover up to 94% of failed payments.
+            Smart payment retries + dunning emails. Recover failed payments automatically.
           </p>
           
           {/* Stats */}
@@ -131,8 +131,8 @@ export default async function Image() {
             }}
           >
             {[
-              { value: '$2.4M+', label: 'Recovered' },
-              { value: '94%', label: 'Recovery Rate' },
+              { value: '$0', label: 'Min. Commitment' },
+              { value: '5 min', label: 'Setup Time' },
               { value: '3 min', label: 'Setup' },
             ].map((stat) => (
               <div

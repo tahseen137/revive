@@ -65,7 +65,7 @@ export default function Welcome({ onNext }: WelcomeProps) {
         {[
           { icon: "⚡", label: "3 min setup" },
           { icon: "🔒", label: "Bank-grade security" },
-          { icon: "📈", label: "94% recovery rate" },
+          { icon: "📈", label: "Smart retry logic" },
         ].map((item) => (
           <div
             key={item.label}

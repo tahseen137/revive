@@ -118,7 +118,7 @@ export default function Complete({ recoveryConfig }: CompleteProps) {
       {/* Stats preview */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: "Recovery Rate", value: "~94%", icon: "📈" },
+          { label: "Recovery", value: "Automated", icon: "📈" },
           { label: "Avg Setup Time", value: "3 min", icon: "⚡" },
           { label: "MRR Protected", value: "$0", icon: "🛡️" },
         ].map((stat) => (

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | Revive",
   },
   description:
-    "Stop losing revenue to failed payments. Revive automatically detects, retries, and recovers failed charges from your Stripe account with smart retry logic and dunning emails. Recover up to 94% of involuntary churn.",
+    "Stop losing revenue to failed payments. Revive automatically detects, retries, and recovers failed charges from your Stripe account with smart retry logic and dunning emails.",
   keywords: [
     "failed payment recovery",
     "payment recovery",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "Revive",
     title: "Revive — Recover Failed Payments on Autopilot",
     description:
-      "Smart payment retries + dunning emails. Recover up to 94% of failed payments automatically. Built for SaaS companies on Stripe.",
+      "Smart payment retries + dunning emails. Recover failed payments automatically. Built for SaaS companies on Stripe.",
     images: [
       {
         url: "/opengraph-image",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Revive — Recover Failed Payments on Autopilot",
     description:
-      "Smart payment retries + dunning emails. Recover up to 94% of failed payments automatically.",
+      "Smart payment retries + dunning emails. Recover failed payments automatically.",
     images: ["/opengraph-image"],
     creator: "@revivehq",
   },
