@@ -4,21 +4,32 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { getAllPayments, getPaymentsByAccount } from "@/lib/db";
+import { getPaymentsByAccount } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
+  // Require authentication
+  const authError = requireAuth(request);
+  if (authError) return authError;
+
   const { searchParams } = new URL(request.url);
   const accountId = searchParams.get("accountId");
   const limit = parseInt(searchParams.get("limit") || "50", 10);
   const offset = parseInt(searchParams.get("offset") || "0", 10);
   const status = searchParams.get("status"); // filter by status
 
+  // Tenant isolation: accountId is required — never return global data
+  if (!accountId) {
+    return NextResponse.json(
+      { error: "accountId query parameter is required" },
+      { status: 400 }
+    );
+  }
+
   try {
-    let payments = accountId
-      ? await getPaymentsByAccount(accountId)
-      : await getAllPayments();
+    let payments = await getPaymentsByAccount(accountId);
 
     // Filter by status if specified
     if (status) {

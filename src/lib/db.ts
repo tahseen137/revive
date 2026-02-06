@@ -183,6 +183,15 @@ async function zrem(key: string, member: string): Promise<void> {
 
 // ============ Failed Payment Operations ============
 
+export async function getPaymentByInvoiceId(invoiceId: string): Promise<FailedPayment | null> {
+  // Use the invoice index for O(1) lookup
+  const paymentId = await get<string>(`invoice:${invoiceId}`);
+  if (paymentId) {
+    return getFailedPayment(paymentId);
+  }
+  return null;
+}
+
 export async function createFailedPayment(
   data: Omit<FailedPayment, "id" | "retryCount" | "retryHistory" | "emailsSent" | "createdAt" | "updatedAt" | "recoveredAt">
 ): Promise<FailedPayment> {
@@ -203,6 +212,9 @@ export async function createFailedPayment(
   await set(`failed_payment:${id}`, payment);
   await sadd(`account:${data.connectedAccountId}:payments`, id);
   await sadd("all_payments", id);
+  
+  // Index by invoice ID for fast lookups & idempotency
+  await set(`invoice:${data.stripeInvoiceId}`, id);
   
   // Add to retry queue if scheduled
   if (payment.nextRetryAt) {

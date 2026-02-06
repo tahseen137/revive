@@ -130,6 +130,15 @@ const generateDemoData = () => {
   return { demoStats, demoTrend, demoPayments };
 };
 
+// ============ Types: Connected Account ============
+
+interface ConnectedAccountInfo {
+  stripeAccountId: string;
+  email: string | null;
+  businessName: string | null;
+  connectedAt: number;
+}
+
 // ============ Dashboard Content ============
 
 function DashboardContent() {
@@ -140,6 +149,11 @@ function DashboardContent() {
   const [loading, setLoading] = useState(true);
   const [connectLoading, setConnectLoading] = useState(false);
   const [dbType, setDbType] = useState<string>("");
+  const [connectedAccount, setConnectedAccount] = useState<ConnectedAccountInfo | null>(null);
+  const [disconnecting, setDisconnecting] = useState(false);
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [loginKey, setLoginKey] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   // Connection analysis from URL params (after Stripe Connect)
   const connected = searchParams.get("connected");
@@ -148,6 +162,42 @@ function DashboardContent() {
   const failedCount = searchParams.get("failedCount");
   const importedCount = searchParams.get("imported");
   const connectError = searchParams.get("connect_error");
+
+  // Fetch connected account status
+  const fetchConnectionStatus = useCallback(async () => {
+    try {
+      const res = await fetch("/api/stripe/status");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.connected && data.account) {
+          setConnectedAccount(data.account);
+        } else {
+          setConnectedAccount(null);
+        }
+      }
+    } catch (e) {
+      console.error("Failed to check connection status:", e);
+    }
+  }, []);
+
+  const handleDisconnect = async () => {
+    if (!confirm("Are you sure you want to disconnect your Stripe account?")) return;
+    setDisconnecting(true);
+    try {
+      const res = await fetch("/api/stripe/disconnect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stripeAccountId: connectedAccount?.stripeAccountId }),
+      });
+      if (res.ok) {
+        setConnectedAccount(null);
+      }
+    } catch (e) {
+      console.error("Disconnect failed:", e);
+    } finally {
+      setDisconnecting(false);
+    }
+  };
 
   const fetchData = useCallback(async () => {
     try {
@@ -189,12 +239,56 @@ function DashboardContent() {
     }
   }, []);
 
+  // Check authentication on mount
   useEffect(() => {
+    async function checkAuth() {
+      try {
+        // Try fetching stats — if it returns 401, we're not authenticated
+        const res = await fetch("/api/dashboard/stats?accountId=direct");
+        if (res.status === 401) {
+          setAuthenticated(false);
+          setLoading(false);
+        } else {
+          setAuthenticated(true);
+        }
+      } catch {
+        setAuthenticated(false);
+        setLoading(false);
+      }
+    }
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    if (authenticated !== true) return;
     fetchData();
-    // Refresh every 30 seconds for real-time feel
-    const interval = setInterval(fetchData, 30000);
+    fetchConnectionStatus();
+    // Refresh every 30 seconds for real-time feel (only when tab is visible)
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") fetchData();
+    }, 30000);
     return () => clearInterval(interval);
-  }, [fetchData]);
+  }, [fetchData, fetchConnectionStatus, authenticated]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ apiKey: loginKey }),
+      });
+      if (res.ok) {
+        setAuthenticated(true);
+        setLoginKey("");
+      } else {
+        setLoginError("Invalid API key");
+      }
+    } catch {
+      setLoginError("Login failed. Please try again.");
+    }
+  };
 
   const handleConnect = () => {
     setConnectLoading(true);
@@ -203,6 +297,56 @@ function DashboardContent() {
 
   const maxTrendValue = Math.max(...trend.map((d) => d.amount), 1);
   const moneySavedThisMonth = (stats?.mrrSaved || 0);
+
+  // Show login screen if not authenticated
+  if (authenticated === false) {
+    return (
+      <main className="min-h-screen bg-[#09090b] flex items-center justify-center px-6">
+        <div className="max-w-sm w-full">
+          <div className="glass rounded-2xl p-8">
+            <div className="text-center mb-6">
+              <div className="h-12 w-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
+              </div>
+              <h1 className="text-xl font-semibold">Revive Dashboard</h1>
+              <p className="text-sm text-zinc-500 mt-1">Enter your API key to continue</p>
+            </div>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <input
+                type="password"
+                value={loginKey}
+                onChange={(e) => setLoginKey(e.target.value)}
+                placeholder="API Secret Key"
+                className="w-full px-4 py-3 bg-zinc-900 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500/50 text-sm"
+                autoFocus
+              />
+              {loginError && (
+                <p className="text-red-400 text-xs">{loginError}</p>
+              )}
+              <button
+                type="submit"
+                className="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-3 rounded-xl transition-colors text-sm"
+              >
+                Sign In
+              </button>
+            </form>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Show loading while checking auth
+  if (authenticated === null) {
+    return (
+      <main className="min-h-screen bg-[#09090b] flex items-center justify-center">
+        <div className="text-zinc-500">Loading...</div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#09090b]">
@@ -260,16 +404,35 @@ function DashboardContent() {
                   : "Connect Stripe to start recovering revenue"}
               </p>
             </div>
-            <button
-              onClick={handleConnect}
-              disabled={connectLoading}
-              className="flex items-center gap-2 bg-[#635bff] hover:bg-[#5851db] text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
-              </svg>
-              {connectLoading ? "Connecting..." : "Connect Stripe"}
-            </button>
+            {connectedAccount ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="text-zinc-400 hidden sm:inline">
+                    {connectedAccount.businessName || connectedAccount.email || connectedAccount.stripeAccountId}
+                  </span>
+                  <span className="text-emerald-400 text-xs font-medium">Connected</span>
+                </div>
+                <button
+                  onClick={handleDisconnect}
+                  disabled={disconnecting}
+                  className="text-xs text-zinc-500 hover:text-red-400 transition-colors disabled:opacity-50"
+                >
+                  {disconnecting ? "..." : "Disconnect"}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleConnect}
+                disabled={connectLoading}
+                className="flex items-center gap-2 bg-[#635bff] hover:bg-[#5851db] text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
+                </svg>
+                {connectLoading ? "Connecting..." : "Connect Stripe"}
+              </button>
+            )}
           </header>
 
           {/* Dashboard Content */}

@@ -4,18 +4,31 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { getStats, getAllPayments, dbHealthCheck } from "@/lib/db";
+import { getStats, getPaymentsByAccount, dbHealthCheck } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
+  // Require authentication
+  const authError = requireAuth(request);
+  if (authError) return authError;
+
   const { searchParams } = new URL(request.url);
   const accountId = searchParams.get("accountId") || undefined;
+
+  // Tenant isolation: accountId is required — never return global data
+  if (!accountId) {
+    return NextResponse.json(
+      { error: "accountId query parameter is required" },
+      { status: 400 }
+    );
+  }
 
   try {
     const [_stats, payments, health] = await Promise.all([
       getStats(accountId),
-      getAllPayments(),
+      getPaymentsByAccount(accountId),
       dbHealthCheck(),
     ]);
     void _stats; // used for future per-account view

@@ -5,10 +5,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getAllPayments } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
+  // Require authentication
+  const authError = requireAuth(request);
+  if (authError) return authError;
   const { searchParams } = new URL(request.url);
   const invoiceId = searchParams.get("invoiceId");
   const customerId = searchParams.get("customerId");

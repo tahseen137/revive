@@ -1,9 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { dbHealthCheck, getStats } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Require authentication
+  const authError = requireAuth(request);
+  if (authError) return authError;
   const results: Record<string, unknown> = {
     timestamp: new Date().toISOString(),
     env: {

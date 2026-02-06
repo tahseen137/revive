@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import { requireAdminAuth } from "@/lib/auth";
 
 const WAITLIST_FILE = path.join(process.cwd(), "data", "waitlist.json");
 const WAITLIST_LOG_FILE = path.join(process.cwd(), "data", "waitlist.log");
@@ -22,35 +23,10 @@ async function getLog(): Promise<string> {
   }
 }
 
-function checkAuth(req: NextRequest): boolean {
-  const authHeader = req.headers.get("Authorization");
-  const adminSecret = process.env.ADMIN_SECRET;
-
-  if (!adminSecret) {
-    console.warn("ADMIN_SECRET not configured - admin endpoint is open!");
-    return true; // Allow access if no secret is set (for development)
-  }
-
-  if (!authHeader) {
-    return false;
-  }
-
-  // Support both "Bearer <token>" and just "<token>"
-  const token = authHeader.startsWith("Bearer ") 
-    ? authHeader.substring(7) 
-    : authHeader;
-
-  return token === adminSecret;
-}
-
 export async function GET(req: NextRequest) {
-  // Check authentication
-  if (!checkAuth(req)) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
+  // Check authentication — denies access if ADMIN_SECRET not configured
+  const authError = requireAdminAuth(req);
+  if (authError) return authError;
 
   try {
     const waitlist = await getWaitlist();

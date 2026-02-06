@@ -1,13 +1,47 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 
 function UpdatePaymentContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const customer = searchParams.get("customer");
+  const [portalUrl, setPortalUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      setError("Invalid or expired link.");
+      return;
+    }
+
+    // Validate token server-side and get a secure Stripe portal URL
+    async function validateAndGetPortal() {
+      try {
+        const res = await fetch("/api/update-payment/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.portalUrl) {
+          setPortalUrl(data.portalUrl);
+        } else {
+          setError(data.error || "Invalid or expired link.");
+        }
+      } catch {
+        setError("Failed to validate link. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    validateAndGetPortal();
+  }, [token]);
 
   return (
     <main className="min-h-screen bg-[#09090b] flex items-center justify-center px-6">
@@ -35,15 +69,12 @@ function UpdatePaymentContent() {
             Your recent payment couldn&apos;t be processed. Update your card details below to keep your account active.
           </p>
 
-          {token && customer ? (
+          {loading ? (
+            <div className="text-zinc-500 text-sm">Validating your link...</div>
+          ) : portalUrl ? (
             <div className="space-y-4">
-              <div className="bg-zinc-900/50 rounded-xl p-4 text-left text-sm">
-                <div className="text-zinc-500 mb-1">Payment Reference</div>
-                <div className="font-mono text-xs text-zinc-300 truncate">{token}</div>
-              </div>
-
               <a
-                href={`https://billing.stripe.com/p/login/test_${customer}`}
+                href={portalUrl}
                 className="block w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-3.5 rounded-xl transition-colors text-center"
               >
                 Open Stripe Customer Portal →
@@ -56,7 +87,7 @@ function UpdatePaymentContent() {
           ) : (
             <div className="space-y-4">
               <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-sm text-amber-400">
-                Invalid or expired link. Please check your email for the latest payment update link.
+                {error || "Invalid or expired link. Please check your email for the latest payment update link."}
               </div>
               <Link
                 href="/"

@@ -11,17 +11,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { processRetryQueue } from "@/lib/retry-engine";
 import { processDunningQueue } from "@/lib/email-service";
+import { requireCronAuth } from "@/lib/auth";
 
 export const maxDuration = 60; // Allow up to 60s for processing
 
 export async function GET(request: NextRequest) {
-  // Verify the request is from Vercel Cron
-  const authHeader = request.headers.get("authorization");
-  const cronSecret = process.env.CRON_SECRET;
-  
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // Verify the request is from Vercel Cron — denies if CRON_SECRET not set
+  const authError = requireCronAuth(request);
+  if (authError) return authError;
 
   console.log("[Cron] Starting retry processing...");
 

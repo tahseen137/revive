@@ -22,6 +22,7 @@ import {
   updateFailedPayment,
   markPaymentRecovered,
 } from "./db";
+import { calculateApplicationFee, APPLICATION_FEE_PERCENT } from "./application-fee";
 
 // ============ Time Constants ============
 
@@ -337,10 +338,29 @@ async function executeRetry(payment: FailedPayment): Promise<RetryResult> {
   console.log(`  Original failure: ${payment.failureCode}`);
   
   try {
-    // First, try to pay the invoice directly
-    const invoice = await stripe.invoices.pay(payment.stripeInvoiceId, {
-      stripeAccount: payment.connectedAccountId === "direct" ? undefined : payment.connectedAccountId,
-    });
+    // Build params — include application fee for connected accounts
+    const isConnectedAccount = payment.connectedAccountId && payment.connectedAccountId !== "direct";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const payParams: Record<string, any> = {};
+    const requestOpts: Stripe.RequestOptions = {};
+
+    if (isConnectedAccount) {
+      requestOpts.stripeAccount = payment.connectedAccountId;
+
+      // Add Revive's application fee (15% of recovered amount)
+      const fee = calculateApplicationFee(payment.amount);
+      if (fee > 0) {
+        payParams.application_fee_amount = fee;
+        console.log(`  💰 Application fee: ${fee} (${APPLICATION_FEE_PERCENT}% of ${payment.amount})`);
+      }
+    }
+
+    // Try to pay the invoice directly
+    const invoice = await stripe.invoices.pay(
+      payment.stripeInvoiceId,
+      payParams as Stripe.InvoicePayParams,
+      requestOpts
+    );
     
     if (invoice.status === "paid") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

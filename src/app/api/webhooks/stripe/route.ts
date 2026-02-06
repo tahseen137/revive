@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import {
   createFailedPayment,
   markPaymentRecovered,
+  getPaymentByInvoiceId,
   getAllPayments,
 } from "@/lib/db";
 import {
@@ -66,6 +67,13 @@ export async function POST(request: NextRequest) {
       case "invoice.payment_failed": {
         const invoice = event.data.object as Stripe.Invoice;
         console.log(`[Webhook] Payment failed for invoice: ${invoice.id}`);
+
+        // Idempotency: check if we already track this invoice
+        const existingPayment = await getPaymentByInvoiceId(invoice.id);
+        if (existingPayment) {
+          console.log(`[Webhook] Already tracking invoice ${invoice.id} (payment ${existingPayment.id}), skipping duplicate`);
+          break;
+        }
 
         // Get customer details
         let customerEmail = "";
@@ -175,12 +183,10 @@ export async function POST(request: NextRequest) {
         console.log(`[Webhook] Payment succeeded for invoice: ${invoice.id}`);
 
         // Check if this was a previously failed payment we're tracking
-        const allPayments = await getAllPayments();
-        const matchingPayment = allPayments.find(
-          (p) => p.stripeInvoiceId === invoice.id && p.status !== "recovered"
-        );
+        // Use efficient index lookup instead of scanning all payments
+        const matchingPayment = await getPaymentByInvoiceId(invoice.id);
 
-        if (matchingPayment) {
+        if (matchingPayment && matchingPayment.status !== "recovered") {
           console.log(`[Webhook] 🎉 Recovered payment: ${matchingPayment.id}`);
           await markPaymentRecovered(matchingPayment.id);
           

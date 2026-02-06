@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllPayments, updateFailedPayment } from "@/lib/db";
 import { calculateNextRetryTime } from "@/lib/retry-engine";
+import { requireAuth } from "@/lib/auth";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -15,6 +16,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
+  // Require authentication
+  const authError = requireAuth(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const { invoiceId } = body;
