@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/retry",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/check-expiring-cards",
+      "schedule": "0 8 * * *"
     }
   ]
 }

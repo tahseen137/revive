@@ -96,7 +96,7 @@ export async function sendDunningEmail(
   let cardUpdateUrl: string;
   try {
     const token = generateCardUpdateToken(payment.id, payment.stripeCustomerId);
-    cardUpdateUrl = `${appUrl}/update-payment?token=${token}`;
+    cardUpdateUrl = `${appUrl}/update-card/${token}`;
   } catch {
     // Fallback if CARD_UPDATE_SECRET not set (development)
     console.warn("[Email] CARD_UPDATE_SECRET not configured — card update URL disabled");

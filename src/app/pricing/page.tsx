@@ -26,7 +26,7 @@ const plans = [
     name: "Growth",
     price: "15%",
     priceSuffix: " of recovered revenue",
-    description: "For SaaS companies serious about reducing churn",
+    description: "For SaaS companies serious about reducing churn (max $99/mo)",
     features: [
       "Unlimited payment retries",
       "Advanced dunning sequences",
@@ -125,6 +125,11 @@ export default function PricingPage() {
                 <div className="mb-8">
                   <span className="text-5xl font-bold">{plan.price}</span>
                   <span className="text-zinc-500 ml-1 text-sm">{plan.priceSuffix}</span>
+                  {plan.name === "Growth" && (
+                    <div className="mt-2 text-xs text-green-400 font-medium">
+                      Capped at $99/month
+                    </div>
+                  )}
                 </div>
 
                 <ul className="space-y-3 mb-8 flex-1">

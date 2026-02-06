@@ -97,7 +97,7 @@ const memSets = new Map<string, Set<string>>();
 
 // ============ Core Operations ============
 
-async function set(key: string, value: unknown): Promise<void> {
+export async function set(key: string, value: unknown): Promise<void> {
   const r = getRedis();
   if (r) {
     await r.set(key, JSON.stringify(value));
@@ -106,7 +106,7 @@ async function set(key: string, value: unknown): Promise<void> {
   }
 }
 
-async function get<T>(key: string): Promise<T | null> {
+export async function get<T>(key: string): Promise<T | null> {
   const r = getRedis();
   if (r) {
     const val = await r.get<string>(key);
