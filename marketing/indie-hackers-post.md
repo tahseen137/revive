@@ -1,100 +1,109 @@
-# I Built a Failed Payment Recovery Tool That's Already Saved $2.4M for 200+ SaaS Companies
+# Indie Hackers Post — Revive
 
-## The "Oh Shit" Moment
-
-Three months ago, I was reviewing my SaaS's Stripe dashboard and noticed something that made my stomach drop: **$847 in failed payments that month alone**. 
-
-Not cancellations. Not churned customers who were unhappy. Just... credit cards that expired, billing addresses that changed, banks that declined charges for no reason.
-
-My product was making $9,400/month. I was literally losing 9% of my MRR to involuntary churn. Money that should have been in my account was just... disappearing.
-
-## The "Wait, This Is Everyone's Problem" Realization
-
-I started asking founder friends about it. Turns out:
-- One friend was losing $2.3K/month to failed payments
-- Another had 47 "failed payment" customers sitting in their Stripe dashboard
-- A third had built a janky Zapier automation that... sometimes worked
-
-The craziest part? **Everyone just accepted it as the cost of doing SaaS.**
-
-"Yeah, Stripe retries once or twice, then gives up. What can you do?"
-
-## What I Built Instead
-
-I spent 6 weeks building **Revive** — a dead-simple failed payment recovery tool that:
-
-1. **Smart Retry Logic**: Not random retries. We analyze bank response codes and retry at optimal times (early morning works better than 3 PM for some banks — who knew?)
-
-2. **Dunning Email Sequences**: Automated, personalized emails that nudge customers without being annoying. "Hey, your card failed. Click here to update it."
-
-3. **One-Click Stripe OAuth**: No API keys to copy. No webhooks to configure. You literally just click "Connect Stripe" and you're done.
-
-The whole setup takes **3 minutes**. Then it runs 24/7 in the background.
-
-## The Results (That Made Me Go Full-Time On This)
-
-After I launched my MVP and put myself on it:
-- **First week**: Recovered $340 in failed payments I would have lost
-- **First month**: Recovered $1,847 (that's 19% of my MRR!)
-- **Recovery rate**: 94% of failed payments eventually go through
-
-I posted about it on Twitter. 12 founder friends DM'd me asking to try it.
-
-Within 30 days, those early users had recovered **$18,000 in total**.
-
-That's when I realized: this isn't a side project. This is a real business.
-
-## Why Not Just Use Baremetrics or Churnkey?
-
-Fair question. Those are great tools, but:
-
-**Baremetrics Recover**: $50/month + 25% of recovered revenue. If you recover $1,000, they take $250. Every month.
-
-**Churnkey**: Powerful but complex. Takes 2+ hours to set up. Designed for enterprise SaaS.
-
-**Revive**: $29/month flat. No revenue cut. 3-minute setup. Built for small-to-mid-size SaaS companies.
-
-I wanted something I could turn on in 5 minutes and forget about. So I built it.
-
-## What I'm Learning
-
-**Good surprises:**
-- 94% recovery rate (I thought 70% would be good)
-- Customers telling me "I didn't even know I was losing this much money"
-- One customer recovered $9,400 in their first week (their integration had been broken for 3 months)
-
-**Challenges:**
-- Some founders don't check their failed payments regularly, so they don't *feel* the problem until I show them the Stripe data
-- Writing dunning emails that don't sound robotic is harder than I thought
-- Stripe OAuth is amazing... until it breaks and you have to debug webhook signatures at 2 AM
-
-## The Numbers (Because IH Loves Metrics)
-
-- **Launch date**: November 2025
-- **Current MRR**: $5,800
-- **Customers**: 200
-- **Total revenue recovered for customers**: $2.4M+
-- **Average recovery rate**: 94%
-- **Average setup time**: 3 minutes
-- **Churn rate**: 2% (ironically low for a churn-prevention tool)
-
-## What's Next
-
-Right now I'm working on:
-1. **Slack/Discord notifications** when payments are recovered (dopamine hit = good retention)
-2. **A/B testing dunning emails** (does emoji help? does "urgent" hurt?)
-3. **Multi-currency support** (EU founders keep asking)
-
-## Try It If You Run a Stripe-Based SaaS
-
-I'm genuinely proud of this thing. It's solving a real problem, it's not vapourware, and the ROI is stupid-obvious.
-
-**14-day free trial. No credit card required.** If it doesn't recover anything, you don't pay.
-
-👉 [https://revive-seven-eosin.vercel.app](https://revive-seven-eosin.vercel.app)
-
-And if you have questions or want to roast my landing page, I'm here for it. Building in public means taking the feedback 🫡
+**Date:** February 5, 2026
+**Status:** DRAFT
 
 ---
 
-**Update**: Holy crap, this blew up. Inbox is flooded. If I'm slow to respond, that's why. Will reply to everyone!
+## TITLE
+
+**Show IH: I just launched a failed payment recovery tool with $0 revenue — here's why I built it anyway**
+
+---
+
+## BODY
+
+Hey IH 👋
+
+I'm building in public, so here are my real numbers on launch day:
+
+- **Revenue:** $0
+- **Customers:** 0
+- **MRR:** $0
+- **Time building:** ~3 months
+
+Now that we've got that out of the way — let me tell you why I think this is worth building.
+
+---
+
+**How I found the problem**
+
+I was digging into why SaaS companies lose subscribers, and I kept running into the same stat: somewhere between 20-40% of all churn is *involuntary*. Not people who canceled. People whose credit card expired, or their bank flagged a transaction, or they just didn't have enough in their account that day.
+
+These are customers who *want* to keep paying. They just... can't, temporarily.
+
+And Stripe's built-in retry logic is surprisingly basic. It retries every failed payment on roughly the same schedule regardless of *why* it failed. Expired card? Same retry. Insufficient funds? Same retry. Temporary bank error? Same retry.
+
+That felt like a solvable problem.
+
+---
+
+**What I built**
+
+[Revive](https://revive-hq.com) — a Stripe integration that retries failed payments intelligently based on the decline code.
+
+The feature I'm most proud of: **payday detection**. If a payment fails due to `insufficient_funds`, Revive doesn't just retry blindly the next day (when the customer still has no money). It retries around the 1st, 15th, and Fridays — when people typically get paid.
+
+It sounds simple, but nobody else does this. The existing tools (Churnkey, Baremetrics Recover, ProfitWell Retain) are either expensive ($300+/mo minimum), bundled into larger platforms you might not need, or use flat pricing that doesn't make sense for smaller SaaS companies.
+
+**Other stuff it does:**
+- Pre-dunning emails (warns customers before their card expires)
+- Decline-code-specific retry strategies
+- Contextual dunning emails (not generic "your payment failed" messages)
+- Analytics dashboard to track recovery rates
+
+---
+
+**Pricing: performance-based**
+
+This is the part I want feedback on most.
+
+Revive is **free up to $500/mo recovered**. After that, 15% of recovered revenue.
+
+The idea: if you're small, it costs nothing. If you're bigger and we recover $5K for you, we take $750 — but you keep $4,250 you would have lost entirely.
+
+If Revive recovers nothing, you pay nothing. Ever.
+
+I went with this model because charging a $200/mo flat fee for a payment recovery tool felt backwards. You're already losing money to failed payments — the tool that fixes it shouldn't add to the bleeding.
+
+---
+
+**Why I'm sharing this at $0**
+
+Because I believe in building in public honestly. I see too many launch posts that start with "I built X and hit $10K MRR in 2 weeks!" and I genuinely don't know if that helps anyone.
+
+Here's the truth: I built this because the problem is real, the existing solutions have gaps, and I think the pricing model is differentiated. But I have zero data on whether it actually works for other people's businesses yet.
+
+I need beta users. Not to pump my numbers — to find out if my assumptions are right.
+
+---
+
+**Tech stack (for the curious):**
+- Next.js + TypeScript
+- Stripe webhooks for real-time payment events
+- Redis (Upstash) for retry queue management
+- PostgreSQL (Supabase)
+- Hosted on Vercel
+
+---
+
+**What I'd love from you:**
+
+1. Does the pricing model make sense? Would you prefer a flat fee instead?
+2. If you run a SaaS on Stripe — do you even know your involuntary churn rate? (Most founders I've talked to don't track it separately.)
+3. What would make you trust a brand-new tool with zero social proof enough to try it?
+
+That last one is genuine. I know "just launched, no customers" is a hard sell. I'm curious what would lower the bar for you.
+
+**Link:** [revive-hq.com](https://revive-hq.com)
+
+Thanks for reading. Happy to answer anything.
+
+---
+
+## NOTES
+
+- IH loves building-in-public transparency — lean into the $0 revenue angle
+- The "what would make you trust a new tool" question should spark good discussion
+- Don't be defensive if people question the market or approach
+- IH audience skews indie/solo founder — performance pricing resonates here
