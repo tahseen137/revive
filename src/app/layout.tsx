@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { FeedbackWidget } from "@/components/FeedbackWidget";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://revive-hq.com";
 
@@ -82,9 +90,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-[#09090b] text-zinc-100 antialiased">
+    <html lang="en" className={`dark ${inter.variable}`}>
+      <body className="bg-[#09090b] text-zinc-100 antialiased font-sans">
         {children}
+        <FeedbackWidget />
         <Analytics />
         <SpeedInsights />
       </body>

@@ -75,6 +75,36 @@ const blogPosts = [
     category: "Business Strategy",
     author: "Revive Team",
   },
+  {
+    slug: "stripe-payment-failure-codes-explained",
+    title: "Stripe Payment Failure Codes Explained: Complete Reference Guide",
+    description:
+      "Understand every Stripe decline code, what causes them, and exactly how to respond. From card_declined to insufficient_funds — master payment failure handling.",
+    date: "February 5, 2026",
+    readTime: "15 min read",
+    category: "Technical Guide",
+    author: "Revive Team",
+  },
+  {
+    slug: "true-cost-of-failed-payments",
+    title: "The True Cost of Failed Payments: Beyond Lost Revenue",
+    description:
+      "Failed payments cost more than the invoice amount. Discover the hidden costs: customer support, churn, CAC loss, and reputation damage. Calculate your real cost.",
+    date: "February 5, 2026",
+    readTime: "10 min read",
+    category: "Business Strategy",
+    author: "Revive Team",
+  },
+  {
+    slug: "churnkey-vs-baremetrics-vs-revive",
+    title: "Churnkey vs Baremetrics vs Revive: Payment Recovery Comparison 2026",
+    description:
+      "Honest comparison of the top payment recovery tools for SaaS. Features, pricing, recovery rates, and which one is best for your business size and needs.",
+    date: "February 5, 2026",
+    readTime: "11 min read",
+    category: "Comparisons",
+    author: "Revive Team",
+  },
 ];
 
 export default function BlogPage() {

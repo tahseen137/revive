@@ -262,6 +262,20 @@ export async function getPaymentsDueForRetry(): Promise<FailedPayment[]> {
   const now = Date.now();
   const ids = await zrangebyscore("retry_queue", 0, now);
   
+  if (ids.length === 0) return [];
+  
+  const r = getRedis();
+  if (r) {
+    // Batch fetch with MGET for O(1) Redis roundtrip
+    const keys = ids.map(id => `failed_payment:${id}`);
+    const results = await r.mget<(string | FailedPayment | null)[]>(...keys);
+    return results
+      .filter((val): val is string | FailedPayment => val !== null)
+      .map(val => typeof val === "string" ? JSON.parse(val) as FailedPayment : val)
+      .filter(p => p.status === "pending" || p.status === "retrying");
+  }
+  
+  // In-memory fallback
   const payments: FailedPayment[] = [];
   for (const id of ids) {
     const payment = await getFailedPayment(id);
@@ -275,8 +289,22 @@ export async function getPaymentsDueForRetry(): Promise<FailedPayment[]> {
 
 export async function getPaymentsByAccount(accountId: string): Promise<FailedPayment[]> {
   const ids = await smembers(`account:${accountId}:payments`);
-  const payments: FailedPayment[] = [];
   
+  if (ids.length === 0) return [];
+  
+  const r = getRedis();
+  if (r) {
+    // Batch fetch with MGET for O(1) Redis roundtrip
+    const keys = ids.map(id => `failed_payment:${id}`);
+    const results = await r.mget<(string | FailedPayment | null)[]>(...keys);
+    return results
+      .filter((val): val is string | FailedPayment => val !== null)
+      .map(val => typeof val === "string" ? JSON.parse(val) as FailedPayment : val)
+      .sort((a, b) => b.createdAt - a.createdAt);
+  }
+  
+  // In-memory fallback
+  const payments: FailedPayment[] = [];
   for (const id of ids) {
     const payment = await getFailedPayment(id);
     if (payment) payments.push(payment);
@@ -287,8 +315,22 @@ export async function getPaymentsByAccount(accountId: string): Promise<FailedPay
 
 export async function getAllPayments(): Promise<FailedPayment[]> {
   const ids = await smembers("all_payments");
-  const payments: FailedPayment[] = [];
   
+  if (ids.length === 0) return [];
+  
+  const r = getRedis();
+  if (r) {
+    // Batch fetch with MGET for O(1) Redis roundtrip
+    const keys = ids.map(id => `failed_payment:${id}`);
+    const results = await r.mget<(string | FailedPayment | null)[]>(...keys);
+    return results
+      .filter((val): val is string | FailedPayment => val !== null)
+      .map(val => typeof val === "string" ? JSON.parse(val) as FailedPayment : val)
+      .sort((a, b) => b.createdAt - a.createdAt);
+  }
+  
+  // In-memory fallback
+  const payments: FailedPayment[] = [];
   for (const id of ids) {
     const payment = await getFailedPayment(id);
     if (payment) payments.push(payment);

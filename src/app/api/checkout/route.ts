@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { checkoutRateLimit, checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-01-28.clover",
@@ -11,6 +12,11 @@ const PLANS: Record<string, { name: string; amount: number; interval: "month" }>
 };
 
 export async function POST(request: NextRequest) {
+  // Rate limit check: 10 requests per minute per IP
+  const ip = getClientIp(request);
+  const rateLimitError = await checkRateLimit(checkoutRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   try {
     const body = await request.json();
     const { priceId } = body;

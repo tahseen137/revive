@@ -1,46 +1,66 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
 import { Resend } from "resend";
-
-const WAITLIST_FILE = path.join(process.cwd(), "data", "waitlist.json");
-const WAITLIST_LOG_FILE = path.join(process.cwd(), "data", "waitlist.log");
+import { Redis } from "@upstash/redis";
+import { waitlistRateLimit, checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 // Initialize Resend if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-async function ensureDataDir() {
-  const dir = path.dirname(WAITLIST_FILE);
-  try {
-    await fs.mkdir(dir, { recursive: true });
-  } catch {
-    // already exists
+// Get Redis client
+function getRedis(): Redis | null {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  
+  if (url && token) {
+    return new Redis({ url, token });
   }
+  return null;
 }
 
-async function getWaitlist(): Promise<{ emails: { email: string; timestamp: string; source: string }[] }> {
-  try {
-    const data = await fs.readFile(WAITLIST_FILE, "utf-8");
-    return JSON.parse(data);
-  } catch {
-    return { emails: [] };
-  }
+// In-memory fallback for development
+const memoryWaitlist: { email: string; timestamp: string; source: string }[] = [];
+
+interface WaitlistEntry {
+  email: string;
+  timestamp: string;
+  source: string;
 }
 
-async function logSignup(email: string, source: string, timestamp: string) {
-  try {
-    const logEntry = `[${timestamp}] New signup: ${email} (source: ${source})\n`;
-    await fs.appendFile(WAITLIST_LOG_FILE, logEntry, "utf-8");
-  } catch (error) {
-    console.error("Error writing to log file:", error);
+async function getWaitlist(): Promise<WaitlistEntry[]> {
+  const redis = getRedis();
+  if (redis) {
+    const entries = await redis.lrange<WaitlistEntry>("waitlist:emails", 0, -1);
+    return entries || [];
   }
+  return memoryWaitlist;
+}
+
+async function addToWaitlist(email: string, source: string): Promise<boolean> {
+  const timestamp = new Date().toISOString();
+  const entry = { email, timestamp, source };
+  
+  const redis = getRedis();
+  if (redis) {
+    // Check for duplicate
+    const existing = await redis.get<string>(`waitlist:email:${email}`);
+    if (existing) return false; // Already exists
+    
+    // Add to list and set lookup key
+    await redis.rpush("waitlist:emails", JSON.stringify(entry));
+    await redis.set(`waitlist:email:${email}`, timestamp);
+    return true;
+  }
+  
+  // In-memory fallback
+  if (memoryWaitlist.some(e => e.email === email)) {
+    return false;
+  }
+  memoryWaitlist.push(entry);
+  return true;
 }
 
 async function sendNotification(email: string, source: string) {
   const timestamp = new Date().toISOString();
-  
-  // Log to file
-  await logSignup(email, source, timestamp);
   
   // Send email notification if Resend is configured
   if (resend && process.env.NOTIFY_EMAIL) {
@@ -80,6 +100,11 @@ async function sendNotification(email: string, source: string) {
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit check: 5 requests per minute per IP
+  const ip = getClientIp(req);
+  const rateLimitError = await checkRateLimit(waitlistRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   try {
     const { email, source = "landing" } = await req.json();
 
@@ -92,25 +117,15 @@ export async function POST(req: NextRequest) {
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    await ensureDataDir();
-    const waitlist = await getWaitlist();
-
-    // Check for duplicates
-    if (waitlist.emails.some((e) => e.email === normalizedEmail)) {
+    // Add to waitlist (returns false if duplicate)
+    const added = await addToWaitlist(normalizedEmail, source);
+    
+    if (!added) {
       return NextResponse.json(
         { message: "You're already on the list! We'll be in touch soon." },
         { status: 200 }
       );
     }
-
-    const timestamp = new Date().toISOString();
-    waitlist.emails.push({
-      email: normalizedEmail,
-      timestamp,
-      source,
-    });
-
-    await fs.writeFile(WAITLIST_FILE, JSON.stringify(waitlist, null, 2));
 
     // Send notifications (fire and forget - don't block response)
     sendNotification(normalizedEmail, source).catch(console.error);

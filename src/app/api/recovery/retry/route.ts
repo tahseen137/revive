@@ -83,11 +83,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Attempt to finalize the invoice (Stripe will attempt payment)
+    // Attempt to pay the invoice (for already-finalized invoices)
     try {
-      const invoice = await stripe.invoices.finalizeInvoice(invoiceId, {
-        auto_advance: true,
-      });
+      const stripeAccountOptions = payment.connectedAccountId === "direct" 
+        ? undefined 
+        : { stripeAccount: payment.connectedAccountId };
+      
+      const invoice = await stripe.invoices.pay(invoiceId, stripeAccountOptions);
 
       // Update retry history
       const newRetryHistory = [
