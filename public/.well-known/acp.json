@@ -1,0 +1,67 @@
+{
+  "acp_version": "2026-01-30",
+  "name": "Revive",
+  "description": "Automated payment recovery for Stripe. Recover failed payments before losing customers with intelligent retry engine and personalized email sequences.",
+  "vendor": {
+    "name": "Motu Inc.",
+    "website": "https://revive-hq.com"
+  },
+  "logo_url": "https://revive-hq.com/logo.png",
+  "api_root": "https://revive-hq.com/api/acp",
+  "capabilities": {
+    "payment_handlers": ["dev.acp.tokenized.card"],
+    "features": [
+      "failed_payment_recovery",
+      "smart_retry_engine",
+      "email_automation",
+      "stripe_integration",
+      "analytics_dashboard",
+      "dunning_management"
+    ]
+  },
+  "plans": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "description": "Perfect for small SaaS businesses. Recover failed payments automatically with smart retry logic.",
+      "price": {
+        "amount": 2900,
+        "currency": "usd",
+        "billing_period": "monthly"
+      },
+      "trial_days": 14,
+      "features": [
+        "Up to 500 recovered payments/month",
+        "Smart retry engine",
+        "Email notification sequences",
+        "Stripe integration",
+        "Basic analytics",
+        "14-day free trial"
+      ]
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
+      "description": "For growing businesses with higher volume. Advanced features and priority support.",
+      "price": {
+        "amount": 7900,
+        "currency": "usd",
+        "billing_period": "monthly"
+      },
+      "trial_days": 14,
+      "features": [
+        "Unlimited recovered payments",
+        "Advanced retry strategies",
+        "Custom email templates",
+        "Webhooks & API access",
+        "Advanced analytics & reports",
+        "Priority support",
+        "14-day free trial"
+      ]
+    }
+  ],
+  "support": {
+    "email": "support@revive-hq.com",
+    "documentation": "https://revive-hq.com/docs"
+  }
+}
