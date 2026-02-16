@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WaitlistForm from "@/components/WaitlistForm";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://revive-hq.com";
 
@@ -480,7 +479,12 @@ export default function ChurnkeyAlternativePage() {
               <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
                 No flat fees. No contracts. Pay only 15% of revenue we actually recover. Cancel anytime.
               </p>
-              <WaitlistForm />
+              <Link
+                href="/api/stripe/connect"
+                className="inline-flex items-center justify-center gap-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-10 py-4 rounded-xl text-lg transition-all hover:shadow-lg hover:shadow-brand-600/25"
+              >
+                Connect Stripe — Get Started Free
+              </Link>
               <div className="flex items-center justify-center gap-6 mt-8 text-xs text-zinc-600">
                 <div className="flex items-center gap-2">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

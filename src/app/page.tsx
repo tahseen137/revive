@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WaitlistForm from "@/components/WaitlistForm";
 
 const features = [
   {
@@ -108,10 +107,10 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
               <Link
-                href="/pricing"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-8 py-3.5 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25"
+                href="/api/stripe/connect"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25 text-lg"
               >
-                Start 14-Day Free Trial
+                Connect Stripe — Start Recovering
                 <svg
                   width="16"
                   height="16"
@@ -395,28 +394,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Early Access Waitlist */}
+      {/* Connect Stripe CTA */}
       <section className="py-20 md:py-32 border-t border-white/5">
         <div className="mx-auto max-w-6xl px-6">
           <div className="glass rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-600/10 via-transparent to-purple-600/10" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-500/20 bg-brand-500/5 text-brand-400 text-xs font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-xs font-medium mb-6">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                Early Access — Limited Spots
+                Join 50+ SaaS founders recovering revenue
               </div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Get early access + 3 months free
+                See how much revenue you&apos;re losing
               </h2>
-              <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-3">
-                We&apos;re onboarding our first 50 customers with <strong className="text-white">3 months free</strong> and white-glove setup. Join the waitlist and we&apos;ll reach out within 24 hours.
+              <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-8">
+                Connect your Stripe account in 3 minutes. We&apos;ll show you exactly how much failed payment revenue you can recover — <strong className="text-white">no credit card required.</strong>
               </p>
-              <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
-                No credit card required. Cancel anytime. Be first to recover revenue on autopilot.
-              </p>
-              <WaitlistForm />
-              <p className="text-xs text-zinc-600 mt-6">
-                🔒 We respect your privacy. Unsubscribe anytime.
+              <Link
+                href="/api/stripe/connect"
+                className="inline-flex items-center justify-center gap-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-10 py-4 rounded-xl text-lg transition-all hover:shadow-lg hover:shadow-brand-600/25"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+                Connect Stripe — See Your Lost Revenue
+              </Link>
+              <p className="text-sm text-zinc-500 mt-4">
+                Free forever for first $500/month recovered. No credit card required.
               </p>
             </div>
           </div>

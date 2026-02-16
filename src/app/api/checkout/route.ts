@@ -12,8 +12,7 @@ function getStripe(): Stripe {
 }
 
 const PLANS: Record<string, { name: string; amount: number; interval: "month" }> = {
-  starter: { name: "Revive Starter", amount: 2900, interval: "month" },
-  growth: { name: "Revive Growth", amount: 7900, interval: "month" },
+  growth: { name: "Revive Growth", amount: 9900, interval: "month" },
 };
 
 export async function POST(request: NextRequest) {

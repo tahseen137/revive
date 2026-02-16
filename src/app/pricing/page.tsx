@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WaitlistForm from "@/components/WaitlistForm";
+import Link from "next/link";
 
 const plans = [
   {
@@ -19,14 +19,15 @@ const plans = [
       "Email support",
     ],
     cta: "Get Started Free",
+    href: "/api/stripe/connect",
     popular: false,
     highlight: false,
   },
   {
     name: "Growth",
-    price: "15%",
-    priceSuffix: " of recovered revenue",
-    description: "For SaaS companies serious about reducing churn (max $99/mo)",
+    price: "$99",
+    priceSuffix: "/month",
+    description: "For SaaS companies serious about reducing churn",
     features: [
       "Unlimited payment retries",
       "Advanced dunning sequences",
@@ -38,7 +39,8 @@ const plans = [
       "Recovery analytics & reports",
       "Team access (up to 5)",
     ],
-    cta: "Join Early Access",
+    cta: "Start Growing",
+    href: "checkout:growth",
     popular: true,
     highlight: true,
   },
@@ -59,6 +61,7 @@ const plans = [
       "Quarterly strategy reviews",
     ],
     cta: "Contact Us",
+    href: "mailto:tahseen137@gmail.com",
     popular: false,
     highlight: false,
   },
@@ -154,19 +157,38 @@ export default function PricingPage() {
                   ))}
                 </ul>
 
-                <button
-                  onClick={() => {
-                    const el = document.getElementById("waitlist");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className={`w-full py-3.5 rounded-xl font-medium transition-all text-sm ${
-                    plan.highlight
-                      ? "bg-brand-600 hover:bg-brand-500 text-white hover:shadow-lg hover:shadow-brand-600/25"
-                      : "bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700"
-                  }`}
-                >
-                  {plan.cta}
-                </button>
+                {plan.href?.startsWith("checkout:") ? (
+                  <button
+                    onClick={async () => {
+                      const planId = plan.href?.split(":")[1];
+                      const res = await fetch("/api/checkout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ priceId: planId }),
+                      });
+                      const data = await res.json();
+                      if (data.url) window.location.href = data.url;
+                    }}
+                    className={`w-full py-3.5 rounded-xl font-medium transition-all text-sm ${
+                      plan.highlight
+                        ? "bg-brand-600 hover:bg-brand-500 text-white hover:shadow-lg hover:shadow-brand-600/25"
+                        : "bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700"
+                    }`}
+                  >
+                    {plan.cta}
+                  </button>
+                ) : (
+                  <Link
+                    href={plan.href || "#"}
+                    className={`w-full py-3.5 rounded-xl font-medium transition-all text-sm text-center block ${
+                      plan.highlight
+                        ? "bg-brand-600 hover:bg-brand-500 text-white hover:shadow-lg hover:shadow-brand-600/25"
+                        : "bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700"
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -201,11 +223,16 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Waitlist */}
-          <div id="waitlist" className="mt-20 max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-3">Join early access — first 50 get 3 months free</h2>
-            <p className="text-zinc-400 text-sm mb-6">No credit card required. We&apos;ll reach out within 24 hours.</p>
-            <WaitlistForm />
+          {/* CTA */}
+          <div className="mt-20 max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl font-bold mb-3">Ready to start recovering revenue?</h2>
+            <p className="text-zinc-400 text-sm mb-6">Connect your Stripe account in 3 minutes. No credit card required.</p>
+            <Link
+              href="/api/stripe/connect"
+              className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all hover:shadow-lg hover:shadow-brand-600/25"
+            >
+              Connect Stripe — Get Started Free
+            </Link>
           </div>
 
           {/* Comparison */}

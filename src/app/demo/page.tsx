@@ -116,7 +116,7 @@ export default function DemoPage() {
               </p>
             </div>
             <Link
-              href="/#waitlist"
+              href="/api/stripe/connect"
               className="flex items-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -146,7 +146,7 @@ export default function DemoPage() {
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <Link
-                      href="/#waitlist"
+                      href="/api/stripe/connect"
                       className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm"
                     >
                       Connect Stripe & See Real Data →
@@ -507,7 +507,7 @@ export default function DemoPage() {
                 This is demo data. Connect your Stripe account to see real recovery timelines for your customers.
               </p>
               <Link
-                href="/#waitlist"
+                href="/api/stripe/connect"
                 className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm"
               >
                 Get Started with Revive →
