@@ -13,11 +13,14 @@ import {
 } from "@/lib/retry-engine";
 import { sendDunningEmail, sendRecoveryEmail } from "@/lib/email-service";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-01-28.clover",
-});
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-01-28.clover",
+  });
+}
 
 // Helper to extract subscription ID from invoice (Clover API uses parent.subscription_details)
 function getSubscriptionId(invoice: Stripe.Invoice): string | undefined {
@@ -44,6 +47,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Missing stripe-signature header" },
         { status: 400 }
+      );
+    }
+
+    const stripe = getStripe();
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    
+    if (!webhookSecret) {
+      return NextResponse.json(
+        { error: "STRIPE_WEBHOOK_SECRET is not configured" },
+        { status: 500 }
       );
     }
 

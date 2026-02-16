@@ -15,9 +15,14 @@ import {
   formatAnalysisForDisplay,
 } from "@/lib/recovery-analyzer";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-01-28.clover",
-});
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-01-28.clover",
+  });
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -51,6 +56,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const stripe = getStripe();
+    
     // Exchange the auth code for tokens + account ID
     const response = await stripe.oauth.token({
       grant_type: "authorization_code",

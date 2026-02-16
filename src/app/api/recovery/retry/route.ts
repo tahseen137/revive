@@ -9,9 +9,14 @@ import { calculateNextRetryTime } from "@/lib/retry-engine";
 import { requireAuth } from "@/lib/auth";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-01-28.clover",
-});
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-01-28.clover",
+  });
+}
 
 export const dynamic = "force-dynamic";
 
@@ -85,6 +90,7 @@ export async function POST(request: NextRequest) {
 
     // Attempt to pay the invoice (for already-finalized invoices)
     try {
+      const stripe = getStripe();
       const stripeAccountOptions = payment.connectedAccountId === "direct" 
         ? undefined 
         : { stripeAccount: payment.connectedAccountId };

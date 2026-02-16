@@ -15,9 +15,14 @@ import {
   removeConnectedAccount,
 } from "@/lib/connected-accounts";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-01-28.clover",
-});
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-01-28.clover",
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,6 +52,7 @@ export async function POST(request: NextRequest) {
     const clientId = process.env.STRIPE_CONNECT_CLIENT_ID;
     if (clientId && clientId !== "ca_placeholder") {
       try {
+        const stripe = getStripe();
         await stripe.oauth.deauthorize({
           client_id: clientId,
           stripe_user_id: targetAccountId,

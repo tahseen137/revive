@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { checkoutRateLimit, checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-01-28.clover",
-});
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-01-28.clover",
+  });
+}
 
 const PLANS: Record<string, { name: string; amount: number; interval: "month" }> = {
   starter: { name: "Revive Starter", amount: 2900, interval: "month" },
@@ -31,6 +36,7 @@ export async function POST(request: NextRequest) {
     const plan = PLANS[priceId];
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://revive.vercel.app";
 
+    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
