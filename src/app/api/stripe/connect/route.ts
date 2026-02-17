@@ -1,50 +1,91 @@
 /**
- * Stripe Connect OAuth Redirect Endpoint
+ * Stripe Connect — Modern Account Links Flow
  *
- * Generates the Stripe Connect OAuth URL and redirects the user to
- * Stripe's authorization page. Uses Express accounts (simplest for
- * customers).
+ * Creates an Express connected account and redirects the user to
+ * Stripe's hosted onboarding. This replaces the deprecated Standard
+ * OAuth flow that Stripe disabled for new integrations.
  *
- * GET /api/stripe/connect?return=onboarding
+ * Flow:
+ *   1. POST /api/stripe/connect → create Express account → account link → redirect
+ *   2. User completes Stripe onboarding
+ *   3. Stripe redirects to /api/stripe/callback?account=acct_xxx
+ *   4. Callback saves the account and routes to /onboarding → /dashboard
+ *
+ * GET also works (for <a href> links) — creates account + redirects.
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 
-export async function GET(request: NextRequest) {
-  const clientId = process.env.STRIPE_CONNECT_CLIENT_ID;
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-01-28.clover",
+  });
+}
+
+async function handleConnect(request: NextRequest) {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
     process.env.NEXT_PUBLIC_APP_URL ||
     "https://revive-hq.com";
 
-  if (!clientId || clientId === "ca_placeholder") {
+  if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json(
-      {
-        error: "Stripe Connect is not configured yet. Please set STRIPE_CONNECT_CLIENT_ID.",
-      },
+      { error: "Stripe is not configured. Please set STRIPE_SECRET_KEY." },
       { status: 500 }
     );
   }
 
-  // Preserve where we should return after the OAuth flow
-  const { searchParams } = new URL(request.url);
-  const returnTo = searchParams.get("return") || "dashboard";
+  try {
+    const stripe = getStripe();
 
-  // Build the Stripe Connect OAuth URL for Express accounts
-  const connectUrl = new URL("https://connect.stripe.com/oauth/authorize");
-  connectUrl.searchParams.set("response_type", "code");
-  connectUrl.searchParams.set("client_id", clientId);
-  connectUrl.searchParams.set("scope", "read_write");
-  connectUrl.searchParams.set(
-    "redirect_uri",
-    `${baseUrl}/api/stripe/callback`
-  );
-  // Encode the return destination into state — Stripe will pass it back
-  connectUrl.searchParams.set("state", returnTo);
-  // Use "login" landing so returning users don't see registration
-  connectUrl.searchParams.set("stripe_landing", "login");
-  // Express account type
-  connectUrl.searchParams.set("stripe_user[business_type]", "company");
+    // Step 1: Create an Express connected account
+    const account = await stripe.accounts.create({
+      type: "express",
+      capabilities: {
+        card_payments: { requested: true },
+        transfers: { requested: true },
+      },
+      settings: {
+        payouts: {
+          schedule: {
+            interval: "manual",
+          },
+        },
+      },
+    });
 
-  return NextResponse.redirect(connectUrl.toString());
+    console.log(
+      `[Stripe Connect] Created Express account: ${account.id}`
+    );
+
+    // Step 2: Create an Account Link for onboarding
+    const accountLink = await stripe.accountLinks.create({
+      account: account.id,
+      refresh_url: `${baseUrl}/api/stripe/connect?retry=true`,
+      return_url: `${baseUrl}/api/stripe/callback?account=${account.id}`,
+      type: "account_onboarding",
+    });
+
+    // Step 3: Redirect to Stripe's hosted onboarding
+    return NextResponse.redirect(accountLink.url);
+  } catch (err: unknown) {
+    console.error("[Stripe Connect] Account creation error:", err);
+    const message =
+      err instanceof Error ? err.message : "Failed to start Stripe connection";
+    return NextResponse.redirect(
+      `${baseUrl}/pricing?connect_error=${encodeURIComponent(message)}`
+    );
+  }
+}
+
+export async function GET(request: NextRequest) {
+  return handleConnect(request);
+}
+
+export async function POST(request: NextRequest) {
+  return handleConnect(request);
 }

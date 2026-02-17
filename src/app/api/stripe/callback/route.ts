@@ -1,10 +1,11 @@
 /**
- * Stripe Connect OAuth Callback Endpoint
+ * Stripe Connect Callback Endpoint
  *
- * Handles the redirect back from Stripe after authorization.
- * Exchanges the auth code for the connected account ID and stores it.
+ * Handles the return from Stripe's Express onboarding (Account Links flow).
+ * The account ID is passed via query param. We verify the account exists,
+ * save it, scan for failed payments, and route through onboarding → dashboard.
  *
- * GET /api/stripe/callback?code=...&state=...
+ * GET /api/stripe/callback?account=acct_xxx
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -26,68 +27,83 @@ function getStripe(): Stripe {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const code = searchParams.get("code");
+  const accountId = searchParams.get("account");
   const error = searchParams.get("error");
-  const errorDescription = searchParams.get("error_description");
-  const state = searchParams.get("state") || "dashboard";
 
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
     process.env.NEXT_PUBLIC_APP_URL ||
     "https://revive-hq.com";
 
-  // ----- Error from Stripe (user denied, etc.) -----
+  // ----- Error from Stripe -----
   if (error) {
-    console.error(
-      `[Stripe Connect] OAuth error: ${error} — ${errorDescription}`
-    );
+    console.error(`[Stripe Connect] Callback error: ${error}`);
     return NextResponse.redirect(
-      `${baseUrl}/${state}?connect_error=${encodeURIComponent(
-        errorDescription || error
-      )}`
+      `${baseUrl}/pricing?connect_error=${encodeURIComponent(error)}`
     );
   }
 
-  // ----- Missing auth code -----
-  if (!code) {
+  // ----- Missing account ID -----
+  if (!accountId) {
     return NextResponse.redirect(
-      `${baseUrl}/${state}?connect_error=no_authorization_code`
+      `${baseUrl}/pricing?connect_error=missing_account_id`
     );
   }
 
   try {
     const stripe = getStripe();
-    
-    // Exchange the auth code for tokens + account ID
-    const response = await stripe.oauth.token({
-      grant_type: "authorization_code",
-      code,
-    });
 
-    const connectedAccountId = response.stripe_user_id!;
-    console.log(
-      `[Stripe Connect] Successfully connected account: ${connectedAccountId}`
-    );
+    // Verify the account exists and check onboarding status
+    const account = await stripe.accounts.retrieve(accountId);
 
-    // Fetch account details for display
-    let email: string | undefined;
-    let businessName: string | undefined;
-    try {
-      const acct = await stripe.accounts.retrieve(connectedAccountId);
-      email = acct.email ?? undefined;
-      businessName =
-        acct.business_profile?.name ??
-        acct.settings?.dashboard?.display_name ??
-        undefined;
-    } catch (e) {
-      console.error("[Stripe Connect] Could not fetch account details:", e);
+    if (!account) {
+      return NextResponse.redirect(
+        `${baseUrl}/pricing?connect_error=account_not_found`
+      );
     }
+
+    const email = account.email ?? undefined;
+    const businessName =
+      account.business_profile?.name ??
+      account.settings?.dashboard?.display_name ??
+      undefined;
+
+    // Check if onboarding is complete
+    const isComplete =
+      account.details_submitted && account.charges_enabled;
+
+    if (!isComplete) {
+      console.log(
+        `[Stripe Connect] Account ${accountId} onboarding incomplete — ` +
+          `details_submitted=${account.details_submitted}, charges_enabled=${account.charges_enabled}`
+      );
+      // Still save, but redirect back to finish onboarding
+      // Generate a new account link to resume
+      try {
+        const accountLink = await stripe.accountLinks.create({
+          account: accountId,
+          refresh_url: `${baseUrl}/api/stripe/connect?retry=true`,
+          return_url: `${baseUrl}/api/stripe/callback?account=${accountId}`,
+          type: "account_onboarding",
+        });
+        return NextResponse.redirect(accountLink.url);
+      } catch {
+        // If account link fails, redirect to pricing with message
+        return NextResponse.redirect(
+          `${baseUrl}/pricing?connect_error=onboarding_incomplete`
+        );
+      }
+    }
+
+    console.log(
+      `[Stripe Connect] Successfully connected account: ${accountId} (${businessName || email})`
+    );
 
     // Persist the connected account
     await saveConnectedAccount({
-      stripeAccountId: connectedAccountId,
-      accessToken: response.access_token || "",
-      refreshToken: response.refresh_token || undefined,
+      stripeAccountId: accountId,
+      accessToken: "", // Not needed with Account Links flow
+      refreshToken: undefined,
       email,
       businessName,
       connectedAt: Date.now(),
@@ -97,7 +113,7 @@ export async function GET(request: NextRequest) {
     // Scan last 30 days of failed payments (conversion hook)
     let analysisParams = "";
     try {
-      const analysis = await analyzeConnectedAccount(connectedAccountId);
+      const analysis = await analyzeConnectedAccount(accountId);
       const display = formatAnalysisForDisplay(analysis);
 
       console.log(
@@ -118,25 +134,26 @@ export async function GET(request: NextRequest) {
     }
 
     // Build display name for the onboarding welcome screen
-    const displayName = encodeURIComponent(businessName || email || connectedAccountId);
+    const displayName = encodeURIComponent(
+      businessName || email || accountId
+    );
 
-    // Route through the onboarding page first (3-second animated setup screen),
-    // which then redirects to the final destination with all the same params.
+    // Route through the onboarding page (animated setup screen),
+    // which then redirects to the dashboard with all params.
     const onboardingUrl =
       `${baseUrl}/onboarding` +
-      `?account=${encodeURIComponent(connectedAccountId)}` +
+      `?account=${encodeURIComponent(accountId)}` +
       `&name=${displayName}` +
       `&connected=true` +
-      `&state=${encodeURIComponent(state)}` +
       analysisParams;
 
     return NextResponse.redirect(onboardingUrl);
   } catch (err: unknown) {
-    console.error("[Stripe Connect] Token exchange error:", err);
+    console.error("[Stripe Connect] Callback error:", err);
     const message =
-      err instanceof Error ? err.message : "Token exchange failed";
+      err instanceof Error ? err.message : "Connection verification failed";
     return NextResponse.redirect(
-      `${baseUrl}/${state}?connect_error=${encodeURIComponent(message)}`
+      `${baseUrl}/pricing?connect_error=${encodeURIComponent(message)}`
     );
   }
 }
