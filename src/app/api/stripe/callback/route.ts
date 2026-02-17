@@ -117,10 +117,20 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Redirect back to the originating page with success params
-    return NextResponse.redirect(
-      `${baseUrl}/${state}?connected=true&account=${connectedAccountId}${analysisParams}`
-    );
+    // Build display name for the onboarding welcome screen
+    const displayName = encodeURIComponent(businessName || email || connectedAccountId);
+
+    // Route through the onboarding page first (3-second animated setup screen),
+    // which then redirects to the final destination with all the same params.
+    const onboardingUrl =
+      `${baseUrl}/onboarding` +
+      `?account=${encodeURIComponent(connectedAccountId)}` +
+      `&name=${displayName}` +
+      `&connected=true` +
+      `&state=${encodeURIComponent(state)}` +
+      analysisParams;
+
+    return NextResponse.redirect(onboardingUrl);
   } catch (err: unknown) {
     console.error("[Stripe Connect] Token exchange error:", err);
     const message =

@@ -1,6 +1,6 @@
 /**
- * Mock data for Revive demo/sandbox mode
- * Demonstrates the full power of the retry engine with realistic scenarios
+ * Mock data for Revive demo mode
+ * 5 curated payments with realistic states/decline codes + supporting stats
  */
 
 export interface MockPayment {
@@ -53,430 +53,203 @@ export interface MockTrend {
   amount: number;
 }
 
-// Helper function to create dates relative to now
+// Helpers
 const daysAgo = (days: number): Date => {
-  const date = new Date();
-  date.setDate(date.getDate() - days);
-  return date;
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return d;
 };
-
-const hoursAgo = (hours: number): Date => {
-  const date = new Date();
-  date.setHours(date.getHours() - hours);
-  return date;
+const hoursAgo = (h: number): Date => {
+  const d = new Date();
+  d.setHours(d.getHours() - h);
+  return d;
 };
+const iso = (d: Date) => d.toISOString();
 
-const formatDate = (date: Date): string => {
-  return date.toISOString();
-};
+// ============ 5 Demo Payments ============
+// Each represents a distinct scenario with specific decline codes.
 
-// Featured success stories (as requested in the spec)
-const featuredPayments: MockPayment[] = [
-  // 1. The Payday Success Story - $47/mo subscription, insufficient_funds, recovered on payday
+export const MOCK_PAYMENTS: MockPayment[] = [
+  // 1. card_declined → recovered (smart retry after 4h worked)
   {
-    id: "featured-1",
-    stripeInvoiceId: "in_payday_success",
-    customer: "Marcus Thompson",
-    email: "marcus.t@freelance.dev",
-    amount: 47.00,
+    id: "demo-1",
+    stripeInvoiceId: "in_demo_card_recovered",
+    customer: "Sarah Johnson",
+    email: "sarah.j@techcorp.com",
+    amount: 149.00,
     currency: "usd",
     status: "recovered",
-    failureReason: "insufficient_funds",
-    failureReasonDisplay: "Insufficient funds",
+    failureReason: "card_declined",
+    failureReasonDisplay: "Card declined",
     retries: 2,
     maxRetries: 4,
     nextRetryAt: null,
-    emailsSent: 2,
+    emailsSent: 1,
     lastEmailType: "payment_recovered",
-    date: "5 days ago",
-    createdAt: formatDate(daysAgo(9)),
-    recoveredAt: formatDate(daysAgo(5)),
-    notes: "💰 Payday Detection Success - Retried on Feb 1 (payday) and recovered!",
+    date: "2 days ago",
+    createdAt: iso(daysAgo(2)),
+    recoveredAt: iso(hoursAgo(36)),
+    notes: "✅ Recovered on 2nd retry after 4-hour smart delay",
     retryTimeline: [
-      {
-        timestamp: formatDate(daysAgo(9)),
-        type: "failed",
-        description: "Initial payment failed - insufficient funds",
-        amount: 47.00,
-        success: false,
-      },
-      {
-        timestamp: formatDate(daysAgo(9)),
-        type: "email",
-        description: "Sent payment failed notification",
-      },
-      {
-        timestamp: formatDate(daysAgo(7)),
-        type: "retry",
-        description: "Retry attempt #1 - still insufficient funds",
-        amount: 47.00,
-        success: false,
-      },
-      {
-        timestamp: formatDate(daysAgo(5)),
-        type: "retry",
-        description: "Retry attempt #2 on PAYDAY (Feb 1) - SUCCESS! 🎉",
-        amount: 47.00,
-        success: true,
-      },
-      {
-        timestamp: formatDate(daysAgo(5)),
-        type: "email",
-        description: "Sent payment recovered confirmation",
-      },
-      {
-        timestamp: formatDate(daysAgo(5)),
-        type: "recovered",
-        description: "Payment recovered successfully",
-        amount: 47.00,
-      },
+      { timestamp: iso(daysAgo(2)), type: "failed", description: "Payment failed — card declined by issuer", amount: 149.00, success: false },
+      { timestamp: iso(daysAgo(2)), type: "email", description: "Sent payment failed notification email" },
+      { timestamp: iso(hoursAgo(44)), type: "retry", description: "Retry attempt #1 — still declined", amount: 149.00, success: false },
+      { timestamp: iso(hoursAgo(36)), type: "retry", description: "Retry attempt #2 — SUCCESS 🎉", amount: 149.00, success: true },
+      { timestamp: iso(hoursAgo(36)), type: "recovered", description: "Payment recovered", amount: 149.00 },
     ],
   },
 
-  // 2. Expired Card + Quick Update = Win
+  // 2. insufficient_funds → retrying (payday-aware schedule)
   {
-    id: "featured-2",
-    stripeInvoiceId: "in_expired_card_win",
-    customer: "Sarah Chen",
-    email: "sarah.chen@startup.io",
-    amount: 129.00,
+    id: "demo-2",
+    stripeInvoiceId: "in_demo_insuf_retrying",
+    customer: "Michael Chen",
+    email: "mchen@startup.io",
+    amount: 299.00,
     currency: "usd",
-    status: "recovered",
+    status: "retrying",
+    failureReason: "insufficient_funds",
+    failureReasonDisplay: "Insufficient funds",
+    retries: 1,
+    maxRetries: 4,
+    nextRetryAt: iso(new Date(Date.now() + 2 * 86400000)),
+    emailsSent: 1,
+    lastEmailType: "payment_failed",
+    date: "1 day ago",
+    createdAt: iso(daysAgo(1)),
+    recoveredAt: null,
+    notes: "🔄 Payday retry scheduled for Feb 1 (expected deposit date)",
+    retryTimeline: [
+      { timestamp: iso(daysAgo(1)), type: "failed", description: "Payment failed — insufficient funds", amount: 299.00, success: false },
+      { timestamp: iso(daysAgo(1)), type: "email", description: "Sent payment failed notification email" },
+      { timestamp: iso(hoursAgo(12)), type: "retry", description: "Retry attempt #1 — still insufficient", amount: 299.00, success: false },
+    ],
+  },
+
+  // 3. expired_card → retrying/dunning (card update email sent)
+  {
+    id: "demo-3",
+    stripeInvoiceId: "in_demo_expired_dunning",
+    customer: "Emily Rodriguez",
+    email: "emily.r@company.com",
+    amount: 79.00,
+    currency: "usd",
+    status: "dunning",
     failureReason: "expired_card",
     failureReasonDisplay: "Expired card",
     retries: 0,
     maxRetries: 0,
     nextRetryAt: null,
     emailsSent: 2,
-    lastEmailType: "payment_recovered",
+    lastEmailType: "card_update_reminder",
     date: "3 days ago",
-    createdAt: formatDate(daysAgo(4)),
-    recoveredAt: formatDate(daysAgo(3)),
-    notes: "📧 Dunning email triggered card update within 24h - customer saved!",
+    createdAt: iso(daysAgo(3)),
+    recoveredAt: null,
+    notes: "📧 2 card update emails sent — awaiting customer action",
     retryTimeline: [
-      {
-        timestamp: formatDate(daysAgo(4)),
-        type: "failed",
-        description: "Payment failed - card expired",
-        amount: 129.00,
-        success: false,
-      },
-      {
-        timestamp: formatDate(daysAgo(4)),
-        type: "dunning",
-        description: "Detected expired card - sent card update reminder",
-      },
-      {
-        timestamp: formatDate(daysAgo(3)),
-        type: "card_updated",
-        description: "Customer updated card information",
-      },
-      {
-        timestamp: formatDate(daysAgo(3)),
-        type: "recovered",
-        description: "Payment processed with new card - SUCCESS! 🎉",
-        amount: 129.00,
-      },
-      {
-        timestamp: formatDate(daysAgo(3)),
-        type: "email",
-        description: "Sent payment recovered confirmation",
-      },
+      { timestamp: iso(daysAgo(3)), type: "failed", description: "Payment failed — card is expired", amount: 79.00, success: false },
+      { timestamp: iso(daysAgo(3)), type: "dunning", description: "Smart detection: no retry for expired card, sent card update link" },
+      { timestamp: iso(daysAgo(1)), type: "email", description: "Sent follow-up card update reminder" },
     ],
   },
 
-  // 3. Processing Error - Quick Auto-Retry Win
+  // 4. card_declined → retrying (multiple retries in progress)
   {
-    id: "featured-3",
-    stripeInvoiceId: "in_processing_error",
-    customer: "David Rodriguez",
-    email: "d.rodriguez@company.com",
-    amount: 299.00,
+    id: "demo-4",
+    stripeInvoiceId: "in_demo_card_retrying",
+    customer: "James Wilson",
+    email: "jwilson@enterprise.com",
+    amount: 499.00,
     currency: "usd",
-    status: "recovered",
-    failureReason: "processing_error",
-    failureReasonDisplay: "Processing error",
-    retries: 1,
+    status: "retrying",
+    failureReason: "card_declined",
+    failureReasonDisplay: "Card declined",
+    retries: 3,
     maxRetries: 4,
-    nextRetryAt: null,
-    emailsSent: 1,
-    lastEmailType: "payment_recovered",
-    date: "2 days ago",
-    createdAt: formatDate(daysAgo(2)),
-    recoveredAt: formatDate(hoursAgo(47)),
-    notes: "⚡ Auto-retry in 1 hour recovered this temporary processing error",
+    nextRetryAt: iso(new Date(Date.now() + 86400000)),
+    emailsSent: 3,
+    lastEmailType: "final_warning",
+    date: "5 days ago",
+    createdAt: iso(daysAgo(5)),
+    recoveredAt: null,
+    notes: "⚠️ Final retry tomorrow — final warning email sent",
     retryTimeline: [
-      {
-        timestamp: formatDate(daysAgo(2)),
-        type: "failed",
-        description: "Payment failed - temporary processing error",
-        amount: 299.00,
-        success: false,
-      },
-      {
-        timestamp: formatDate(hoursAgo(47)),
-        type: "retry",
-        description: "Auto-retry after 1 hour - SUCCESS! 🎉",
-        amount: 299.00,
-        success: true,
-      },
-      {
-        timestamp: formatDate(hoursAgo(47)),
-        type: "email",
-        description: "Sent payment recovered confirmation",
-      },
-      {
-        timestamp: formatDate(hoursAgo(47)),
-        type: "recovered",
-        description: "Payment recovered automatically",
-        amount: 299.00,
-      },
+      { timestamp: iso(daysAgo(5)), type: "failed", description: "Payment failed — generic card decline", amount: 499.00, success: false },
+      { timestamp: iso(daysAgo(5)), type: "email", description: "Sent payment failed notification" },
+      { timestamp: iso(daysAgo(4)), type: "retry", description: "Retry #1 — declined", amount: 499.00, success: false },
+      { timestamp: iso(daysAgo(3)), type: "retry", description: "Retry #2 — declined", amount: 499.00, success: false },
+      { timestamp: iso(daysAgo(1)), type: "retry", description: "Retry #3 — declined", amount: 499.00, success: false },
+      { timestamp: iso(daysAgo(1)), type: "email", description: "Sent final warning: 1 retry remaining" },
     ],
   },
 
-  // 4. Stolen Card - Correctly NOT Retried (shows intelligence)
+  // 5. insufficient_funds → failed (maxed out retries, churned)
   {
-    id: "featured-4",
-    stripeInvoiceId: "in_stolen_card",
-    customer: "Jessica Williams",
-    email: "j.williams@email.com",
-    amount: 79.00,
+    id: "demo-5",
+    stripeInvoiceId: "in_demo_insuf_failed",
+    customer: "Jennifer Lee",
+    email: "jlee@startup.com",
+    amount: 99.00,
     currency: "usd",
     status: "failed",
-    failureReason: "card_declined",
-    failureReasonDisplay: "Card reported stolen",
-    retries: 0,
-    maxRetries: 0,
+    failureReason: "insufficient_funds",
+    failureReasonDisplay: "Insufficient funds",
+    retries: 4,
+    maxRetries: 4,
     nextRetryAt: null,
-    emailsSent: 1,
-    lastEmailType: "card_update_reminder",
-    date: "1 day ago",
-    createdAt: formatDate(daysAgo(1)),
+    emailsSent: 4,
+    lastEmailType: "final_warning",
+    date: "2 weeks ago",
+    createdAt: iso(daysAgo(18)),
     recoveredAt: null,
-    notes: "🛡️ Smart detection - stolen card marked unrecoverable (no wasteful retries)",
+    notes: "❌ All 4 retries exhausted — customer notified",
     retryTimeline: [
-      {
-        timestamp: formatDate(daysAgo(1)),
-        type: "failed",
-        description: "Payment failed - card reported stolen",
-        amount: 79.00,
-        success: false,
-      },
-      {
-        timestamp: formatDate(daysAgo(1)),
-        type: "dunning",
-        description: "Intelligent retry logic: marked unrecoverable, sent card update request",
-      },
+      { timestamp: iso(daysAgo(18)), type: "failed", description: "Initial payment failed — insufficient funds", amount: 99.00, success: false },
+      { timestamp: iso(daysAgo(15)), type: "retry", description: "Retry #1 (3-day cycle) — still insufficient", amount: 99.00, success: false },
+      { timestamp: iso(daysAgo(12)), type: "retry", description: "Retry #2 — still insufficient", amount: 99.00, success: false },
+      { timestamp: iso(daysAgo(9)), type: "retry", description: "Retry #3 — still insufficient", amount: 99.00, success: false },
+      { timestamp: iso(daysAgo(6)), type: "retry", description: "Retry #4 (final) — still insufficient", amount: 99.00, success: false },
+      { timestamp: iso(daysAgo(6)), type: "email", description: "Sent final failure notification — all retries exhausted" },
     ],
   },
 ];
 
-// Generate additional realistic payments to reach 50 total
-const generateAdditionalPayments = (): MockPayment[] => {
-  const firstNames = [
-    "Emily", "Michael", "Sophia", "James", "Olivia", "William", "Ava", "Robert",
-    "Isabella", "John", "Mia", "Christopher", "Charlotte", "Daniel", "Amelia",
-    "Matthew", "Harper", "Andrew", "Evelyn", "Joshua", "Abigail", "Ryan",
-    "Emma", "Nicholas", "Elizabeth", "Alexander", "Sofia", "Tyler", "Madison",
-    "Kevin", "Avery", "Jacob", "Ella", "Brandon", "Scarlett", "Dylan", "Grace",
-    "Nathan", "Chloe", "Samuel", "Victoria", "Benjamin", "Riley", "Logan", "Aria",
-  ];
-
-  const lastNames = [
-    "Smith", "Johnson", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
-    "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson",
-    "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee",
-    "Walker", "Hall", "Allen", "Young", "King", "Wright", "Lopez", "Hill",
-    "Scott", "Green", "Adams", "Baker", "Nelson", "Carter", "Mitchell", "Perez",
-    "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards",
-  ];
-
-  const domains = [
-    "gmail.com", "company.com", "startup.io", "business.co", "tech.dev",
-    "agency.com", "consulting.com", "software.io", "design.co", "creative.com",
-    "enterprise.com", "saas.io", "digital.co", "ventures.com", "corp.com",
-  ];
-
-  const failureTypes = [
-    { reason: "insufficient_funds", display: "Insufficient funds", maxRetries: 4 },
-    { reason: "card_declined", display: "Card declined", maxRetries: 4 },
-    { reason: "expired_card", display: "Expired card", maxRetries: 0 },
-    { reason: "processing_error", display: "Processing error", maxRetries: 4 },
-    { reason: "generic_decline", display: "Generic decline", maxRetries: 4 },
-  ];
-
-  const statuses: Array<"recovered" | "retrying" | "pending" | "dunning" | "failed"> = [
-    "recovered", "recovered", "recovered", "recovered", "recovered", // 87% recovery rate
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "recovered", "recovered", "recovered", "recovered", "recovered",
-    "retrying", "retrying", "retrying", "dunning", "dunning", "failed",
-  ];
-
-  const amounts = [29, 39, 47, 49, 59, 79, 89, 99, 129, 149, 179, 199, 249, 299, 399, 499];
-
-  const payments: MockPayment[] = [];
-
-  for (let i = 0; i < 46; i++) {
-    const firstName = firstNames[i % firstNames.length];
-    const lastName = lastNames[Math.floor(i / firstNames.length) % lastNames.length];
-    const name = `${firstName} ${lastName}`;
-    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${domains[i % domains.length]}`;
-    
-    const failure = failureTypes[i % failureTypes.length];
-    const status = statuses[i];
-    const amount = amounts[i % amounts.length];
-    const daysOld = Math.floor(i / 2) + 1;
-    
-    const retries = status === "recovered" 
-      ? Math.floor(Math.random() * 3) + 1
-      : status === "retrying"
-      ? Math.floor(Math.random() * 3)
-      : status === "dunning" || failure.reason === "expired_card"
-      ? 0
-      : Math.floor(Math.random() * 2);
-
-    const emailsSent = status === "recovered" 
-      ? retries + 1
-      : status === "retrying"
-      ? retries
-      : status === "dunning"
-      ? Math.floor(Math.random() * 2) + 1
-      : 1;
-
-    const lastEmailType = status === "recovered"
-      ? "payment_recovered"
-      : status === "dunning"
-      ? "card_update_reminder"
-      : status === "retrying"
-      ? "payment_failed"
-      : "final_warning";
-
-    payments.push({
-      id: `gen-${i + 1}`,
-      stripeInvoiceId: `in_demo_${i + 1}`,
-      customer: name,
-      email,
-      amount,
-      currency: "usd",
-      status,
-      failureReason: failure.reason,
-      failureReasonDisplay: failure.display,
-      retries,
-      maxRetries: failure.maxRetries,
-      nextRetryAt: status === "retrying" 
-        ? formatDate(new Date(Date.now() + (Math.random() * 3 + 1) * 86400000))
-        : null,
-      emailsSent,
-      lastEmailType,
-      date: daysOld === 1 ? "1 day ago" : daysOld < 7 ? `${daysOld} days ago` : `${Math.floor(daysOld / 7)} week${Math.floor(daysOld / 7) > 1 ? 's' : ''} ago`,
-      createdAt: formatDate(daysAgo(daysOld)),
-      recoveredAt: status === "recovered" 
-        ? formatDate(daysAgo(Math.max(1, daysOld - Math.floor(Math.random() * 3) - 1)))
-        : null,
-    });
-  }
-
-  return payments;
+// ============ Stats — matches the brief exactly ============
+export const MOCK_STATS: MockStats = {
+  totalRecovered: 47_320.50,
+  recoveryRate: 73,
+  activeRetries: 3,       // payments in retrying/dunning
+  dunningCount: 1,
+  failedThisMonth: 5,
+  recoveredThisMonth: 19, // count of recoveries this month
+  pendingRetries: 3,
+  mrrSaved: 2_847.00,     // $2,847 recovered THIS month
+  churnPrevented: 73,
+  totalPayments: 156,
 };
 
-// Combine featured + generated payments
-export const MOCK_PAYMENTS: MockPayment[] = [
-  ...featuredPayments,
-  ...generateAdditionalPayments(),
-];
-
-// Calculate stats from mock data
-const calculateStats = (): MockStats => {
-  const recovered = MOCK_PAYMENTS.filter(p => p.status === "recovered");
-  const retrying = MOCK_PAYMENTS.filter(p => p.status === "retrying");
-  const dunning = MOCK_PAYMENTS.filter(p => p.status === "dunning");
-  const failed = MOCK_PAYMENTS.filter(p => p.status === "failed");
-  
-  const totalRecovered = recovered.reduce((sum, p) => sum + p.amount, 0);
-  const mrrSaved = recovered.reduce((sum, p) => sum + p.amount, 0); // Assuming MRR = recovered amount
-  
-  // Recovery rate: recovered / (recovered + failed)
-  const completedAttempts = recovered.length + failed.length;
-  const recoveryRate = completedAttempts > 0 
-    ? Math.round((recovered.length / completedAttempts) * 100)
-    : 0;
-
-  return {
-    totalRecovered,
-    recoveryRate,
-    activeRetries: retrying.length,
-    dunningCount: dunning.length,
-    failedThisMonth: MOCK_PAYMENTS.length,
-    recoveredThisMonth: recovered.length,
-    pendingRetries: retrying.length,
-    mrrSaved,
-    churnPrevented: Math.round((recovered.length / MOCK_PAYMENTS.length) * 100),
-    totalPayments: MOCK_PAYMENTS.length,
-  };
-};
-
-export const MOCK_STATS: MockStats = calculateStats();
-
-// Generate 30-day trend data
+// ============ 30-Day Trend ============
 export const MOCK_TREND: MockTrend[] = Array.from({ length: 30 }, (_, i) => {
   const date = new Date();
   date.setDate(date.getDate() - (29 - i));
-  
-  // More recoveries toward the end (showing improvement over time)
-  const baseRecoveries = i < 10 ? 2 : i < 20 ? 4 : 6;
-  const recovered = baseRecoveries + Math.floor(Math.random() * 3);
-  const failed = Math.floor(Math.random() * 2);
-  const avgAmount = 150;
-  
+  // Upward trend toward end of month (shows Revive working)
+  const base = i < 10 ? 2 : i < 20 ? 4 : 6;
+  const recovered = base + Math.floor(Math.random() * 3);
+  const failed = Math.max(0, Math.floor(Math.random() * 2));
   return {
-    date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
     recovered,
     failed,
-    amount: recovered * avgAmount,
+    amount: recovered * 149.95,
   };
 });
 
-// Activity feed items (mix of everything)
+// ============ Activity Feed ============
 export const MOCK_ACTIVITY = [
-  {
-    time: "2 minutes ago",
-    type: "recovery",
-    message: "Payment recovered for Emily Anderson ($149.00)",
-    icon: "✅",
-  },
-  {
-    time: "15 minutes ago",
-    type: "email",
-    message: "Dunning email sent to Marcus Thompson",
-    icon: "📧",
-  },
-  {
-    time: "1 hour ago",
-    type: "retry",
-    message: "Retry attempt #2 for Sarah Chen - Success!",
-    icon: "🔄",
-  },
-  {
-    time: "2 hours ago",
-    type: "email",
-    message: "Payment recovered notification sent to David Rodriguez",
-    icon: "📧",
-  },
-  {
-    time: "3 hours ago",
-    type: "recovery",
-    message: "Payment recovered for Michael Brown ($299.00)",
-    icon: "✅",
-  },
-  {
-    time: "5 hours ago",
-    type: "retry",
-    message: "Payday retry scheduled for 3 customers",
-    icon: "📅",
-  },
+  { time: "2 min ago",  icon: "✅", message: "Payment recovered for Sarah Johnson ($149.00)" },
+  { time: "18 min ago", icon: "📧", message: "Card update reminder sent to Emily Rodriguez" },
+  { time: "1 hr ago",   icon: "🔄", message: "Payday retry scheduled for Michael Chen" },
+  { time: "3 hr ago",   icon: "📧", message: "Final warning email sent to James Wilson" },
+  { time: "5 hr ago",   icon: "✅", message: "Payment recovered via dunning: $249.00" },
+  { time: "Yesterday",  icon: "📅", message: "3 payday retries queued for Feb 1" },
 ];

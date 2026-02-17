@@ -4,25 +4,25 @@ import Link from "next/link";
 import { useState } from "react";
 import { MOCK_PAYMENTS, MOCK_STATS, MOCK_TREND, MOCK_ACTIVITY, type MockPayment } from "@/lib/mock-data";
 
-// ============ Utility Functions ============
+// ============ Utilities (mirror dashboard) ============
 
 const maskEmail = (email: string): string => {
-  if (!email || !email.includes('@')) return email;
-  const [local, domain] = email.split('@');
+  if (!email || !email.includes("@")) return email;
+  const [local, domain] = email.split("@");
   if (local.length <= 2) return `${local[0]}***@${domain}`;
   return `${local[0]}***@${domain}`;
 };
 
 const getStatusIcon = (status: string): string => {
   const icons: Record<string, string> = {
-    recovered: '✅',
-    retrying: '🔄',
-    pending: '🔄',
-    dunning: '📧',
-    failed: '❌',
-    expired_card: '❌',
+    recovered: "✅",
+    retrying: "🔄",
+    pending: "🔄",
+    dunning: "📧",
+    failed: "❌",
+    expired_card: "❌",
   };
-  return icons[status] || '⏸️';
+  return icons[status] || "⏸️";
 };
 
 const statusColors: Record<string, string> = {
@@ -43,28 +43,27 @@ const statusLabels: Record<string, string> = {
   expired_card: "Expired Card",
 };
 
-// ============ Demo Page Component ============
+const maxTrendValue = Math.max(...MOCK_TREND.map((d) => d.amount), 1);
+
+// ============ Demo Page ============
 
 export default function DemoPage() {
   const [selectedPayment, setSelectedPayment] = useState<MockPayment | null>(null);
-  const [showTimeline, setShowTimeline] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const maxTrendValue = Math.max(...MOCK_TREND.map((d) => d.amount), 1);
-
-  const handlePaymentClick = (payment: MockPayment) => {
-    setSelectedPayment(payment);
-    setShowTimeline(true);
+  const openModal = (p: MockPayment) => {
+    setSelectedPayment(p);
+    setShowModal(true);
   };
-
-  const closeTimeline = () => {
-    setShowTimeline(false);
+  const closeModal = () => {
+    setShowModal(false);
     setTimeout(() => setSelectedPayment(null), 300);
   };
 
   return (
     <main className="min-h-screen bg-[#09090b]">
       <div className="flex">
-        {/* Sidebar */}
+        {/* ── Sidebar (mirrors real dashboard) ── */}
         <aside className="hidden lg:flex flex-col w-64 min-h-screen border-r border-white/5 bg-[#0a0a0c] p-6">
           <Link href="/" className="flex items-center gap-2 mb-10">
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
@@ -81,7 +80,7 @@ export default function DemoPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              Demo Overview
+              Overview
             </Link>
             <Link href="/demo#analytics" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.02] transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -95,6 +94,18 @@ export default function DemoPage() {
               </svg>
               Payments
             </Link>
+            <Link href="/demo#emails" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.02] transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Emails
+            </Link>
+            <Link href="/demo" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.02] transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Settings
+            </Link>
           </nav>
 
           <div className="pt-6 border-t border-white/5">
@@ -105,116 +116,54 @@ export default function DemoPage() {
           </div>
         </aside>
 
-        {/* Main Content */}
+        {/* ── Main Content ── */}
         <div className="flex-1 min-h-screen">
           {/* Top Bar */}
-          <header className="border-b border-white/5 px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <header className="border-b border-white/5 px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
             <div>
-              <h1 className="text-xl font-semibold">Demo Dashboard</h1>
+              <h1 className="text-xl font-semibold">Dashboard</h1>
               <p className="text-sm text-zinc-500">
-                Monitoring {MOCK_STATS.totalPayments} payments • {MOCK_STATS.recoveryRate}% recovery rate
+                Monitoring {MOCK_STATS.totalPayments} payments &bull; {MOCK_STATS.recoveryRate}% recovery rate
               </p>
             </div>
             <Link
-              href="/api/stripe/connect"
-              className="flex items-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40"
+              href="/api/connect"
+              className="flex items-center gap-2 bg-[#635bff] hover:bg-[#5851db] text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-lg shadow-[#635bff]/20"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
               </svg>
-              Connect Your Stripe
+              Connect Stripe
             </Link>
           </header>
 
-          {/* Dashboard Content */}
+          {/* ── Page Body ── */}
           <div className="p-6 lg:p-8 space-y-6">
-            {/* Demo Mode Banner */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-purple-600/10 via-brand-500/10 to-pink-600/10 border border-purple-500/20 rounded-2xl p-6">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-pink-500/5 animate-pulse" />
-              <div className="relative flex items-start gap-4">
-                <div className="h-12 w-12 rounded-xl bg-purple-600/20 flex items-center justify-center shrink-0">
-                  <span className="text-2xl">🎭</span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-1 flex items-center gap-2">
-                    You're Viewing Demo Data
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-medium">SANDBOX</span>
-                  </h3>
-                  <p className="text-zinc-400 text-sm mb-4">
-                    This dashboard shows what Revive can do for YOUR business. The data below is simulated, 
-                    but the recovery engine is 100% real. Connect your Stripe account to see your actual numbers.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <Link
-                      href="/api/stripe/connect"
-                      className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm"
-                    >
-                      Connect Stripe & See Real Data →
-                    </Link>
-                    <Link
-                      href="/"
-                      className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm"
-                    >
-                      Learn More
-                    </Link>
-                  </div>
-                </div>
+
+            {/* ── Demo Banner ── */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gradient-to-r from-amber-500/8 via-amber-400/5 to-orange-500/8 border border-amber-500/20 rounded-xl px-5 py-4">
+              <div className="flex items-center gap-3">
+                <span className="text-amber-400 flex-shrink-0">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                </span>
+                <p className="text-sm text-amber-200/90">
+                  <span className="font-semibold text-amber-300">This is demo data.</span>{" "}
+                  Connect your Stripe to see your real numbers.
+                </p>
               </div>
+              <Link
+                href="/api/connect"
+                className="flex-shrink-0 inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+              >
+                Connect Stripe →
+              </Link>
             </div>
 
-            {/* Success Stories Highlight */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="glass rounded-xl p-5 border-emerald-500/20 hover:border-emerald-500/40 transition-all group cursor-pointer">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span className="text-xl">💰</span>
-                  </div>
-                  <span className="text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">Payday Win</span>
-                </div>
-                <div className="text-2xl font-bold text-emerald-400 mb-1">$47.00</div>
-                <div className="text-xs text-zinc-400">Recovered on payday (Feb 1)</div>
-                <div className="text-xs text-zinc-500 mt-2">Marcus T. • Insufficient funds</div>
-              </div>
-
-              <div className="glass rounded-xl p-5 border-blue-500/20 hover:border-blue-500/40 transition-all group cursor-pointer">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span className="text-xl">📧</span>
-                  </div>
-                  <span className="text-xs px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 font-medium">24h Save</span>
-                </div>
-                <div className="text-2xl font-bold text-blue-400 mb-1">$129.00</div>
-                <div className="text-xs text-zinc-400">Card updated in 24h</div>
-                <div className="text-xs text-zinc-500 mt-2">Sarah C. • Expired card</div>
-              </div>
-
-              <div className="glass rounded-xl p-5 border-purple-500/20 hover:border-purple-500/40 transition-all group cursor-pointer">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span className="text-xl">⚡</span>
-                  </div>
-                  <span className="text-xs px-2 py-1 rounded-full bg-purple-500/10 text-purple-400 font-medium">Auto-Fix</span>
-                </div>
-                <div className="text-2xl font-bold text-purple-400 mb-1">$299.00</div>
-                <div className="text-xs text-zinc-400">Recovered in 1 hour</div>
-                <div className="text-xs text-zinc-500 mt-2">David R. • Processing error</div>
-              </div>
-
-              <div className="glass rounded-xl p-5 border-zinc-500/20 hover:border-zinc-500/40 transition-all group cursor-pointer">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="h-10 w-10 rounded-lg bg-zinc-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span className="text-xl">🛡️</span>
-                  </div>
-                  <span className="text-xs px-2 py-1 rounded-full bg-zinc-500/10 text-zinc-400 font-medium">Smart Skip</span>
-                </div>
-                <div className="text-2xl font-bold text-zinc-400 mb-1">$79.00</div>
-                <div className="text-xs text-zinc-400">Stolen card (no retry)</div>
-                <div className="text-xs text-zinc-500 mt-2">Jessica W. • Marked unrecoverable</div>
-              </div>
-            </div>
-
-            {/* Main Metrics Cards */}
+            {/* ── 4 Metric Cards ── */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Total Recovered */}
               <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Total Revenue Recovered</div>
@@ -228,10 +177,11 @@ export default function DemoPage() {
                   ${MOCK_STATS.totalRecovered.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
                 <div className="text-xs text-zinc-500">
-                  All time • {MOCK_STATS.recoveredThisMonth} payments recovered
+                  All time &bull; {MOCK_STATS.recoveredThisMonth} payments recovered
                 </div>
               </div>
 
+              {/* Recovery Rate */}
               <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Recovery Rate</div>
@@ -246,12 +196,13 @@ export default function DemoPage() {
                 </div>
                 <div className="w-full bg-zinc-800 rounded-full h-2 mt-2">
                   <div
-                    className="bg-gradient-to-r from-brand-500 to-brand-400 h-2 rounded-full transition-all duration-1000"
+                    className="bg-gradient-to-r from-brand-500 to-brand-400 h-2 rounded-full"
                     style={{ width: `${MOCK_STATS.recoveryRate}%` }}
                   />
                 </div>
               </div>
 
+              {/* Active Failed Payments */}
               <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Active Failed Payments</div>
@@ -265,13 +216,14 @@ export default function DemoPage() {
                   {MOCK_STATS.activeRetries}
                 </div>
                 <div className="text-xs text-zinc-500">
-                  Currently being retried • {MOCK_STATS.dunningCount} in dunning
+                  Currently being retried &bull; {MOCK_STATS.dunningCount} in dunning
                 </div>
               </div>
 
+              {/* Money Saved This Month */}
               <div className="glass rounded-xl p-6 hover:border-brand-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Money Saved This Month</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Recovered This Month</div>
                   <div className="h-8 w-8 rounded-lg bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
                     <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
@@ -282,13 +234,13 @@ export default function DemoPage() {
                   ${MOCK_STATS.mrrSaved.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
                 <div className="text-xs text-zinc-500">
-                  MRR saved • {MOCK_STATS.churnPrevented}% churn prevented
+                  MRR saved &bull; {MOCK_STATS.churnPrevented}% churn prevented
                 </div>
               </div>
             </div>
 
-            {/* Timeline Chart + Activity Feed */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* ── Chart + Activity ── */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6" id="analytics">
               {/* Recovery Timeline Chart */}
               <div className="lg:col-span-2 glass rounded-xl p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -296,11 +248,9 @@ export default function DemoPage() {
                     <h3 className="font-medium">Recovery Timeline (Last 30 Days)</h3>
                     <p className="text-xs text-zinc-500 mt-1">Hover over bars to see details</p>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-zinc-500">
-                    <div className="flex items-center gap-2">
-                      <div className="h-3 w-3 rounded bg-gradient-to-t from-emerald-500/60 to-emerald-400/40" />
-                      Recovered
-                    </div>
+                  <div className="flex items-center gap-2 text-xs text-zinc-500">
+                    <div className="h-3 w-3 rounded bg-gradient-to-t from-emerald-500/60 to-emerald-400/40" />
+                    Recovered
                   </div>
                 </div>
                 <div className="h-64 flex items-end gap-1">
@@ -313,8 +263,8 @@ export default function DemoPage() {
                         style={{
                           height: `${Math.max(height, 2)}%`,
                           background: day.amount > 0
-                            ? 'linear-gradient(to top, rgba(52, 211, 153, 0.6), rgba(52, 211, 153, 0.3))'
-                            : 'rgba(63, 63, 70, 0.2)',
+                            ? "linear-gradient(to top, rgba(52,211,153,0.6), rgba(52,211,153,0.3))"
+                            : "rgba(63,63,70,0.2)",
                         }}
                       >
                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-800 text-xs text-white px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-xl border border-white/10">
@@ -326,46 +276,75 @@ export default function DemoPage() {
                     );
                   })}
                 </div>
+                <div className="mt-4 text-xs text-zinc-500 text-center">Hover over bars for details</div>
               </div>
 
-              {/* Live Activity Feed */}
+              {/* Quick Actions (mirror real dashboard) */}
               <div className="glass rounded-xl p-6">
-                <h3 className="font-medium mb-4 flex items-center gap-2">
-                  Live Activity
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                </h3>
-                <div className="space-y-4">
-                  {MOCK_ACTIVITY.map((activity, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
-                      <span className="text-lg flex-shrink-0">{activity.icon}</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-zinc-300 text-xs">{activity.message}</p>
-                        <p className="text-zinc-600 text-xs mt-0.5">{activity.time}</p>
+                <h3 className="font-medium mb-4">Quick Actions</h3>
+                <div className="space-y-3">
+                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-brand-500/10 border border-brand-500/20 hover:bg-brand-500/20 hover:border-brand-500/30 text-brand-400 transition-all duration-200 group">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-sm font-medium">Retry All Failed</span>
+                  </button>
+                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-500/30 text-purple-400 transition-all duration-200 group">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-sm font-medium">Send Dunning Emails</span>
+                  </button>
+                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 hover:border-emerald-500/30 text-emerald-400 transition-all duration-200 group">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-sm font-medium">Export CSV</span>
+                  </button>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/5">
+                  {/* Live Activity */}
+                  <h4 className="text-xs text-zinc-500 uppercase tracking-wider font-medium mb-3 flex items-center gap-2">
+                    Live Activity
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  </h4>
+                  <div className="space-y-3">
+                    {MOCK_ACTIVITY.slice(0, 4).map((a, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs">
+                        <span className="flex-shrink-0">{a.icon}</span>
+                        <div>
+                          <p className="text-zinc-400 leading-snug">{a.message}</p>
+                          <p className="text-zinc-600 mt-0.5">{a.time}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Recent Payments Table */}
+            {/* ── Recent Activity (5 demo payments) ── */}
             <div className="glass rounded-xl overflow-hidden" id="payments">
               <div className="p-6 border-b border-white/5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium">All Payments</h3>
+                    <h3 className="font-medium">Recent Activity</h3>
                     <p className="text-xs text-zinc-500 mt-1">
                       Click any payment to see the full recovery timeline
                     </p>
                   </div>
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 font-medium border border-purple-500/20">
+                    Demo Data
+                  </span>
                 </div>
               </div>
 
-              <div className="divide-y divide-white/5 max-h-[600px] overflow-y-auto">
-                {MOCK_PAYMENTS.slice(0, 15).map((payment) => (
+              <div className="divide-y divide-white/5">
+                {MOCK_PAYMENTS.map((payment) => (
                   <div
                     key={payment.id}
-                    onClick={() => handlePaymentClick(payment)}
+                    onClick={() => openModal(payment)}
                     className="p-6 hover:bg-white/[0.02] transition-colors cursor-pointer"
                   >
                     <div className="flex items-start gap-4">
@@ -387,18 +366,18 @@ export default function DemoPage() {
                           <span className={`inline-flex items-center px-2.5 py-1 rounded-full font-medium ${statusColors[payment.status] || "text-zinc-400 bg-zinc-400/10"}`}>
                             {statusLabels[payment.status] || payment.status}
                           </span>
-                          <span className="text-zinc-500">
-                            {payment.failureReasonDisplay}
-                          </span>
+                          <span className="text-zinc-500">{payment.failureReasonDisplay}</span>
                           <span className="text-zinc-600">•</span>
                           <span className="text-zinc-400">
-                            {payment.retries > 0 ? `${payment.retries} ${payment.retries === 1 ? 'retry' : 'retries'}` : 'No retries yet'}
+                            {payment.retries > 0
+                              ? `${payment.retries} ${payment.retries === 1 ? "retry" : "retries"}`
+                              : "No retries yet"}
                           </span>
                           {payment.emailsSent > 0 && (
                             <>
                               <span className="text-zinc-600">•</span>
                               <span className="text-zinc-400">
-                                📧 {payment.emailsSent} {payment.emailsSent === 1 ? 'email' : 'emails'} sent
+                                📧 {payment.emailsSent} {payment.emailsSent === 1 ? "email" : "emails"} sent
                               </span>
                             </>
                           )}
@@ -414,30 +393,51 @@ export default function DemoPage() {
                 ))}
               </div>
             </div>
+
+            {/* ── Bottom CTA ── */}
+            <div className="glass rounded-2xl p-8 text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-600/5 via-transparent to-purple-600/5" />
+              <div className="relative">
+                <h3 className="text-xl font-semibold mb-2">Ready to see your real numbers?</h3>
+                <p className="text-zinc-400 text-sm max-w-md mx-auto mb-6">
+                  Connect your Stripe account and we&apos;ll instantly show you how much you&apos;ve lost to failed payments — and start recovering it automatically.
+                </p>
+                <Link
+                  href="/api/connect"
+                  className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
+                  </svg>
+                  Connect Stripe — It&apos;s Free
+                </Link>
+                <p className="text-xs text-zinc-600 mt-3">
+                  🔒 Read-only access via Stripe OAuth. 5-minute setup. No credit card required.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Timeline Modal */}
-      {showTimeline && selectedPayment && (
+      {/* ── Payment Timeline Modal ── */}
+      {showModal && selectedPayment && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
-          onClick={closeTimeline}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={closeModal}
         >
           <div
-            className="glass rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto animate-slide-up"
+            className="glass rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Modal Header */}
             <div className="sticky top-0 bg-[#09090b]/95 backdrop-blur-xl border-b border-white/10 p-6 z-10">
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-xl font-semibold mb-1">{selectedPayment.customer}</h3>
                   <p className="text-sm text-zinc-500">{maskEmail(selectedPayment.email)}</p>
                 </div>
-                <button
-                  onClick={closeTimeline}
-                  className="text-zinc-500 hover:text-white transition-colors"
-                >
+                <button onClick={closeModal} className="text-zinc-500 hover:text-white transition-colors">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -448,44 +448,43 @@ export default function DemoPage() {
                   {getStatusIcon(selectedPayment.status)} {statusLabels[selectedPayment.status]}
                 </span>
                 <span className="text-2xl font-bold text-white">${selectedPayment.amount.toFixed(2)}</span>
+                <span className="text-sm text-zinc-500">{selectedPayment.failureReasonDisplay}</span>
               </div>
             </div>
 
+            {/* Timeline */}
             <div className="p-6">
               {selectedPayment.retryTimeline && selectedPayment.retryTimeline.length > 0 ? (
-                <div className="space-y-6">
-                  <h4 className="font-medium text-sm text-zinc-400 uppercase tracking-wider">Recovery Timeline</h4>
+                <div className="space-y-0">
+                  <h4 className="font-medium text-sm text-zinc-400 uppercase tracking-wider mb-6">Recovery Timeline</h4>
                   {selectedPayment.retryTimeline.map((event, i) => (
                     <div key={i} className="flex gap-4">
                       <div className="flex flex-col items-center">
-                        <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                          event.type === 'recovered' ? 'bg-emerald-500/20 text-emerald-400' :
-                          event.type === 'failed' ? 'bg-red-500/20 text-red-400' :
-                          event.type === 'retry' && event.success ? 'bg-emerald-500/20 text-emerald-400' :
-                          event.type === 'retry' ? 'bg-amber-500/20 text-amber-400' :
-                          event.type === 'email' ? 'bg-blue-500/20 text-blue-400' :
-                          event.type === 'dunning' ? 'bg-orange-500/20 text-orange-400' :
-                          'bg-purple-500/20 text-purple-400'
+                        <div className={`h-10 w-10 rounded-full flex items-center justify-center text-base ${
+                          event.type === "recovered" ? "bg-emerald-500/20 text-emerald-400" :
+                          event.type === "failed" ? "bg-red-500/20 text-red-400" :
+                          event.type === "retry" && event.success ? "bg-emerald-500/20" :
+                          event.type === "retry" ? "bg-amber-500/20" :
+                          event.type === "email" ? "bg-blue-500/20" :
+                          event.type === "dunning" ? "bg-orange-500/20" :
+                          "bg-purple-500/20"
                         }`}>
-                          {event.type === 'recovered' && '✅'}
-                          {event.type === 'failed' && '❌'}
-                          {event.type === 'retry' && (event.success ? '✅' : '🔄')}
-                          {event.type === 'email' && '📧'}
-                          {event.type === 'dunning' && '⚠️'}
-                          {event.type === 'card_updated' && '💳'}
+                          {event.type === "recovered" && "✅"}
+                          {event.type === "failed" && "❌"}
+                          {event.type === "retry" && (event.success ? "✅" : "🔄")}
+                          {event.type === "email" && "📧"}
+                          {event.type === "dunning" && "⚠️"}
+                          {event.type === "card_updated" && "💳"}
                         </div>
                         {i < selectedPayment.retryTimeline!.length - 1 && (
-                          <div className="w-0.5 h-full bg-white/10 flex-1 my-2" />
+                          <div className="w-0.5 flex-1 bg-white/10 my-2" />
                         )}
                       </div>
                       <div className="flex-1 pb-6">
                         <div className="text-sm text-white font-medium mb-1">{event.description}</div>
                         <div className="text-xs text-zinc-500">
-                          {new Date(event.timestamp).toLocaleString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit',
+                          {new Date(event.timestamp).toLocaleString("en-US", {
+                            month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
                           })}
                         </div>
                         {event.amount && (
@@ -496,18 +495,17 @@ export default function DemoPage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-zinc-500">
-                  <p>No detailed timeline available for this payment.</p>
-                </div>
+                <p className="text-center text-zinc-500 py-8">No timeline events yet.</p>
               )}
             </div>
 
+            {/* Modal Footer CTA */}
             <div className="border-t border-white/10 p-6 bg-brand-500/5">
               <p className="text-sm text-zinc-400 mb-4">
                 This is demo data. Connect your Stripe account to see real recovery timelines for your customers.
               </p>
               <Link
-                href="/api/stripe/connect"
+                href="/api/connect"
                 className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm"
               >
                 Get Started with Revive →
