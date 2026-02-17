@@ -73,13 +73,13 @@ export default function Navbar() {
             href="/dashboard"
             className="text-sm text-zinc-400 hover:text-white transition-colors px-4 py-2"
           >
-            Log in
+            Dashboard
           </Link>
           <Link
-            href="/pricing"
+            href="/api/connect"
             className="text-sm font-medium bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg transition-colors"
           >
-            Get Started
+            Connect Stripe
           </Link>
         </div>
 
@@ -151,11 +151,11 @@ export default function Navbar() {
             Terms
           </Link>
           <Link
-            href="/pricing"
+            href="/api/connect"
             className="block text-sm font-medium bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-center mt-2"
             onClick={() => setMobileOpen(false)}
           >
-            Get Started
+            Connect Stripe
           </Link>
         </div>
       )}

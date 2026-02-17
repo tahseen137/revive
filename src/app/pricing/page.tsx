@@ -1,73 +1,102 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Link from "next/link";
 
 const plans = [
   {
     name: "Free",
-    price: "0",
-    priceSuffix: "/month",
-    description: "Try it risk-free on your first $500 recovered",
+    price: "$0",
+    priceSuffix: "/forever",
+    description: "Perfect for getting started. Free forever on your first $500/mo recovered.",
     features: [
-      "Up to $500 recovered/month",
+      "Up to $500/mo recovered",
       "Smart payment retries",
       "Basic dunning emails",
       "Real-time dashboard",
       "Stripe OAuth integration",
       "Email support",
     ],
-    cta: "Get Started Free",
-    href: "/api/stripe/connect",
+    cta: "Connect Stripe — Start Free",
+    ctaLink: "/api/connect",
     popular: false,
     highlight: false,
+    priceId: null,
   },
   {
     name: "Growth",
     price: "$99",
     priceSuffix: "/month",
-    description: "For SaaS companies serious about reducing churn",
+    description: "For SaaS companies serious about eliminating involuntary churn.",
     features: [
-      "Unlimited payment retries",
-      "Advanced dunning sequences",
+      "Unlimited recovered revenue",
+      "Advanced AI retry optimization",
+      "Custom dunning sequences",
       "Custom email templates",
-      "AI-powered retry optimization",
+      "A/B testing for emails",
+      "Advanced analytics & reports",
       "Priority support",
       "30-day retry window",
       "Webhook notifications",
-      "Recovery analytics & reports",
       "Team access (up to 5)",
     ],
-    cta: "Start Growing",
-    href: "checkout:growth",
+    cta: "Start Growth Plan",
+    ctaLink: null,
     popular: true,
     highlight: true,
+    priceId: "growth",
   },
   {
     name: "Scale",
-    price: "10%",
-    priceSuffix: " of recovered revenue",
-    description: "For high-volume SaaS recovering $10K+/month",
+    price: "Custom",
+    priceSuffix: "",
+    description: "For high-volume SaaS recovering $10K+/month in failed payments.",
     features: [
       "Everything in Growth",
-      "Lower rate at scale",
+      "Volume discounts",
       "Dedicated account manager",
       "Custom retry strategies",
-      "API access",
+      "Full API access",
       "SLA guarantee",
       "White-label emails",
       "Unlimited team members",
       "Quarterly strategy reviews",
+      "Custom integrations",
     ],
-    cta: "Contact Us",
-    href: "mailto:tahseen137@gmail.com",
+    cta: "Contact Sales",
+    ctaLink: "mailto:sales@revive-hq.com?subject=Revive Scale Plan Inquiry",
     popular: false,
     highlight: false,
+    priceId: null,
   },
 ];
 
 export default function PricingPage() {
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const handleCheckout = async (priceId: string) => {
+    setLoading(priceId);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("Checkout error:", data.error);
+        setLoading(null);
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      setLoading(null);
+    }
+  };
+
   return (
     <main className="min-h-screen">
       <Navbar />
@@ -80,22 +109,21 @@ export default function PricingPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-xs font-medium mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-              Pay only when we recover your revenue
+              Simple, predictable pricing
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              You only pay when you get paid
+              Free until it&apos;s paying for itself
             </h1>
             <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-              No monthly fees. No setup costs. No risk. We take a small percentage of the revenue we actually recover for you — if we don&apos;t recover anything, you pay nothing.
+              Start recovering revenue for free. Upgrade to Growth when you&apos;re ready for unlimited recovery and advanced features.
             </p>
           </div>
 
-          {/* How it works mini */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-16">
             {[
-              { icon: "🔌", text: "Connect Stripe in 3 min" },
+              { icon: "🔌", text: "Connect Stripe in 5 min" },
               { icon: "🤖", text: "We recover failed payments automatically" },
-              { icon: "💰", text: "You keep 85-100% of recovered revenue" },
+              { icon: "💰", text: "Keep 100% of recovered revenue" },
             ].map((step) => (
               <div key={step.text} className="text-center">
                 <div className="text-2xl mb-2">{step.icon}</div>
@@ -109,9 +137,7 @@ export default function PricingPage() {
               <div
                 key={plan.name}
                 className={`relative glass rounded-2xl p-8 flex flex-col ${
-                  plan.highlight
-                    ? "border-brand-500/30 ring-1 ring-brand-500/20"
-                    : ""
+                  plan.highlight ? "border-brand-500/30 ring-1 ring-brand-500/20" : ""
                 }`}
               >
                 {plan.popular && (
@@ -128,28 +154,22 @@ export default function PricingPage() {
                 <div className="mb-8">
                   <span className="text-5xl font-bold">{plan.price}</span>
                   <span className="text-zinc-500 ml-1 text-sm">{plan.priceSuffix}</span>
-                  {plan.name === "Growth" && (
+                  {plan.name === "Free" && (
                     <div className="mt-2 text-xs text-green-400 font-medium">
-                      Capped at $99/month
+                      First $500/mo recovered — always free
+                    </div>
+                  )}
+                  {plan.name === "Growth" && (
+                    <div className="mt-2 text-xs text-brand-400 font-medium">
+                      Unlimited recovery • No percentage cuts
                     </div>
                   )}
                 </div>
 
                 <ul className="space-y-3 mb-8 flex-1">
                   {plan.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex items-start gap-3 text-sm text-zinc-300"
-                    >
-                      <svg
-                        className="w-4 h-4 text-brand-500 mt-0.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
+                    <li key={feature} className="flex items-start gap-3 text-sm text-zinc-300">
+                      <svg className="w-4 h-4 text-brand-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                       {feature}
@@ -157,38 +177,40 @@ export default function PricingPage() {
                   ))}
                 </ul>
 
-                {plan.href?.startsWith("checkout:") ? (
+                {plan.priceId ? (
                   <button
-                    onClick={async () => {
-                      const planId = plan.href?.split(":")[1];
-                      const res = await fetch("/api/checkout", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ priceId: planId }),
-                      });
-                      const data = await res.json();
-                      if (data.url) window.location.href = data.url;
-                    }}
-                    className={`w-full py-3.5 rounded-xl font-medium transition-all text-sm ${
+                    onClick={() => handleCheckout(plan.priceId!)}
+                    disabled={loading === plan.priceId}
+                    className={`w-full py-3.5 rounded-xl font-medium transition-all text-sm disabled:opacity-50 ${
                       plan.highlight
                         ? "bg-brand-600 hover:bg-brand-500 text-white hover:shadow-lg hover:shadow-brand-600/25"
                         : "bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700"
                     }`}
                   >
-                    {plan.cta}
+                    {loading === plan.priceId ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Processing...
+                      </span>
+                    ) : (
+                      plan.cta
+                    )}
                   </button>
-                ) : (
+                ) : plan.ctaLink ? (
                   <Link
-                    href={plan.href || "#"}
+                    href={plan.ctaLink}
                     className={`w-full py-3.5 rounded-xl font-medium transition-all text-sm text-center block ${
-                      plan.highlight
+                      plan.name === "Free"
                         ? "bg-brand-600 hover:bg-brand-500 text-white hover:shadow-lg hover:shadow-brand-600/25"
                         : "bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700"
                     }`}
                   >
                     {plan.cta}
                   </Link>
-                )}
+                ) : null}
               </div>
             ))}
           </div>
@@ -198,138 +220,69 @@ export default function PricingPage() {
             <div className="glass rounded-2xl p-10 text-center">
               <h2 className="text-2xl font-bold mb-3">See what you could recover</h2>
               <p className="text-zinc-400 text-sm mb-8 max-w-lg mx-auto">
-                The average SaaS company loses 9% of MRR to involuntary churn. Here&apos;s what Revive could save you:
+                The average SaaS company loses 9% of MRR to involuntary churn. Here&apos;s what Revive saves you:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { mrr: "$10K MRR", lost: "$900/mo lost", recovered: "$630/mo recovered", cost: "You pay: $94", net: "Net gain: $536/mo" },
-                  { mrr: "$50K MRR", lost: "$4,500/mo lost", recovered: "$3,150/mo recovered", cost: "You pay: $472", net: "Net gain: $2,678/mo" },
-                  { mrr: "$100K MRR", lost: "$9,000/mo lost", recovered: "$6,300/mo recovered", cost: "You pay: $630", net: "Net gain: $5,670/mo" },
+                  { mrr: "$10K MRR", lost: "$900/mo lost", recovered: "$630/mo recovered", plan: "Free tier", net: "Net: +$630/mo" },
+                  { mrr: "$50K MRR", lost: "$4,500/mo lost", recovered: "$3,150/mo recovered", plan: "Growth ($99)", net: "Net: +$3,051/mo" },
+                  { mrr: "$100K MRR", lost: "$9,000/mo lost", recovered: "$6,300/mo recovered", plan: "Growth ($99)", net: "Net: +$6,201/mo" },
                 ].map((example) => (
                   <div key={example.mrr} className="bg-zinc-900/50 rounded-xl p-5 text-left">
                     <div className="text-brand-400 font-semibold text-sm mb-3">{example.mrr}</div>
                     <div className="space-y-1.5 text-xs text-zinc-400">
                       <div>❌ {example.lost}</div>
                       <div>✅ {example.recovered}</div>
-                      <div>💳 {example.cost}</div>
-                      <div className="text-green-400 font-semibold text-sm pt-2 border-t border-zinc-800">
-                        {example.net}
-                      </div>
+                      <div>📦 {example.plan}</div>
+                      <div className="text-green-400 font-semibold text-sm pt-2 border-t border-zinc-800">{example.net}</div>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-zinc-600 mt-4">Based on 9% involuntary churn rate and 70% recovery rate at the Growth tier (15%)</p>
+              <p className="text-xs text-zinc-600 mt-4">Based on 9% involuntary churn rate and 70% recovery rate</p>
             </div>
           </div>
 
-          {/* CTA */}
+          {/* Connect CTA */}
           <div className="mt-20 max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-3">Ready to start recovering revenue?</h2>
-            <p className="text-zinc-400 text-sm mb-6">Connect your Stripe account in 3 minutes. No credit card required.</p>
+            <h2 className="text-2xl font-bold mb-3">Ready to stop losing revenue?</h2>
+            <p className="text-zinc-400 text-sm mb-6">Connect your Stripe account and see exactly how much you&apos;ve lost — and how much we can recover.</p>
             <Link
-              href="/api/stripe/connect"
-              className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all hover:shadow-lg hover:shadow-brand-600/25"
+              href="/api/connect"
+              className="inline-flex items-center gap-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25"
             >
-              Connect Stripe — Get Started Free
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
+              </svg>
+              Connect Stripe — Start Free
             </Link>
-          </div>
-
-          {/* Comparison */}
-          <div className="mt-20 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-10">How we compare</h2>
-            <div className="glass rounded-2xl overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-800">
-                    <th className="text-left p-4 text-zinc-400 font-medium"></th>
-                    <th className="p-4 text-brand-400 font-semibold">Revive</th>
-                    <th className="p-4 text-zinc-400 font-medium">Churnkey</th>
-                    <th className="p-4 text-zinc-400 font-medium">Baremetrics</th>
-                  </tr>
-                </thead>
-                <tbody className="text-zinc-300">
-                  <tr className="border-b border-zinc-800/50">
-                    <td className="p-4 text-zinc-400">Starting price</td>
-                    <td className="p-4 text-center font-semibold text-green-400">Free</td>
-                    <td className="p-4 text-center">$500/mo</td>
-                    <td className="p-4 text-center">$58/mo</td>
-                  </tr>
-                  <tr className="border-b border-zinc-800/50">
-                    <td className="p-4 text-zinc-400">Pricing model</td>
-                    <td className="p-4 text-center font-semibold text-green-400">Pay per recovery</td>
-                    <td className="p-4 text-center">Flat fee</td>
-                    <td className="p-4 text-center">Flat fee</td>
-                  </tr>
-                  <tr className="border-b border-zinc-800/50">
-                    <td className="p-4 text-zinc-400">Smart retries</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
-                  </tr>
-                  <tr className="border-b border-zinc-800/50">
-                    <td className="p-4 text-zinc-400">Dunning emails</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">✅</td>
-                  </tr>
-                  <tr className="border-b border-zinc-800/50">
-                    <td className="p-4 text-zinc-400">Setup time</td>
-                    <td className="p-4 text-center font-semibold text-green-400">3 min</td>
-                    <td className="p-4 text-center">30 min</td>
-                    <td className="p-4 text-center">15 min</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 text-zinc-400">Risk</td>
-                    <td className="p-4 text-center font-semibold text-green-400">Zero</td>
-                    <td className="p-4 text-center">$6K/yr upfront</td>
-                    <td className="p-4 text-center">$696/yr upfront</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
 
           {/* FAQ Section */}
           <div className="mt-20 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-12">
-              Frequently asked questions
-            </h2>
+            <h2 className="text-2xl font-bold text-center mb-12">Frequently asked questions</h2>
             <div className="space-y-6">
               {[
                 {
-                  q: "How does performance-based pricing work?",
-                  a: "We only charge a percentage of the revenue we actually recover for you. If we recover $1,000 in failed payments, you keep $850 (Growth plan). If we recover nothing, you pay nothing. It's that simple.",
+                  q: "How does the Free tier work?",
+                  a: "The Free tier lets you recover up to $500/month in failed payments at no cost. This is perfect for startups and small SaaS companies. You get all core features — smart retries, dunning emails, and the real-time dashboard.",
                 },
                 {
-                  q: "What counts as \"recovered revenue\"?",
-                  a: "Any failed payment that Revive successfully retries or that a customer pays after receiving our dunning emails. We only count it once the money is in your Stripe account.",
+                  q: "What's included in the Growth plan?",
+                  a: "Growth ($99/mo) removes all limits. Recover unlimited failed payments with advanced AI optimization, custom dunning sequences, A/B testing for emails, and priority support. There's no percentage cut — you keep 100% of everything you recover.",
                 },
                 {
-                  q: "How do you collect your fee?",
-                  a: "We invoice you monthly based on recovered revenue. You'll see a clear breakdown in your dashboard showing every recovered payment and our fee. No surprises.",
-                },
-                {
-                  q: "Can I switch between plans?",
-                  a: "Yes! You can upgrade or downgrade at any time. As your recovered revenue grows past $10K/mo, you'll automatically qualify for the Scale rate (10%).",
+                  q: "Do you take a percentage of recovered revenue?",
+                  a: "No. Unlike competitors who take 15-25% of recovered revenue, Revive charges a flat monthly fee. On the Free tier, you pay nothing. On Growth, it's $99/mo flat. You keep 100% of what we recover for you.",
                 },
                 {
                   q: "Is my Stripe data safe?",
-                  a: "Absolutely. We use Stripe OAuth (Connect), so we never see your Stripe password. All data is encrypted in transit and at rest. We only access what's needed for payment recovery.",
-                },
-                {
-                  q: "How is this different from Stripe's built-in retries?",
-                  a: "Stripe's Smart Retries are basic — they recover about 10% of failed payments. Revive uses AI-powered retry timing based on decline codes, plus sends personalized dunning emails. Our customers see 40-70% recovery rates.",
+                  a: "Absolutely. We use Stripe OAuth (Connect), so we never see your Stripe password. All data is encrypted in transit and at rest. We're SOC 2 compliant and only access what's needed for payment recovery.",
                 },
               ].map((item) => (
-                <div
-                  key={item.q}
-                  className="glass rounded-xl p-6"
-                >
+                <div key={item.q} className="glass rounded-xl p-6">
                   <h3 className="font-medium mb-2">{item.q}</h3>
-                  <p className="text-sm text-zinc-400 leading-relaxed">
-                    {item.a}
-                  </p>
+                  <p className="text-sm text-zinc-400 leading-relaxed">{item.a}</p>
                 </div>
               ))}
             </div>

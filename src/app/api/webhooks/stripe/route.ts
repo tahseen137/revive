@@ -4,7 +4,8 @@ import {
   createFailedPayment,
   markPaymentRecovered,
   getPaymentByInvoiceId,
-  getAllPayments,
+  set,
+  get,
 } from "@/lib/db";
 import {
   calculateNextRetryTime,
@@ -22,20 +23,58 @@ function getStripe(): Stripe {
   });
 }
 
-// Helper to extract subscription ID from invoice (Clover API uses parent.subscription_details)
+interface SubscriptionRecord {
+  stripeSubscriptionId: string;
+  stripeCustomerId: string;
+  status: "active" | "trialing" | "past_due" | "canceled" | "unpaid";
+  plan: string;
+  currentPeriodStart: number;
+  currentPeriodEnd: number;
+  cancelAtPeriodEnd: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
 function getSubscriptionId(invoice: Stripe.Invoice): string | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const inv = invoice as any;
-  // Clover API: invoice.parent?.subscription_details?.subscription
   if (inv.parent?.subscription_details?.subscription) {
     const sub = inv.parent.subscription_details.subscription;
     return typeof sub === "string" ? sub : sub?.id;
   }
-  // Legacy fallback
   if (inv.subscription) {
     return typeof inv.subscription === "string" ? inv.subscription : inv.subscription?.id;
   }
   return undefined;
+}
+
+async function saveSubscription(subscription: Stripe.Subscription): Promise<void> {
+  const customerId = typeof subscription.customer === "string" 
+    ? subscription.customer 
+    : subscription.customer.id;
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sub = subscription as any;
+  
+  const record: SubscriptionRecord = {
+    stripeSubscriptionId: subscription.id,
+    stripeCustomerId: customerId,
+    status: subscription.status as SubscriptionRecord["status"],
+    plan: sub.items?.data?.[0]?.price?.metadata?.plan || subscription.metadata?.plan || "growth",
+    currentPeriodStart: (sub.current_period_start || Date.now() / 1000) * 1000,
+    currentPeriodEnd: (sub.current_period_end || Date.now() / 1000 + 30 * 24 * 60 * 60) * 1000,
+    cancelAtPeriodEnd: sub.cancel_at_period_end || false,
+    createdAt: (sub.created || Date.now() / 1000) * 1000,
+    updatedAt: Date.now(),
+  };
+
+  await set(`subscription:${subscription.id}`, record);
+  await set(`customer:${customerId}:subscription`, record);
+  console.log(`[Webhook] Saved subscription ${subscription.id} (status: ${subscription.status})`);
+}
+
+export async function getSubscriptionByCustomer(customerId: string): Promise<SubscriptionRecord | null> {
+  return get<SubscriptionRecord>(`customer:${customerId}:subscription`);
 }
 
 export async function POST(request: NextRequest) {
@@ -44,20 +83,14 @@ export async function POST(request: NextRequest) {
     const signature = request.headers.get("stripe-signature");
 
     if (!signature) {
-      return NextResponse.json(
-        { error: "Missing stripe-signature header" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing stripe-signature header" }, { status: 400 });
     }
 
     const stripe = getStripe();
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     
     if (!webhookSecret) {
-      return NextResponse.json(
-        { error: "STRIPE_WEBHOOK_SECRET is not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "STRIPE_WEBHOOK_SECRET is not configured" }, { status: 500 });
     }
 
     let event: Stripe.Event;
@@ -67,28 +100,22 @@ export async function POST(request: NextRequest) {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Invalid signature";
       console.error("Webhook signature verification failed:", message);
-      return NextResponse.json(
-        { error: `Webhook Error: ${message}` },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
     }
 
     console.log(`[Webhook] Received event: ${event.type} (${event.id})`);
 
     switch (event.type) {
-      // ============ CORE: Payment Failed ============
       case "invoice.payment_failed": {
         const invoice = event.data.object as Stripe.Invoice;
         console.log(`[Webhook] Payment failed for invoice: ${invoice.id}`);
 
-        // Idempotency: check if we already track this invoice
         const existingPayment = await getPaymentByInvoiceId(invoice.id);
         if (existingPayment) {
-          console.log(`[Webhook] Already tracking invoice ${invoice.id} (payment ${existingPayment.id}), skipping duplicate`);
+          console.log(`[Webhook] Already tracking invoice ${invoice.id}, skipping`);
           break;
         }
 
-        // Get customer details
         let customerEmail = "";
         let customerName = "";
         
@@ -109,13 +136,11 @@ export async function POST(request: NextRequest) {
           customerName = invoice.customer.name || invoice.customer.email || "";
         }
 
-        // Fallback to invoice-level email
         if (!customerEmail && invoice.customer_email) {
           customerEmail = invoice.customer_email;
           customerName = customerName || customerEmail;
         }
 
-        // Determine failure reason
         let failureCode = "card_declined";
         let failureReason = "Payment failed";
         
@@ -126,14 +151,10 @@ export async function POST(request: NextRequest) {
           failureReason = invoiceAny.last_finalization_error.message || "Payment failed";
         }
 
-        // Determine connected account
         const connectedAccountId = event.account || "direct";
-
-        // Determine retry strategy
         const skipRetries = shouldSkipRetries(failureCode);
         const maxRetries = getMaxRetries(failureCode);
 
-        // Build the payment record for next retry calculation
         const tempPayment = {
           id: "",
           stripeInvoiceId: invoice.id,
@@ -158,7 +179,6 @@ export async function POST(request: NextRequest) {
 
         const nextRetryAt = skipRetries ? null : calculateNextRetryTime(tempPayment);
 
-        // Store in database
         const payment = await createFailedPayment({
           stripeInvoiceId: invoice.id,
           stripeCustomerId: tempPayment.stripeCustomerId,
@@ -175,44 +195,28 @@ export async function POST(request: NextRequest) {
           status: skipRetries ? "expired_card" : "pending",
         });
 
-        console.log(`[Webhook] Created failed payment record: ${payment.id}`);
-        console.log(`[Webhook]   Customer: ${customerEmail}`);
-        console.log(`[Webhook]   Amount: ${invoice.amount_due} ${invoice.currency}`);
-        console.log(`[Webhook]   Failure: ${failureCode}`);
-        console.log(`[Webhook]   Strategy: ${skipRetries ? "dunning only" : `retry (max ${maxRetries})`}`);
-        console.log(`[Webhook]   Next retry: ${nextRetryAt ? new Date(nextRetryAt).toISOString() : "none"}`);
+        console.log(`[Webhook] Created failed payment: ${payment.id}`);
 
-        // Send initial dunning email for expired cards (no retries)
         if (skipRetries && customerEmail) {
           await sendDunningEmail(payment);
         }
-
         break;
       }
 
-      // ============ Payment Succeeded (recovery detection) ============
       case "invoice.payment_succeeded": {
         const invoice = event.data.object as Stripe.Invoice;
-        console.log(`[Webhook] Payment succeeded for invoice: ${invoice.id}`);
-
-        // Check if this was a previously failed payment we're tracking
-        // Use efficient index lookup instead of scanning all payments
         const matchingPayment = await getPaymentByInvoiceId(invoice.id);
 
         if (matchingPayment && matchingPayment.status !== "recovered") {
           console.log(`[Webhook] 🎉 Recovered payment: ${matchingPayment.id}`);
           await markPaymentRecovered(matchingPayment.id);
-          
-          // Send recovery confirmation email
           if (matchingPayment.customerEmail) {
             await sendRecoveryEmail(matchingPayment);
           }
         }
-
         break;
       }
 
-      // ============ Subscription Events ============
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
         console.log(`[Webhook] Checkout completed: ${session.id}`);
@@ -222,18 +226,21 @@ export async function POST(request: NextRequest) {
       case "customer.subscription.created": {
         const subscription = event.data.object as Stripe.Subscription;
         console.log(`[Webhook] Subscription created: ${subscription.id}`);
+        await saveSubscription(subscription);
         break;
       }
 
       case "customer.subscription.updated": {
         const subscription = event.data.object as Stripe.Subscription;
         console.log(`[Webhook] Subscription updated: ${subscription.id} → ${subscription.status}`);
+        await saveSubscription(subscription);
         break;
       }
 
       case "customer.subscription.deleted": {
         const subscription = event.data.object as Stripe.Subscription;
         console.log(`[Webhook] Subscription cancelled: ${subscription.id}`);
+        await saveSubscription(subscription);
         break;
       }
 
@@ -244,9 +251,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true });
   } catch (error: unknown) {
     console.error("[Webhook] Error:", error);
-    return NextResponse.json(
-      { error: "Webhook handler failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Webhook handler failed" }, { status: 500 });
   }
 }
