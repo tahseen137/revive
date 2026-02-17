@@ -71,9 +71,9 @@ const features = [
 ];
 
 const stats = [
-  { value: "$0", label: "Minimum Commitment" },
+  { value: "$0", label: "To Get Started" },
   { value: "5 min", label: "Setup Time" },
-  { value: "100%", label: "Stripe Compatible" },
+  { value: "$500", label: "Free Recovery/Mo" },
   { value: "24/7", label: "Automated Recovery" },
 ];
 
@@ -91,26 +91,29 @@ export default function Home() {
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="max-w-3xl mx-auto text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-500/20 bg-brand-500/5 text-brand-400 text-xs font-medium mb-8 animate-fade-in">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-pulse" />
-              Smart payment recovery for SaaS companies on Stripe
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-xs font-medium mb-8 animate-fade-in">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+              Now Live — Start Recovering Revenue Today
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-slide-up">
-              Recover failed payments{" "}
-              <span className="gradient-text">before customers churn</span>
+              Stop Losing Customers{" "}
+              <span className="gradient-text">You Already Paid to Acquire</span>
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up">
-              <strong className="text-zinc-300">Involuntary churn costs SaaS companies billions annually.</strong> Revive automatically recovers failed payments with smart retry logic and personalized recovery emails — <strong className="text-zinc-300">zero engineering required.</strong>
+              Revive catches churning customers, recovers failed payments, and wins back the ones who left — <strong className="text-zinc-300">automatically.</strong> Connect Stripe in 5 minutes. <strong className="text-zinc-300">Free until it&apos;s paying for itself.</strong>
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
               <Link
-                href="/api/stripe/connect"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25 text-lg"
+                href="/api/connect"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25 text-lg"
               >
-                Connect Stripe — Start Recovering
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
+                </svg>
+                Start Free — No Credit Card
                 <svg
                   width="16"
                   height="16"
@@ -126,11 +129,15 @@ export default function Home() {
               </Link>
               <Link
                 href="/dashboard"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-zinc-400 hover:text-white font-medium px-8 py-3.5 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-zinc-400 hover:text-white font-medium px-8 py-4 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all"
               >
                 View Demo Dashboard
               </Link>
             </div>
+            
+            <p className="text-sm text-zinc-500 mt-4 animate-slide-up">
+              Free forever on your first $500/mo recovered. No engineers required.
+            </p>
           </div>
 
           {/* Stats bar */}
@@ -298,7 +305,7 @@ export default function Home() {
               {
                 icon: "⚡",
                 title: "Zero Risk Pricing",
-                desc: "Pay nothing upfront. We only earn when we recover your money. If we don't recover, you don't pay.",
+                desc: "Free up to $500/mo recovered. After that, flat $99/mo for unlimited. No percentage cuts, ever.",
               },
               {
                 icon: "📧",
@@ -326,8 +333,8 @@ export default function Home() {
             {[
               {
                 value: "$0",
-                label: "Minimum Commitment",
-                sublabel: "Start free, scale when ready",
+                label: "Free Tier",
+                sublabel: "First $500/mo recovered free",
               },
               {
                 value: "5 min",
@@ -340,9 +347,9 @@ export default function Home() {
                 sublabel: "Works with any account",
               },
               {
-                value: "20%",
-                label: "Performance-Based",
-                sublabel: "Only pay on recovered revenue",
+                value: "$99",
+                label: "Growth Plan",
+                sublabel: "Unlimited recovery, flat rate",
               },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
@@ -394,7 +401,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Connect Stripe CTA */}
+      {/* CTA Section (replaces Waitlist) */}
       <section className="py-20 md:py-32 border-t border-white/5">
         <div className="mx-auto max-w-6xl px-6">
           <div className="glass rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
@@ -402,26 +409,40 @@ export default function Home() {
             <div className="relative">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-xs font-medium mb-6">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                Join 50+ SaaS founders recovering revenue
+                Live Now — Connect & Start Recovering
               </div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
                 See how much revenue you&apos;re losing
               </h2>
-              <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-8">
-                Connect your Stripe account in 3 minutes. We&apos;ll show you exactly how much failed payment revenue you can recover — <strong className="text-white">no credit card required.</strong>
+              <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-3">
+                Connect your Stripe account and we&apos;ll instantly show you how much you&apos;ve lost to failed payments in the last 30 days — <strong className="text-white">and how much we can recover.</strong>
+              </p>
+              <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
+                No credit card required. Free forever on your first $500/mo recovered.
               </p>
               <Link
-                href="/api/stripe/connect"
-                className="inline-flex items-center justify-center gap-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-10 py-4 rounded-xl text-lg transition-all hover:shadow-lg hover:shadow-brand-600/25"
+                href="/api/connect"
+                className="inline-flex items-center gap-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-10 py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25 text-lg"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-                  <path d="M9 12l2 2 4-4" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
                 </svg>
                 Connect Stripe — See Your Lost Revenue
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Link>
-              <p className="text-sm text-zinc-500 mt-4">
-                Free forever for first $500/month recovered. No credit card required.
+              <p className="text-xs text-zinc-600 mt-6">
+                🔒 Read-only access via Stripe OAuth. We never see your password.
               </p>
             </div>
           </div>
@@ -436,26 +457,26 @@ export default function Home() {
               Stop watching revenue disappear
             </h2>
             <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-3">
-              Every month you delay costs <strong className="text-white">$8,300 in lost MRR.</strong> Our customers recover an average of <strong className="text-white">$47,000 in year one</strong> — with zero manual work.
+              The average SaaS company loses <strong className="text-white">9% of MRR</strong> to involuntary churn. That&apos;s revenue from customers who <em>want</em> to pay you.
             </p>
             <p className="text-zinc-500 text-sm max-w-xl mx-auto mb-8">
-              3-minute setup. 14-day free trial. No credit card required.
+              5-minute setup. Free up to $500/mo. No credit card required.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/pricing"
+                href="/api/connect"
                 className="inline-flex items-center gap-2 bg-white text-zinc-900 font-semibold px-8 py-4 rounded-xl hover:bg-zinc-100 transition-all hover:shadow-lg hover:shadow-white/10"
               >
-                View Pricing
+                Start Free Now
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
               <Link
-                href="/dashboard"
+                href="/pricing"
                 className="inline-flex items-center gap-2 text-zinc-400 hover:text-white font-medium px-8 py-4 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all"
               >
-                Try Demo Dashboard
+                View Pricing
               </Link>
             </div>
           </div>
