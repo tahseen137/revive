@@ -31,7 +31,7 @@ const changelogEntries: ChangelogEntry[] = [
       "Smart retry engine with ML-powered timing optimization",
       "Dunning email system with behavioral triggers",
       "Stripe webhook integration for real-time payment monitoring",
-      "Performance-based pricing (20% of recovered revenue)",
+      "Simple flat-rate pricing — no percentage cuts, ever",
       "Real-time analytics dashboard",
       "Interactive onboarding wizard",
       "Complete API documentation",

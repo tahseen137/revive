@@ -19,7 +19,8 @@ const PUBLIC_ROUTES = [
   '/api/health',
   '/api/acp', // ACP has its own CORS handling
   
-  // Stripe Connect flow
+  // Stripe Connect flow (main entry point + callback)
+  '/api/connect',
   '/api/stripe/connect',
   '/api/stripe/callback',
   

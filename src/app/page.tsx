@@ -128,7 +128,7 @@ export default function Home() {
                 </svg>
               </Link>
               <Link
-                href="/dashboard"
+                href="/demo"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-zinc-400 hover:text-white font-medium px-8 py-4 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all"
               >
                 View Demo Dashboard
