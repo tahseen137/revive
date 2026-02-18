@@ -5,10 +5,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateCardUpdateToken } from "@/lib/auth";
 import { getFailedPayment } from "@/lib/db";
+import { checkRateLimit, getClientIp, updateCardRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip = getClientIp(request);
+  const rateLimitError = await checkRateLimit(updateCardRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   try {
     const body = await request.json();
     const { token } = body;

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { Redis } from "@upstash/redis";
 import { waitlistRateLimit, checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { sanitizeEmail } from "@/lib/sanitize";
 
 // Initialize Resend if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -76,9 +77,9 @@ async function sendNotification(email: string, source: string) {
           <p><strong>Timestamp:</strong> ${new Date(timestamp).toLocaleString()}</p>
         `,
       });
-      console.log(`Email notification sent for ${email}`);
+      console.log(`[Waitlist] Email notification sent for ${sanitizeEmail(email)}`);
     } catch (error) {
-      console.error("Error sending email notification:", error);
+      console.error("[Waitlist] Error sending email notification:", error);
     }
   }
   
@@ -89,10 +90,10 @@ async function sendNotification(email: string, source: string) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          content: `🎉 **New Revive Waitlist Signup**\n📧 Email: ${email}\n📍 Source: ${source}\n⏰ Time: ${new Date(timestamp).toLocaleString()}`,
+          content: `🎉 **New Revive Waitlist Signup**\n📧 Email: ${sanitizeEmail(email)}\n📍 Source: ${source}\n⏰ Time: ${new Date(timestamp).toLocaleString()}`,
         }),
       });
-      console.log(`Webhook notification sent for ${email}`);
+      console.log(`[Waitlist] Webhook notification sent for ${sanitizeEmail(email)}`);
     } catch (error) {
       console.error("Error sending webhook notification:", error);
     }

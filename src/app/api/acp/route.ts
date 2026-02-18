@@ -11,20 +11,33 @@ function getStripe(): Stripe {
   })
 }
 
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://revive-hq.com',
+  'https://www.revive-hq.com',
+  'https://revive.vercel.app',
+];
+
 // CORS headers for AI agent access
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+function getCorsHeaders(origin: string | null): Record<string, string> {
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin || '') ? origin! : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
 }
 
 // Handle CORS preflight
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: corsHeaders })
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return NextResponse.json({}, { headers: getCorsHeaders(origin) });
 }
 
 // GET /api/acp - Return product catalog
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  const corsHeaders = getCorsHeaders(origin);
   const catalog = {
     acp_version: '2026-01-30',
     name: 'Revive',
@@ -77,6 +90,9 @@ export async function GET() {
 
 // POST /api/acp - Create checkout session for AI agents
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  const corsHeaders = getCorsHeaders(origin);
+  
   try {
     const body = await request.json()
     const { plan_id, buyer_email, agent_id } = body

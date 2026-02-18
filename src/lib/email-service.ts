@@ -13,6 +13,7 @@ import { FailedPayment, updateFailedPayment, EmailRecord } from "./db";
 import { getEmailTemplate } from "./email-templates";
 import { getDunningEmailType } from "./retry-engine";
 import { generateCardUpdateToken } from "./auth";
+import { sanitizeEmail } from "./sanitize";
 
 interface SendEmailParams {
   to: string;
@@ -63,9 +64,9 @@ async function sendEmail(params: SendEmailParams): Promise<SendResult> {
     return sendViaResend(params);
   }
 
-  // Fallback: log to console
+  // Fallback: log to console (sanitize email)
   console.log("📧 [EMAIL - DEV MODE] Would send email:");
-  console.log(`   To: ${params.to}`);
+  console.log(`   To: ${sanitizeEmail(params.to)}`);
   console.log(`   From: ${params.from}`);
   console.log(`   Subject: ${params.subject}`);
   console.log(`   Body length: ${params.html.length} chars`);
@@ -142,7 +143,7 @@ export async function sendDunningEmail(
     return { type: emailType, messageId: result.messageId };
   }
 
-  console.error(`Failed to send ${emailType} email to ${payment.customerEmail}:`, result.error);
+  console.error(`[Email] Failed to send ${emailType} email to ${sanitizeEmail(payment.customerEmail)}:`, result.error);
   return null;
 }
 

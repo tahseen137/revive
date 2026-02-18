@@ -4,10 +4,12 @@
  * Supports:
  * - Bearer token auth via API_SECRET_KEY (for API endpoints)
  * - Constant-time comparison to prevent timing attacks
+ * - Card update token generation and validation with one-time use
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { get, set } from "@/lib/db";
 
 /**
  * Constant-time string comparison to prevent timing attacks.
@@ -183,4 +185,24 @@ export function validateCardUpdateToken(token: string): { paymentId: string; cus
   } catch {
     return null;
   }
+}
+
+/**
+ * Check if a card update token has already been used.
+ * Returns true if token was previously invalidated.
+ */
+export async function isTokenUsed(token: string): Promise<boolean> {
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+  const used = await get<number>(`token_used:${tokenHash}`);
+  return used !== null;
+}
+
+/**
+ * Invalidate a card update token after successful use.
+ * Stores the token hash with a 7-day TTL matching token expiry.
+ */
+export async function invalidateCardUpdateToken(token: string): Promise<void> {
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+  // Store with timestamp - TTL handled by Redis if configured
+  await set(`token_used:${tokenHash}`, Date.now());
 }

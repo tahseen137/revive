@@ -3,14 +3,20 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { validateCardUpdateToken } from "@/lib/auth";
+import { validateCardUpdateToken, invalidateCardUpdateToken, isTokenUsed } from "@/lib/auth";
 import { getFailedPayment, markPaymentRecovered, updateFailedPayment } from "@/lib/db";
 import Stripe from "stripe";
 import { sendRecoveryEmail } from "@/lib/email-service";
+import { checkRateLimit, getClientIp, updateCardRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip = getClientIp(request);
+  const rateLimitError = await checkRateLimit(updateCardRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   try {
     const body = await request.json();
     const { token, paymentMethodId } = body;
@@ -19,6 +25,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
+      );
+    }
+
+    // Check if token was already used
+    const tokenUsed = await isTokenUsed(token);
+    if (tokenUsed) {
+      return NextResponse.json(
+        { error: "This link has already been used" },
+        { status: 403 }
       );
     }
 
@@ -86,6 +101,9 @@ export async function POST(request: NextRequest) {
           // Mark as recovered
           await markPaymentRecovered(payment.id);
           
+          // Invalidate the token so it can't be reused
+          await invalidateCardUpdateToken(token);
+          
           // Send recovery confirmation email
           await sendRecoveryEmail(payment, "Revive"); // TODO: Get business name from connected account
           
@@ -101,6 +119,9 @@ export async function POST(request: NextRequest) {
       await updateFailedPayment(payment.id, {
         status: "retrying",
       });
+      
+      // Invalidate the token so it can't be reused
+      await invalidateCardUpdateToken(token);
 
       return NextResponse.json({
         success: true,

@@ -5,8 +5,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { checkRateLimit, getClientIp, loginRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
+  // Rate limiting - stricter for login (5 per 5 minutes)
+  const ip = getClientIp(request);
+  const rateLimitError = await checkRateLimit(loginRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   try {
     const body = await request.json();
     const { apiKey } = body;

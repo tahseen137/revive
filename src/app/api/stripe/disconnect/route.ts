@@ -14,6 +14,7 @@ import {
   hasActiveConnection,
   removeConnectedAccount,
 } from "@/lib/connected-accounts";
+import { requireAuth } from "@/lib/auth";
 
 function getStripe(): Stripe {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -25,6 +26,10 @@ function getStripe(): Stripe {
 }
 
 export async function POST(request: NextRequest) {
+  // Require authentication
+  const authError = requireAuth(request);
+  if (authError) return authError;
+
   try {
     let targetAccountId: string | undefined;
 

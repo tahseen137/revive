@@ -1,8 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { checkRateLimit, getClientIp, feedbackRateLimit } from "@/lib/rate-limit";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip = getClientIp(request);
+  const rateLimitError = await checkRateLimit(feedbackRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   try {
     const body = await request.json();
     const { feedback, email } = body;

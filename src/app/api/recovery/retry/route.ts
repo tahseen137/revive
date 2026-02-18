@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllPayments, updateFailedPayment } from "@/lib/db";
 import { calculateNextRetryTime } from "@/lib/retry-engine";
 import { requireAuth } from "@/lib/auth";
+import { checkRateLimit, getClientIp, recoveryRetryRateLimit } from "@/lib/rate-limit";
 import Stripe from "stripe";
 
 function getStripe(): Stripe {
@@ -21,6 +22,11 @@ function getStripe(): Stripe {
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip = getClientIp(request);
+  const rateLimitError = await checkRateLimit(recoveryRetryRateLimit, ip);
+  if (rateLimitError) return rateLimitError;
+
   // Require authentication
   const authError = requireAuth(request);
   if (authError) return authError;

@@ -13,6 +13,7 @@ import {
   shouldSkipRetries,
 } from "@/lib/retry-engine";
 import { sendDunningEmail, sendRecoveryEmail } from "@/lib/email-service";
+import { sanitizeEmail, sanitizeCustomerId } from "@/lib/sanitize";
 
 function getStripe(): Stripe {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -88,19 +89,37 @@ export async function POST(request: NextRequest) {
 
     const stripe = getStripe();
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    const connectWebhookSecret = process.env.STRIPE_CONNECT_WEBHOOK_SECRET;
     
-    if (!webhookSecret) {
-      return NextResponse.json({ error: "STRIPE_WEBHOOK_SECRET is not configured" }, { status: 500 });
+    if (!webhookSecret && !connectWebhookSecret) {
+      console.error("[Webhook] No webhook secrets configured");
+      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
     }
 
     let event: Stripe.Event;
 
+    // Try primary webhook secret first, then Connect webhook secret
     try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Invalid signature";
-      console.error("Webhook signature verification failed:", message);
-      return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
+      if (webhookSecret) {
+        event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+      } else {
+        throw new Error("No primary secret");
+      }
+    } catch (primaryErr: unknown) {
+      // Try Connect webhook secret as fallback
+      if (connectWebhookSecret) {
+        try {
+          event = stripe.webhooks.constructEvent(body, signature, connectWebhookSecret);
+        } catch (connectErr: unknown) {
+          const message = connectErr instanceof Error ? connectErr.message : "Invalid signature";
+          console.error("[Webhook] Signature verification failed for both secrets");
+          return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+        }
+      } else {
+        const message = primaryErr instanceof Error ? primaryErr.message : "Invalid signature";
+        console.error("[Webhook] Signature verification failed:", message);
+        return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+      }
     }
 
     console.log(`[Webhook] Received event: ${event.type} (${event.id})`);

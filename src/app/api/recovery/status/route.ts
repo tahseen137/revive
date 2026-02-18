@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { getAllPayments } from "@/lib/db";
+import { getAllPayments, getPaymentsByAccount } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +16,22 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const invoiceId = searchParams.get("invoiceId");
   const customerId = searchParams.get("customerId");
+  const accountId = searchParams.get("accountId");
+
+  // Require accountId for tenant isolation when querying by customerId
+  if (customerId && !accountId) {
+    return NextResponse.json(
+      { 
+        error: {
+          type: "invalid_request_error",
+          message: "accountId is required when querying by customerId",
+          param: "accountId",
+          code: "missing_parameter"
+        }
+      },
+      { status: 400 }
+    );
+  }
 
   if (!invoiceId && !customerId) {
     return NextResponse.json(
@@ -32,7 +48,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const payments = await getAllPayments();
+    // Use account-filtered query when accountId is provided
+    const payments = accountId 
+      ? await getPaymentsByAccount(accountId)
+      : await getAllPayments();
 
     // Find matching payment(s)
     let matchingPayments = payments;

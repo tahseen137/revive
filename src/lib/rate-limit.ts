@@ -38,6 +38,42 @@ export const checkoutRateLimit = redis
     })
   : null;
 
+// Card update: 5 requests per minute per IP
+export const updateCardRateLimit = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, "60 s"),
+      prefix: "ratelimit:update-card",
+    })
+  : null;
+
+// Recovery retry: 10 requests per minute per IP
+export const recoveryRetryRateLimit = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(10, "60 s"),
+      prefix: "ratelimit:recovery-retry",
+    })
+  : null;
+
+// Login: 5 requests per 5 minutes per IP (stricter for security)
+export const loginRateLimit = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, "300 s"),
+      prefix: "ratelimit:login",
+    })
+  : null;
+
+// Feedback: 5 requests per minute per IP
+export const feedbackRateLimit = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, "60 s"),
+      prefix: "ratelimit:feedback",
+    })
+  : null;
+
 /**
  * Get client IP from request
  */

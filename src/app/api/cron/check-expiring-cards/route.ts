@@ -15,6 +15,7 @@ import { getAllConnectedAccounts, get, set } from "@/lib/db";
 import Stripe from "stripe";
 import { Resend } from "resend";
 import { generateCardUpdateToken } from "@/lib/auth";
+import { sanitizeEmail, sanitizeCustomerId } from "@/lib/sanitize";
 
 export const maxDuration = 60;
 
@@ -102,7 +103,7 @@ export async function GET(request: NextRequest) {
 
                 // Skip if notified within last 7 days
                 if (existingNotification && (Date.now() - existingNotification.notifiedAt) < 7 * 24 * 60 * 60 * 1000) {
-                  console.log(`[Pre-Dunning] Already notified ${customer.email} about card expiring ${card.exp_month}/${card.exp_year}`);
+                  console.log(`[Pre-Dunning] Already notified ${sanitizeEmail(customer.email)} about card expiring ${card.exp_month}/${card.exp_year}`);
                   continue;
                 }
 
@@ -178,7 +179,7 @@ async function sendExpiringCardEmail(data: {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || apiKey.includes("placeholder")) {
     console.log("📧 [EMAIL - DEV MODE] Would send expiring card email:");
-    console.log(`   To: ${data.customerEmail}`);
+    console.log(`   To: ${sanitizeEmail(data.customerEmail)}`);
     console.log(`   Card: •••• ${data.cardLast4} expiring ${data.expiryMonth}/${data.expiryYear}`);
     return true; // Success in dev mode
   }
@@ -217,11 +218,11 @@ async function sendExpiringCardEmail(data: {
     });
 
     if (error) {
-      console.error(`[Pre-Dunning] Email error for ${data.customerEmail}:`, error);
+      console.error(`[Pre-Dunning] Email error for ${sanitizeEmail(data.customerEmail)}:`, error);
       return false;
     }
 
-    console.log(`[Pre-Dunning] ✅ Sent expiring card email to ${data.customerEmail}`);
+    console.log(`[Pre-Dunning] ✅ Sent expiring card email to ${sanitizeEmail(data.customerEmail)}`);
     return true;
   } catch (err: unknown) {
     console.error("[Pre-Dunning] Email send error:", err);
