@@ -277,7 +277,7 @@ export default function PricingPage() {
                 },
                 {
                   q: "Is my Stripe data safe?",
-                  a: "Absolutely. We use Stripe OAuth (Connect), so we never see your Stripe password. All data is encrypted in transit and at rest. We're SOC 2 compliant and only access what's needed for payment recovery.",
+                  a: "Absolutely. We use Stripe OAuth (Connect), so we never see your Stripe password. All data is encrypted in transit and at rest with 256-bit encryption. We only access what's needed for payment recovery.",
                 },
               ].map((item) => (
                 <div key={item.q} className="glass rounded-xl p-6">
