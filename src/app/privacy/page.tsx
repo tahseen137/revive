@@ -107,7 +107,7 @@ export default function PrivacyPage() {
                 We implement industry-standard security measures including
                 encryption at rest and in transit (TLS 1.3), secure OAuth token
                 storage, regular security audits, and access controls. Our
-                infrastructure is hosted on SOC 2 compliant providers.
+                infrastructure uses enterprise-grade encryption and security best practices.
               </p>
             </section>
 

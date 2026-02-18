@@ -435,7 +435,7 @@ export default function ForStripeSaaSPage() {
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
                 <span className="text-sm font-medium text-zinc-300">
-                  Bank-grade security. SOC 2 compliant. Your Stripe credentials are encrypted at rest and in transit.
+                  Bank-grade security. 256-bit encryption for all data. Your Stripe credentials are encrypted at rest and in transit.
                 </span>
               </div>
             </div>
@@ -544,7 +544,7 @@ export default function ForStripeSaaSPage() {
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                     <polyline points="22 4 12 14.01 9 11.01" />
                   </svg>
-                  SOC 2 compliant
+                  256-bit encrypted
                 </div>
                 <div className="flex items-center gap-2">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

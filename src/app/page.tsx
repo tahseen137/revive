@@ -66,7 +66,7 @@ const features = [
     ),
     title: "Bank-Grade Security",
     description:
-      "SOC 2 compliant infrastructure. Your Stripe credentials are encrypted at rest and in transit. We never store card data.",
+      "Enterprise-grade encryption. Your Stripe credentials are encrypted at rest and in transit. We never store card data — all payments flow through Stripe's secure API.",
   },
 ];
 
@@ -245,7 +245,7 @@ export default function Home() {
                     <path d="M9 12l2 2 4-4" />
                   </svg>
                 ),
-                label: "SOC 2 Compliant",
+                label: "256-bit Encryption",
               },
               {
                 icon: (

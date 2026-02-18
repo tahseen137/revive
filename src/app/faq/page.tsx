@@ -100,7 +100,7 @@ export default function FAQPage() {
         {
           question: "Is my data secure?",
           answer:
-            "Absolutely. We're SOC 2 compliant with bank-grade encryption. Your Stripe credentials are encrypted at rest and in transit using 256-bit SSL. We never store card data — only payment metadata needed for recovery. All retries happen directly through Stripe's secure API.",
+            "Absolutely. We use bank-grade 256-bit encryption for all data at rest and in transit. We never store card data — only payment metadata needed for recovery. Your Stripe credentials are securely encrypted, and all retries happen directly through Stripe's secure API.",
         },
       ],
     },

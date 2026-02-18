@@ -267,7 +267,7 @@ export default function ConnectStripe({ onNext, onBack }: ConnectStripeProps) {
         <div className="space-y-3 text-sm text-zinc-400">
           {[
             "✓ OAuth 2.0 authentication (no API keys to manage)",
-            "✓ SOC 2 compliant infrastructure",
+            "✓ Enterprise-grade encrypted infrastructure",
             "✓ End-to-end encryption for all data",
             "✓ We never store or see card numbers",
             "✓ Disconnect anytime from your Stripe dashboard",
