@@ -254,7 +254,7 @@ export default function Home() {
                     <line x1="1" y1="10" x2="23" y2="10" />
                   </svg>
                 ),
-                label: "Stripe Verified Partner",
+                label: "Powered by Stripe",
               },
               {
                 icon: (
