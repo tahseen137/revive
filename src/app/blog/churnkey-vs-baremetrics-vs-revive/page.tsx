@@ -4,23 +4,25 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Churnkey vs Baremetrics vs Revive: Best Failed Payment Recovery Tools in 2026",
+  title: "ChurnKey vs Baremetrics vs Revive: Which Churn Tool Fits Your Budget in 2026?",
   description:
-    "Compare the top failed payment recovery tools for SaaS. Churnkey vs Baremetrics Recover vs Revive — features, pricing, pros/cons, and which is best for your business.",
+    "Honest comparison of ChurnKey ($250+), Baremetrics ($204), and Revive ($49). Pricing, features, and what indie founders actually need.",
   keywords: [
+    "churnkey vs baremetrics",
     "churnkey alternative",
     "baremetrics alternative",
+    "churn tool comparison 2026",
+    "best churn tool indie saas",
     "failed payment recovery tool",
-    "dunning software",
-    "payment recovery comparison",
-    "stripe failed payment",
-    "involuntary churn tool",
-    "churnkey vs baremetrics",
+    "dunning software comparison",
+    "win-back campaigns saas",
+    "lemon squeezy churn tool",
+    "churn recovery tool pricing",
   ],
   openGraph: {
-    title: "Churnkey vs Baremetrics vs Revive: Best Failed Payment Recovery Tools",
+    title: "ChurnKey vs Baremetrics vs Revive: Which Churn Tool Fits Your Budget in 2026?",
     description:
-      "Compare the top failed payment recovery tools. Find the best dunning software for your SaaS in 2026.",
+      "Honest comparison of ChurnKey ($250+), Baremetrics ($204), and Revive ($49). Real pricing, real features, no fluff.",
   },
 };
 
@@ -37,433 +39,382 @@ export default function BlogPost() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-medium">
                 Tool Comparison
               </div>
-              <span className="text-sm text-zinc-500">February 5, 2026</span>
+              <span className="text-sm text-zinc-500">February 22, 2026</span>
               <span className="text-zinc-600">·</span>
-              <span className="text-sm text-zinc-500">10 min read</span>
+              <span className="text-sm text-zinc-500">8 min read</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">
-              Churnkey vs Baremetrics vs Revive: Best Failed Payment Recovery Tools in 2026
+              ChurnKey vs Baremetrics vs Revive: Which Churn Tool Actually Fits Your Budget in 2026?
             </h1>
 
             <p className="text-xl text-zinc-400 leading-relaxed">
-              Failed payments cost SaaS companies 9% of MRR on average. Here's
-              how Churnkey, Baremetrics Recover, and Revive stack up for
-              recovering lost revenue in 2026.
+              Honest comparison of three churn recovery tools — real pricing, real tradeoffs, and
+              which one actually makes sense for indie SaaS founders at $2K–$30K MRR.
             </p>
           </div>
 
           {/* Content */}
           <div className="prose prose-invert prose-zinc max-w-none">
             <div className="text-zinc-300 space-y-6 leading-relaxed">
+
+              {/* Intro */}
+              <p>
+                You&apos;re a SaaS founder at $5K–$20K MRR. Customers are churning. You Google
+                &quot;churn tool&quot; and find… $250/mo minimums. Ouch.
+              </p>
+
+              <p>
+                The enterprise churn space is packed — ChurnZero, Vitally, Gainsight — but those
+                require a dedicated customer success team and $500+/mo just to get started. That&apos;s
+                not this article. We&apos;re comparing the three tools indie SaaS founders actually
+                consider: <strong className="text-white">ChurnKey</strong>,{" "}
+                <strong className="text-white">Baremetrics (Metrics + Recover)</strong>, and{" "}
+                <strong className="text-white">Revive</strong>.
+              </p>
+
+              <p>
+                Full disclosure: we built Revive, so yes, we&apos;re biased. But the pricing below is
+                public and verifiable — check each tool&apos;s pricing page yourself.
+              </p>
+
+              {/* Section 1: Pricing */}
               <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Why Payment Recovery Matters
+                Section 1: The Pricing Reality Check
               </h2>
 
               <p>
-                If you're running a SaaS business, <strong className="text-white">involuntary churn</strong> is silently bleeding your revenue. The average company loses <strong className="text-white">9% of monthly recurring revenue (MRR)</strong> to failed payments — customers who <em>want</em> to stay subscribed but can't because of expired cards, insufficient funds, or bank declines.
-              </p>
-
-              <p>
-                For a $50K/month business, that's <strong className="text-white">$4,500 lost every month</strong>. Over a year, you're leaving $54,000 on the table.
-              </p>
-
-              <div className="glass rounded-xl p-6 my-8 border-l-4 border-brand-500">
-                <p className="text-sm text-zinc-400 mb-2 font-medium uppercase tracking-wide">The Problem</p>
-                <p className="text-lg font-semibold text-white mb-2">
-                  Stripe's default retry logic only recovers ~30% of failed payments.
-                </p>
-                <p className="text-sm text-zinc-400 mb-0">
-                  To recover the other 70%, you need smart retries (based on decline codes), dunning emails, and real-time monitoring. That's where payment recovery tools come in.
-                </p>
-              </div>
-
-              <p>
-                In this guide, we'll compare the three leading failed payment recovery tools — <strong className="text-white">Churnkey</strong>, <strong className="text-white">Baremetrics Recover</strong>, and <strong className="text-white">Revive</strong> — to help you choose the best fit for your SaaS.
-              </p>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Churnkey: The Enterprise Solution
-              </h2>
-
-              <p>
-                <Link href="https://churnkey.co" className="text-brand-400 hover:text-brand-300">Churnkey</Link> is a comprehensive retention platform that goes beyond payment recovery — it includes cancellation flows, pause options, and customer surveys.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Key Features
-              </h3>
-
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Failed payment recovery</strong> with smart retries and dunning emails</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Cancellation flows</strong> with deflection offers (discounts, pauses, downgrades)</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Customer segmentation</strong> for personalized retention strategies</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Analytics dashboard</strong> with churn insights and cohort analysis</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Integrations</strong> with Stripe, Braintree, Chargebee, and more</li>
-              </ul>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Pricing
-              </h3>
-
-              <p>
-                Churnkey's pricing is <strong className="text-white">not publicly listed</strong>, but based on reports from users, it typically starts at:
-              </p>
-
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">$500-$1,000/month</strong> base fee</li>
-                <li className="text-zinc-400">💰 Often requires <strong className="text-zinc-300">annual contracts</strong></li>
-                <li className="text-zinc-400">💰 Custom pricing for larger teams</li>
-              </ul>
-
-              <p>
-                This makes Churnkey <strong className="text-white">best suited for mid-to-large SaaS companies</strong> with significant churn budgets.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Pros & Cons
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="glass rounded-xl p-6">
-                  <p className="text-sm text-green-400 mb-3 font-medium uppercase tracking-wide">Pros</p>
-                  <ul className="space-y-2 text-sm text-zinc-300">
-                    <li>✅ Comprehensive retention suite (not just payment recovery)</li>
-                    <li>✅ Advanced customization options</li>
-                    <li>✅ Strong analytics and reporting</li>
-                    <li>✅ White-glove onboarding and support</li>
-                  </ul>
-                </div>
-                <div className="glass rounded-xl p-6">
-                  <p className="text-sm text-red-400 mb-3 font-medium uppercase tracking-wide">Cons</p>
-                  <ul className="space-y-2 text-sm text-zinc-300">
-                    <li>❌ High monthly cost ($500-$1K+)</li>
-                    <li>❌ Overkill if you only need payment recovery</li>
-                    <li>❌ Annual contracts may be required</li>
-                    <li>❌ Steeper learning curve</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="glass rounded-xl p-6 my-8 border-l-4 border-yellow-500">
-                <p className="text-sm text-zinc-400 mb-2 font-medium uppercase tracking-wide">Best For</p>
-                <p className="text-zinc-300 mb-0">
-                  <strong className="text-white">Enterprise SaaS companies ($500K+ ARR)</strong> that need a full retention platform — cancellation flows, surveys, and advanced analytics — not just failed payment recovery.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Baremetrics Recover: The Analytics-First Option
-              </h2>
-
-              <p>
-                <Link href="https://baremetrics.com/recover" className="text-brand-400 hover:text-brand-300">Baremetrics Recover</Link> is part of the larger Baremetrics subscription analytics platform. It adds failed payment recovery to their core metrics and forecasting tools.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Key Features
-              </h3>
-
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Automated dunning emails</strong> sent when payments fail</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">In-app card update forms</strong> with Stripe integration</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Recovery dashboard</strong> showing recovered MRR and email performance</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Built-in subscription metrics</strong> (MRR, churn rate, LTV, etc.)</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Benchmarking</strong> against similar SaaS companies</li>
-              </ul>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Pricing
-              </h3>
-
-              <p>
-                Baremetrics uses <strong className="text-white">tiered pricing based on MRR</strong>:
-              </p>
-
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">$58/month</strong> for up to $10K MRR</li>
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">$108/month</strong> for up to $25K MRR</li>
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">$258/month</strong> for up to $100K MRR</li>
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">Custom pricing</strong> for larger businesses</li>
-              </ul>
-
-              <p>
-                <strong className="text-white">Important:</strong> You're paying for the entire Baremetrics platform, not just Recover. If you don't need analytics, forecasting, and cohort reports, you're paying for features you won't use.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Pros & Cons
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="glass rounded-xl p-6">
-                  <p className="text-sm text-green-400 mb-3 font-medium uppercase tracking-wide">Pros</p>
-                  <ul className="space-y-2 text-sm text-zinc-300">
-                    <li>✅ Great if you already use Baremetrics for analytics</li>
-                    <li>✅ Reasonable pricing for small-mid SaaS</li>
-                    <li>✅ Clean, easy-to-use interface</li>
-                    <li>✅ Reliable email delivery</li>
-                  </ul>
-                </div>
-                <div className="glass rounded-xl p-6">
-                  <p className="text-sm text-red-400 mb-3 font-medium uppercase tracking-wide">Cons</p>
-                  <ul className="space-y-2 text-sm text-zinc-300">
-                    <li>❌ No smart retry logic (relies on Stripe's default retries)</li>
-                    <li>❌ Limited customization options</li>
-                    <li>❌ You must pay for full Baremetrics subscription</li>
-                    <li>❌ Recovery rates ~50-60% (lower than best-in-class)</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="glass rounded-xl p-6 my-8 border-l-4 border-yellow-500">
-                <p className="text-sm text-zinc-400 mb-2 font-medium uppercase tracking-wide">Best For</p>
-                <p className="text-zinc-300 mb-0">
-                  <strong className="text-white">SaaS founders who already use (or want) Baremetrics for analytics</strong> and need basic dunning email automation. Not ideal if you only need payment recovery.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Revive: The Performance-Based Solution
-              </h2>
-
-              <p>
-                <Link href="/" className="text-brand-400 hover:text-brand-300">Revive</Link> is a lightweight, purpose-built tool for failed payment recovery. Unlike Churnkey and Baremetrics, it focuses on <strong className="text-white">one thing only</strong>: recovering failed Stripe payments with smart retries and dunning emails.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Key Features
-              </h3>
-
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Smart retry logic</strong> based on decline codes (expired card, insufficient funds, etc.)</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Automated dunning emails</strong> with direct card update links</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Real-time recovery dashboard</strong> showing MRR saved, recovery rate, and failure breakdown</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">One-click Stripe integration</strong> (setup in 3 minutes)</li>
-                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Customizable email templates</strong> with your branding</li>
-              </ul>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Pricing
-              </h3>
-
-              <p>
-                Revive uses <strong className="text-white">performance-based pricing</strong> — you only pay when revenue is recovered:
-              </p>
-
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">Free tier:</strong> $0/month for up to $500 recovered MRR</li>
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">15% fee</strong> on recovered revenue up to $10K/month</li>
-                <li className="text-zinc-400">💰 <strong className="text-zinc-300">10% fee</strong> on recovered revenue above $10K/month</li>
-              </ul>
-
-              <p>
-                <strong className="text-white">Example:</strong> If Revive recovers $5,000 in failed payments this month, you pay $750 (15%). If you recover nothing, you pay nothing.
-              </p>
-
-              <div className="glass rounded-xl p-6 my-8 border-l-4 border-brand-500">
-                <p className="text-sm text-zinc-400 mb-2 font-medium uppercase tracking-wide">Zero-Risk Pricing</p>
-                <p className="text-lg font-semibold text-white mb-2">
-                  No upfront costs. No monthly fees. Only pay when we recover your revenue.
-                </p>
-                <p className="text-sm text-zinc-400 mb-0">
-                  This makes Revive the <strong className="text-white">lowest-risk option</strong> for bootstrapped and early-stage SaaS — you can't lose money.
-                </p>
-              </div>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Pros & Cons
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="glass rounded-xl p-6">
-                  <p className="text-sm text-green-400 mb-3 font-medium uppercase tracking-wide">Pros</p>
-                  <ul className="space-y-2 text-sm text-zinc-300">
-                    <li>✅ Zero risk pricing (only pay on recovered revenue)</li>
-                    <li>✅ Smart retry logic optimized by decline code</li>
-                    <li>✅ 3-minute setup (literally)</li>
-                    <li>✅ Designed for maximum recovery rates</li>
-                    <li>✅ Free tier for small businesses</li>
-                  </ul>
-                </div>
-                <div className="glass rounded-xl p-6">
-                  <p className="text-sm text-red-400 mb-3 font-medium uppercase tracking-wide">Cons</p>
-                  <ul className="space-y-2 text-sm text-zinc-300">
-                    <li>❌ Stripe-only (no support for Braintree, Chargebee, etc.)</li>
-                    <li>❌ No cancellation flows or retention surveys</li>
-                    <li>❌ Newer product (less established than Churnkey or Baremetrics)</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="glass rounded-xl p-6 my-8 border-l-4 border-yellow-500">
-                <p className="text-sm text-zinc-400 mb-2 font-medium uppercase tracking-wide">Best For</p>
-                <p className="text-zinc-300 mb-0">
-                  <strong className="text-white">Bootstrapped and small-to-mid SaaS companies using Stripe</strong> who want high recovery rates without upfront costs. Ideal for businesses under $500K ARR that need a simple, effective solution.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Side-by-Side Comparison
-              </h2>
-
-              <p>
-                Here's how the three tools stack up across key decision factors:
+                Let&apos;s start with the number that matters most when you&apos;re bootstrapped.
               </p>
 
               <div className="glass rounded-xl p-6 my-8 overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-800">
-                      <th className="text-left py-3 text-zinc-400 font-medium">Feature</th>
-                      <th className="text-left py-3 text-zinc-400 font-medium">Churnkey</th>
+                    <tr className="border-b border-zinc-700">
+                      <th className="text-left py-3 pr-6 text-zinc-400 font-medium"></th>
+                      <th className="text-left py-3 pr-6 text-brand-400 font-semibold">Revive</th>
+                      <th className="text-left py-3 pr-6 text-zinc-400 font-medium">ChurnKey</th>
                       <th className="text-left py-3 text-zinc-400 font-medium">Baremetrics</th>
-                      <th className="text-left py-3 text-zinc-400 font-medium">Revive</th>
                     </tr>
                   </thead>
                   <tbody className="text-zinc-300">
                     <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Pricing Model</td>
-                      <td className="py-3">Fixed ($500-$1K/mo)</td>
-                      <td className="py-3">Tiered ($58-$258/mo)</td>
-                      <td className="py-3">Performance (15%/10%)</td>
+                      <td className="py-3 pr-6 font-medium text-zinc-400">Base price</td>
+                      <td className="py-3 pr-6 text-brand-300 font-semibold">$49/mo</td>
+                      <td className="py-3 pr-6">$250/mo</td>
+                      <td className="py-3">$204/mo ($75 + $129 Recover)</td>
                     </tr>
                     <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Free Tier</td>
-                      <td className="py-3">❌</td>
-                      <td className="py-3">❌</td>
-                      <td className="py-3">✅ ($0-$500 recovered)</td>
+                      <td className="py-3 pr-6 font-medium text-zinc-400">Revenue share</td>
+                      <td className="py-3 pr-6 text-green-400 font-semibold">None</td>
+                      <td className="py-3 pr-6 text-red-400">10–25% of recovered</td>
+                      <td className="py-3 text-green-400">None</td>
                     </tr>
                     <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Smart Retries</td>
-                      <td className="py-3">✅</td>
-                      <td className="py-3">❌ (uses Stripe default)</td>
-                      <td className="py-3">✅</td>
-                    </tr>
-                    <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Dunning Emails</td>
-                      <td className="py-3">✅</td>
-                      <td className="py-3">✅</td>
-                      <td className="py-3">✅</td>
-                    </tr>
-                    <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Cancellation Flows</td>
-                      <td className="py-3">✅</td>
-                      <td className="py-3">❌</td>
-                      <td className="py-3">❌</td>
-                    </tr>
-                    <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Analytics Dashboard</td>
-                      <td className="py-3">✅ (advanced)</td>
-                      <td className="py-3">✅ (full suite)</td>
-                      <td className="py-3">✅ (recovery focused)</td>
-                    </tr>
-                    <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Setup Time</td>
-                      <td className="py-3">30-60 min</td>
-                      <td className="py-3">15-30 min</td>
-                      <td className="py-3">3 min</td>
-                    </tr>
-                    <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Recovery Rate</td>
-                      <td className="py-3">~85%</td>
-                      <td className="py-3">~60%</td>
-                      <td className="py-3">High recovery rates</td>
-                    </tr>
-                    <tr className="border-b border-zinc-800/50">
-                      <td className="py-3 font-medium">Payment Processors</td>
-                      <td className="py-3">Stripe, Braintree, etc.</td>
-                      <td className="py-3">Stripe only</td>
-                      <td className="py-3">Stripe only</td>
+                      <td className="py-3 pr-6 font-medium text-zinc-400">Free tier</td>
+                      <td className="py-3 pr-6 text-green-400">Yes (up to $500/mo MRR)</td>
+                      <td className="py-3 pr-6 text-red-400">No</td>
+                      <td className="py-3 text-red-400">No</td>
                     </tr>
                     <tr>
-                      <td className="py-3 font-medium">Best For</td>
-                      <td className="py-3">Enterprise ($500K+ ARR)</td>
-                      <td className="py-3">Analytics users</td>
-                      <td className="py-3">Small-mid SaaS</td>
+                      <td className="py-3 pr-6 font-medium text-zinc-400">Total cost at $10K MRR</td>
+                      <td className="py-3 pr-6 text-brand-300 font-semibold">$49</td>
+                      <td className="py-3 pr-6 text-red-400 font-semibold">$500+</td>
+                      <td className="py-3">$204</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
+              <div className="glass rounded-xl p-6 my-8 border-l-4 border-yellow-500">
+                <p className="text-sm text-yellow-400 mb-2 font-medium uppercase tracking-wide">The Hidden Cost</p>
+                <p className="text-zinc-300 mb-0">
+                  At $10K MRR with $1K/mo recovered, ChurnKey charges $250 base + up to $250 in
+                  revenue share (25%). That&apos;s <strong className="text-white">$500+/mo</strong> — more than
+                  some indie founders&apos; entire marketing budget. The more you recover, the more you pay them.
+                </p>
+              </div>
+
+              {/* Section 2: What Each Tool Actually Does */}
               <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Which Tool Should You Choose?
+                Section 2: What Each Tool Actually Does
+              </h2>
+
+              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
+                ChurnKey ($250+/mo)
+              </h3>
+
+              <p>
+                ChurnKey&apos;s real strength is <strong className="text-white">cancel flow optimization</strong> —
+                intercepting users mid-cancellation with offers, surveys, and pause options. If someone is
+                trying to cancel and you want to save them in that moment, ChurnKey is genuinely impressive at that.
+              </p>
+
+              <ul className="space-y-2 ml-6 my-4">
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Cancel flow optimization</strong> — their core differentiator</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Payment recovery</strong> (dunning emails + retries)</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Customer health scoring</strong></li>
+                <li className="text-zinc-400">⚠️ <strong className="text-zinc-300">Stripe only</strong> — no Lemon Squeezy, Paddle, or Gumroad</li>
+                <li className="text-zinc-400">⚠️ <strong className="text-zinc-300">Complex setup</strong> — G2 reviews consistently mention configuration friction</li>
+                <li className="text-zinc-400">⚠️ <strong className="text-zinc-300">Revenue share adds up fast</strong> — especially as you scale</li>
+              </ul>
+
+              <div className="glass rounded-xl p-4 my-6 border-l-4 border-zinc-600">
+                <p className="text-sm text-zinc-400 mb-0">
+                  <strong className="text-zinc-300">Best for:</strong> Funded SaaS at $50K+ MRR that has a team, needs cancel flow
+                  optimization, and can absorb the revenue share math.
+                </p>
+              </div>
+
+              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
+                Baremetrics ($204/mo — Metrics + Recover)
+              </h3>
+
+              <p>
+                Baremetrics is primarily a <strong className="text-white">subscription analytics platform</strong>.
+                Their dashboards are genuinely beautiful — MRR trends, LTV, cohort analysis. Recover is an
+                add-on ($129/mo) that gives you dunning emails when payments fail. If you live in data
+                and love dashboards, Baremetrics scratches an itch.
+              </p>
+
+              <ul className="space-y-2 ml-6 my-4">
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Analytics dashboards</strong> — their actual core product</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Recover add-on</strong> for basic dunning emails</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Cancellation insights</strong> (survey data)</li>
+                <li className="text-zinc-400">⚠️ <strong className="text-zinc-300">No automated win-back</strong> — can&apos;t re-engage customers who already left</li>
+                <li className="text-zinc-400">⚠️ <strong className="text-zinc-300">Stripe only</strong></li>
+                <li className="text-zinc-400">⚠️ <strong className="text-zinc-300">Recover is just dunning emails</strong> — no smart retry logic</li>
+              </ul>
+
+              <div className="glass rounded-xl p-4 my-6 border-l-4 border-zinc-600">
+                <p className="text-sm text-zinc-400 mb-0">
+                  <strong className="text-zinc-300">Best for:</strong> Data-obsessed founders who want beautiful analytics
+                  dashboards first, and &quot;good enough&quot; dunning emails second.
+                </p>
+              </div>
+
+              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
+                Revive ($49/mo)
+              </h3>
+
+              <p>
+                Revive is built specifically for indie SaaS founders who need churn recovery without the
+                enterprise price tag. The focus is on <em>action</em> — recovering failed payments and
+                winning back customers who already churned — not analytics dashboards.
+              </p>
+
+              <ul className="space-y-2 ml-6 my-4">
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Failed payment recovery</strong> — smart retries + dunning emails</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Win-back campaigns</strong> — 7/14/30-day automated re-engagement (unique to Revive)</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Multi-platform</strong> — Stripe, Lemon Squeezy, Gumroad, Paddle, Polar.sh</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">No revenue share</strong> — flat $49/mo, keep everything you recover</li>
+                <li className="text-zinc-400">✅ <strong className="text-zinc-300">Free tier</strong> — up to $500/mo MRR recovered at $0</li>
+              </ul>
+
+              <div className="glass rounded-xl p-4 my-6 border-l-4 border-brand-500">
+                <p className="text-sm text-zinc-400 mb-0">
+                  <strong className="text-zinc-300">Best for:</strong> Indie founders at $2K–$30K MRR who want churn recovery
+                  that actually works — not dashboards, not cancel flows, just revenue back in your pocket.
+                </p>
+              </div>
+
+              {/* Section 3: The Win-Back Gap */}
+              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
+                Section 3: The Win-Back Gap Nobody Talks About
               </h2>
 
               <p>
-                The "best" failed payment recovery tool depends on your business size, payment processor, and what you need beyond just payment recovery.
+                Here&apos;s what&apos;s missing from every churn tool comparison you&apos;ll read:{" "}
+                <strong className="text-white">none of the established tools handle voluntary churn re-engagement.</strong>
               </p>
 
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Choose Churnkey if:
-              </h3>
+              <p>
+                ChurnKey is great at the cancel <em>moment</em> — they optimize the experience right
+                as someone clicks &quot;cancel.&quot; Baremetrics gives you analytics to understand why
+                people canceled. But what about the customer who churned 14 days ago? What do you do
+                with them?
+              </p>
 
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ You're an enterprise SaaS with $500K+ ARR</li>
-                <li className="text-zinc-400">✅ You need cancellation flows, surveys, and deflection offers</li>
-                <li className="text-zinc-400">✅ You use payment processors other than Stripe (Braintree, Chargebee, etc.)</li>
-                <li className="text-zinc-400">✅ You have budget for a full retention platform ($500-$1K/month)</li>
-              </ul>
+              <p>
+                Both tools&apos; answer: nothing. Those customers are gone.
+              </p>
 
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Choose Baremetrics Recover if:
-              </h3>
+              <p>
+                Revive is the only tool with automated win-back campaigns — sequences that run
+                7, 14, and 30 days after a customer churns, triggered by their cancellation reason:
+              </p>
 
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ You already use Baremetrics for subscription analytics</li>
-                <li className="text-zinc-400">✅ You want MRR tracking, forecasting, and benchmarking in one tool</li>
-                <li className="text-zinc-400">✅ You're okay with ~60% recovery rates</li>
-                <li className="text-zinc-400">✅ Basic dunning emails are enough (no need for smart retries)</li>
-              </ul>
+              <div className="glass rounded-xl p-6 my-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center text-sm font-bold">7</div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">&quot;Left for price&quot;</p>
+                    <p className="text-sm text-zinc-400 mb-0">Automatic discount offer fires at day 7 — when the pain of leaving is still fresh but the decision isn&apos;t locked in.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center text-sm font-bold">14</div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">&quot;Missing feature&quot;</p>
+                    <p className="text-sm text-zinc-400 mb-0">&quot;We shipped it&quot; email sent when the requested feature launches — turning a lost customer into a re-acquisition opportunity.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center text-sm font-bold">30</div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">&quot;Not using it&quot;</p>
+                    <p className="text-sm text-zinc-400 mb-0">Tutorial + customer success story at day 30 — re-engaging with value, not just a sales pitch.</p>
+                  </div>
+                </div>
+              </div>
 
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Choose Revive if:
-              </h3>
+              <p>
+                This matters because <strong className="text-white">voluntary churn is recoverable</strong> — 
+                if you act at the right time with the right message. Research consistently shows 20–40% of
+                churned customers will return within 90 days if re-engaged meaningfully.{" "}
+                <Link href="/calculator" className="text-brand-400 hover:text-brand-300 underline-offset-2 underline">
+                  Calculate what that&apos;s worth at your MRR.
+                </Link>
+              </p>
 
-              <ul className="space-y-2 ml-6">
-                <li className="text-zinc-400">✅ You use Stripe and only need failed payment recovery</li>
-                <li className="text-zinc-400">✅ You want zero upfront costs (performance-based pricing)</li>
-                <li className="text-zinc-400">✅ You want the highest recovery rate (~94%)</li>
-                <li className="text-zinc-400">✅ You're bootstrapped or under $500K ARR and need to minimize fixed costs</li>
-                <li className="text-zinc-400">✅ You want to set up in 3 minutes and start recovering immediately</li>
-              </ul>
-
+              {/* Section 4: Platform Support */}
               <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                The Verdict: Revive Wins for Small-to-Mid SaaS
+                Section 4: Platform Support — The Stripe-Only Problem
               </h2>
 
               <p>
-                If you're a bootstrapped or early-stage SaaS company using Stripe, <strong className="text-white">Revive is the clear winner</strong>.
+                If you&apos;re not on Stripe, your options among established churn tools are… zero.
               </p>
 
               <p>
-                Here's why:
+                Both ChurnKey and Baremetrics are <strong className="text-white">Stripe-only. Period.</strong> This was
+                acceptable in 2022, but indie SaaS founders have diversified significantly. Lemon Squeezy
+                has become a genuine Stripe alternative for founders who don&apos;t want to deal with tax
+                remittance. Gumroad dominates digital products. Paddle is the choice for global compliance.
               </p>
 
-              <ol className="space-y-3 ml-6 text-zinc-300">
-                <li>
-                  <strong className="text-white">1. Zero-risk pricing</strong> — You only pay when revenue is recovered. No upfront fees, no monthly minimums. If it doesn't work, you pay nothing.
-                </li>
-                <li>
-                  <strong className="text-white">2. Smart recovery logic</strong> — Intelligent retry schedules based on decline codes help maximize recovery vs basic retry approaches used by other tools.
-                </li>
-                <li>
-                  <strong className="text-white">3. Dead simple setup</strong> — Connect your Stripe account in one click and start recovering payments in 3 minutes. No complex onboarding or configuration.
-                </li>
-                <li>
-                  <strong className="text-white">4. Purpose-built for payment recovery</strong> — Unlike Churnkey (overkill) or Baremetrics (analytics bloat), Revive does one thing really well: recover failed Stripe payments.
-                </li>
-              </ol>
+              <div className="glass rounded-xl p-6 my-8 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-700">
+                      <th className="text-left py-3 pr-6 text-zinc-400 font-medium">Platform</th>
+                      <th className="text-left py-3 pr-6 text-brand-400 font-semibold">Revive</th>
+                      <th className="text-left py-3 pr-6 text-zinc-400 font-medium">ChurnKey</th>
+                      <th className="text-left py-3 text-zinc-400 font-medium">Baremetrics</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-zinc-300">
+                    {[
+                      { name: "Stripe", revive: true, churnkey: true, baremetrics: true },
+                      { name: "Lemon Squeezy", revive: true, churnkey: false, baremetrics: false },
+                      { name: "Gumroad", revive: true, churnkey: false, baremetrics: false },
+                      { name: "Paddle", revive: true, churnkey: false, baremetrics: false },
+                      { name: "Polar.sh", revive: true, churnkey: false, baremetrics: false },
+                    ].map((row) => (
+                      <tr key={row.name} className="border-b border-zinc-800/50">
+                        <td className="py-3 pr-6 font-medium text-zinc-400">{row.name}</td>
+                        <td className="py-3 pr-6">
+                          {row.revive ? <span className="text-green-400">✅ Supported</span> : <span className="text-red-400">❌ No</span>}
+                        </td>
+                        <td className="py-3 pr-6">
+                          {row.churnkey ? <span className="text-green-400">✅ Supported</span> : <span className="text-red-400">❌ No</span>}
+                        </td>
+                        <td className="py-3">
+                          {row.baremetrics ? <span className="text-green-400">✅ Supported</span> : <span className="text-red-400">❌ No</span>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
+              <p>
+                If you&apos;re on Lemon Squeezy, Gumroad, Paddle, or Polar.sh, Revive is{" "}
+                <strong className="text-white">literally your only option</strong> for automated churn recovery.
+                ChurnKey and Baremetrics simply don&apos;t support these platforms.
+              </p>
+
+              <p>
+                You can{" "}
+                <Link href="/launch" className="text-brand-400 hover:text-brand-300 underline-offset-2 underline">
+                  connect your billing platform in minutes
+                </Link>{" "}
+                — no developer needed.
+              </p>
+
+              {/* Section 5: The Verdict */}
+              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
+                Section 5: The Verdict
+              </h2>
+
+              <p>Here&apos;s the decision matrix — no fluff:</p>
+
+              <div className="glass rounded-xl p-6 my-8 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-700">
+                      <th className="text-left py-3 pr-6 text-zinc-400 font-medium">Your situation</th>
+                      <th className="text-left py-3 text-zinc-400 font-medium">Recommendation</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-zinc-300">
+                    <tr className="border-b border-zinc-800/50">
+                      <td className="py-3 pr-6">Just getting started, &lt;$500 recovered/mo</td>
+                      <td className="py-3 text-brand-300 font-semibold">Revive Free tier — $0</td>
+                    </tr>
+                    <tr className="border-b border-zinc-800/50">
+                      <td className="py-3 pr-6">$2K–$30K MRR, want to actually recover revenue</td>
+                      <td className="py-3 text-brand-300 font-semibold">Revive Indie — $49/mo flat</td>
+                    </tr>
+                    <tr className="border-b border-zinc-800/50">
+                      <td className="py-3 pr-6">On Lemon Squeezy, Gumroad, or Paddle</td>
+                      <td className="py-3 text-brand-300 font-semibold">Revive — only real option</td>
+                    </tr>
+                    <tr className="border-b border-zinc-800/50">
+                      <td className="py-3 pr-6">Data-obsessed, want beautiful analytics dashboards</td>
+                      <td className="py-3">Baremetrics — but budget $204/mo for metrics + recover</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 pr-6">Funded, $50K+ MRR, need cancel-flow optimization + CS team</td>
+                      <td className="py-3">ChurnKey — if you can stomach the revenue share math</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>
+                At $49/mo vs $250+ for ChurnKey or $204 for Baremetrics, the math for indie founders
+                is straightforward. If you&apos;re recovering $1,000/mo and ChurnKey takes 25% of that plus
+                their base fee, you&apos;re sending them more money than you keep. That&apos;s a bad deal at
+                $10K MRR.
+              </p>
+
+              <p>
+                The tools you need at $10K MRR aren&apos;t the same tools you need at $500K MRR. Revive is
+                built for where you are right now — not where VC-funded competitors assume you should be.
+              </p>
+
+              {/* Pricing link */}
+              <div className="glass rounded-xl p-4 my-8 border border-zinc-700/50">
+                <p className="text-sm text-zinc-400 mb-0">
+                  📊 Want to see the full plan breakdown?{" "}
+                  <Link href="/pricing" className="text-brand-400 hover:text-brand-300 underline-offset-2 underline">
+                    View Revive pricing →
+                  </Link>
+                </p>
+              </div>
+
+              {/* CTA */}
               <div className="glass rounded-xl p-8 my-12 text-center border-l-4 border-brand-500">
                 <h3 className="text-2xl font-bold text-white mb-4">
-                  Stop Losing Revenue to Failed Payments
+                  Try Revive Free — Recover Your First $500/mo With Zero Risk
                 </h3>
-                <p className="text-zinc-400 mb-6">
-                  Revive helps recover failed Stripe payments with smart retries and dunning emails. Setup takes 3 minutes. No credit card required.
+                <p className="text-zinc-400 mb-6 max-w-md mx-auto">
+                  Connect your billing platform in under 5 minutes. No credit card required.
+                  Upgrade only when it&apos;s paid for itself.
                 </p>
-                <Link
-                  href="/pricing"
+                <a
+                  href="https://revive-hq.com/api/connect"
                   className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl transition-all"
                 >
                   Start Recovering Revenue Free
@@ -479,70 +430,19 @@ export default function BlogPost() {
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                </Link>
+                </a>
                 <p className="text-xs text-zinc-500 mt-4">
-                  Free tier up to $500 recovered • No credit card required • 3-minute setup
+                  Free tier up to $500/mo recovered · No credit card required · 5-minute setup
                 </p>
               </div>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Frequently Asked Questions
-              </h2>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Can I use multiple tools at once?
-              </h3>
-
-              <p>
-                Technically yes, but it's not recommended. Running multiple payment recovery systems can lead to duplicate emails, conflicting retry schedules, and confused customers. Pick one tool and stick with it.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                How long does it take to see results?
-              </h3>
-
-              <p>
-                Most failed payments are recovered within <strong className="text-white">7-14 days</strong>. You'll see results immediately (same day), but full recovery takes 1-2 weeks as retry schedules play out.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                What if I'm not using Stripe?
-              </h3>
-
-              <p>
-                If you use Braintree, Chargebee, or another payment processor, <strong className="text-white">Churnkey is your best option</strong> (it supports multiple processors). Revive and Baremetrics are Stripe-only.
-              </p>
-
-              <h3 className="text-xl font-semibold text-white mt-8 mb-3">
-                Do I need developer help to set these up?
-              </h3>
-
-              <p>
-                <strong className="text-white">No.</strong> All three tools offer one-click integrations with your payment processor. Revive takes 3 minutes. Baremetrics takes 15-30 minutes. Churnkey may require 30-60 minutes for advanced customization.
-              </p>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4">
-                Final Thoughts
-              </h2>
-
-              <p>
-                Failed payment recovery is <strong className="text-white">one of the highest-ROI investments</strong> you can make as a SaaS founder. For most small-to-mid-sized businesses, Revive offers the best combination of:
-              </p>
-
-              <ul className="space-y-2 ml-6 text-zinc-300">
-                <li>💡 Zero upfront risk</li>
-                <li>💡 Highest recovery rates</li>
-                <li>💡 Fastest setup</li>
-                <li>💡 Laser focus on payment recovery (no feature bloat)</li>
-              </ul>
-
-              <p className="mt-8">
-                If you're an enterprise team needing cancellation flows and advanced retention, go with Churnkey. If you already use Baremetrics for analytics, add Recover. But for everyone else — especially bootstrappers and early-stage SaaS — <strong className="text-white">Revive is the no-brainer choice</strong>.
-              </p>
-
+              {/* Disclosure */}
               <div className="mt-12 pt-8 border-t border-zinc-800">
                 <p className="text-sm text-zinc-500">
-                  <strong className="text-zinc-400">About Revive:</strong> We help SaaS companies recover failed Stripe payments automatically with smart retry logic and dunning emails. Performance-based pricing means you only pay when we recover your revenue. Connect your Stripe account and start recovering in 3 minutes.
+                  <strong className="text-zinc-400">Disclosure:</strong> We built Revive. Pricing for ChurnKey and
+                  Baremetrics is sourced from their public pricing pages as of February 2026 — verify directly before
+                  making any purchasing decision. ChurnKey&apos;s revenue share (10–25%) is disclosed in their pricing FAQ.
+                  Baremetrics Recover is a $129/mo add-on to their base Metrics plan starting at $75/mo.
                 </p>
               </div>
             </div>
