@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,10 +33,25 @@ export const metadata: Metadata = {
     "automated dunning emails",
     "churn reduction",
     "failed payments SaaS",
+    "churn prevention software",
+    "subscription recovery",
+    "stripe dunning",
+    "payment retry optimization",
+    "subscriber win-back",
+    "cancel flow optimization",
+    "lemon squeezy payment recovery",
+    "recover failed payments",
+    "reduce involuntary churn",
   ],
   authors: [{ name: "Revive" }],
   creator: "Revive",
   publisher: "Revive",
+  verification: {
+    // ⚠️ PASTE your Google Search Console verification code here (digits/letters only, not full tag)
+    // Get it from: search.google.com/search-console → Add Property → revive-hq.com → HTML tag method
+    // Example: google: 'AbCdEfGhIjKlMnOpQrStUvWxYz1234567'
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_REVIVE || '',
+  },
   robots: {
     index: true,
     follow: true,
@@ -82,6 +98,9 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function RootLayout({
@@ -91,6 +110,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
+      <head>
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
+      </head>
       <body className="bg-[#09090b] text-zinc-100 antialiased font-sans">
         {children}
         <FeedbackWidget />
