@@ -10,9 +10,9 @@ const features = [
         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
       </svg>
     ),
-    title: "AI-Powered Smart Retries",
+    title: "Smarter Payment Retries",
     description:
-      "Our retry engine reads decline codes and picks the optimal retry window — not random intervals. card_declined → 4 hours. insufficient_funds → payday-aware 3-day cycle. Result: 3.2x higher recovery rate vs. random retry tools.",
+      "When a payment fails, timing is everything. Revive figures out why it failed and retries at exactly the right moment — not randomly. The result: 3.2x more payments recovered compared to tools that just retry on a fixed schedule.",
   },
   {
     icon: (
@@ -21,9 +21,9 @@ const features = [
         <polyline points="22,6 12,13 2,6" />
       </svg>
     ),
-    title: "High-Converting Dunning Emails",
+    title: "Emails Customers Actually Open",
     description:
-      "Personalized email sequences triggered by payment failure severity. 68% average open rate (vs. 21% industry average). One-click card update link in every email — no login required. Your brand, your voice.",
+      "When a payment fails, Revive automatically sends a personalized email with a one-click link to update their card — no login required. 68% average open rate (industry average is 21%). Your branding, your voice.",
   },
   {
     icon: (
@@ -32,9 +32,9 @@ const features = [
         <path d="M3 3v5h5" />
       </svg>
     ),
-    title: "Win-Back Campaigns",
+    title: "Bring Back Cancelled Customers",
     description:
-      "Most tools stop at failed payments. Revive also re-engages customers who voluntarily cancelled — agentic sequences at 7, 14, and 30 days. Offer a discount, a plan pause, or just a personal note.",
+      "Most tools stop at failed payments. Revive also re-engages customers who cancelled — with automated follow-ups at 7, 14, and 30 days. Offer a discount, a plan pause, or just a personal note. Recover customers you thought were gone.",
   },
   {
     icon: (
@@ -44,9 +44,9 @@ const features = [
         <path d="M17 15v6M14 18h6" />
       </svg>
     ),
-    title: "Multi-Platform (Not Just Stripe)",
+    title: "Works With All Your Payment Platforms",
     description:
-      "ChurnKey only works with Stripe. Revive supports Stripe, Lemon Squeezy, Gumroad, Paddle, and Polar.sh. One dashboard. Every payment platform. All your revenue in one place.",
+      "Using Lemon Squeezy, Gumroad, Paddle, or Polar.sh alongside Stripe? Revive supports all of them. One dashboard for every platform. Competitors like ChurnKey only work with Stripe.",
   },
   {
     icon: (
@@ -56,9 +56,9 @@ const features = [
         <line x1="6" y1="20" x2="6" y2="14" />
       </svg>
     ),
-    title: "Real-Time Recovery Dashboard",
+    title: "See Exactly What You Recovered",
     description:
-      "See exactly what Revive recovered — per customer, per payment, per campaign. No vanity metrics. Just: how much did you get back?",
+      "A clear dashboard showing what Revive got back — per customer, per payment, per campaign. No confusing charts. Just a simple answer to: how much money did we recover this month?",
   },
   {
     icon: (
@@ -67,9 +67,9 @@ const features = [
         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
       </svg>
     ),
-    title: "Bank-Grade Security",
+    title: "Your Data Stays Safe",
     description:
-      "Read-only OAuth. We never store card data. All payments flow through your payment platform's secure API. Encrypted at rest and in transit.",
+      "Revive connects with view-only access — we can see failed payments, but can't move money or change anything. We never store card numbers. You can disconnect in 2 clicks, anytime.",
   },
 ];
 
@@ -180,22 +180,22 @@ export default function Home() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-300 text-xs font-medium mb-8 animate-fade-in">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-400 animate-pulse" />
-              Agentic churn recovery &bull; Win-back campaigns &bull; Flat $49/mo
+              Automatic payment recovery &bull; Win-back campaigns &bull; Flat $49/mo
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-slide-up">
-              The average SaaS loses{" "}
-              <span className="gradient-text">9% of MRR</span>{" "}
-              to failed payments.
+              Your SaaS is losing{" "}
+              <span className="gradient-text">9% of revenue</span>{" "}
+              to failed payments every month.
               <span className="text-zinc-300 text-3xl md:text-4xl lg:text-5xl font-semibold block mt-3">
-                Revive gets it back — agentically.
+                Revive gets it back — automatically.
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up">
-              Smart payment retries + agentic win-back campaigns.{" "}
-              <strong className="text-zinc-300">One Stripe webhook. 15-minute setup.</strong>{" "}
-              No engineers. No revenue tax.{" "}
+              Smart retry timing + automated win-back emails.{" "}
+              <strong className="text-zinc-300">Connect in 15 minutes. No engineers needed.</strong>{" "}
+              No revenue share. No surprises.{" "}
               <strong className="text-zinc-300">Just $49/mo flat.</strong>
             </p>
 
@@ -221,7 +221,7 @@ export default function Home() {
             </div>
 
             <p className="text-sm text-zinc-500 mt-4 animate-slide-up">
-              🔒 Read-only OAuth. We never see your password or card data.{" "}
+              🔒 View-only access. We never see your password or card numbers.{" "}
               <strong className="text-zinc-400">Free until it pays for itself.</strong>
             </p>
           </div>

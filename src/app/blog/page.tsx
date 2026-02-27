@@ -16,6 +16,36 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "dunning-email-templates-7",
+    title: "7 Dunning Email Templates That Recover Failed Payments",
+    description:
+      "Steal these 7 dunning email templates used by SaaS companies recovering 60-70% of failed payments. Full copy, subject lines, and timing for each template.",
+    date: "February 27, 2026",
+    readTime: "10 min read",
+    category: "Payment Recovery",
+    author: "Revive Team",
+  },
+  {
+    slug: "stripe-webhooks-payment-recovery",
+    title: "Building Payment Recovery with Stripe Webhooks: Complete Guide",
+    description:
+      "Build a complete Stripe payment recovery system: webhook setup, decline code routing, smart retry scheduling with BullMQ, and dunning email automation in Node.js.",
+    date: "February 27, 2026",
+    readTime: "15 min read",
+    category: "Developer Guide",
+    author: "Revive Team",
+  },
+  {
+    slug: "saas-churn-metrics-2026",
+    title: "SaaS Churn Metrics That Actually Matter in 2026 (With Benchmarks)",
+    description:
+      "The 6 churn metrics that drive decisions — NRR, involuntary churn rate, cohort retention, recovery rate — with formulas and 2026 benchmarks for SMB and enterprise SaaS.",
+    date: "February 27, 2026",
+    readTime: "12 min read",
+    category: "Growth & Retention",
+    author: "Revive Team",
+  },
+  {
     slug: "how-to-reduce-involuntary-churn",
     title: "How to Reduce Involuntary Churn: The Complete Guide for SaaS",
     description:
