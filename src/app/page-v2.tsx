@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SoftwareApplicationJsonLd } from "@/components/JsonLd";
+import { TrackedCTA, ABVariantTracker } from "@/components/TrackedCTA";
 
 // Variant A: "Never Lose a Customer to Payment Issues"
 // Focus: Emotional appeal — customer retention, relationship preservation
@@ -169,6 +170,7 @@ export default function HomeVariantA() {
   return (
     <>
       <SoftwareApplicationJsonLd />
+      <ABVariantTracker variant="a" />
       <main className="min-h-screen">
       <Navbar />
 
@@ -199,8 +201,11 @@ export default function HomeVariantA() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
-              <Link
+              <TrackedCTA
                 href="/api/connect"
+                variant="a"
+                position="hero"
+                label="Save My Customers — Start Free"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/25 text-lg"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -210,7 +215,7 @@ export default function HomeVariantA() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </Link>
+              </TrackedCTA>
               <a
                 href="#how-it-works-steps"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-zinc-400 hover:text-white font-medium px-8 py-4 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all"
