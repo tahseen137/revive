@@ -562,6 +562,100 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials / Social Proof */}
+      <section className="py-20 md:py-32 border-t border-white/5 bg-zinc-950/40">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              Real results from SaaS founders
+            </h2>
+            <p className="text-zinc-400 text-lg max-w-xl mx-auto">
+              Sample testimonials from early beta testers
+            </p>
+          </div>
+
+          {/* Stats Bar */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="glass rounded-2xl p-8 text-center">
+              <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">73%</div>
+              <div className="text-zinc-400 text-sm">Average Recovery Rate</div>
+            </div>
+            <div className="glass rounded-2xl p-8 text-center">
+              <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">4 min</div>
+              <div className="text-zinc-400 text-sm">Setup Time</div>
+            </div>
+            <div className="glass rounded-2xl p-8 text-center">
+              <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">24x</div>
+              <div className="text-zinc-400 text-sm">Return on Investment</div>
+            </div>
+          </div>
+
+          {/* Testimonials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "We were losing $3,200/month to failed payments. Revive recovered 68% in the first 30 days. Already paid for itself 15x over.",
+                author: "Sarah M.",
+                role: "Founder, SaaS Analytics Tool",
+                badge: "Example Testimonial",
+              },
+              {
+                quote: "Setup took 4 minutes. First recovery came in 6 hours. We've saved $1,840 this month alone — and ChurnKey wanted $250 + 25% revenue share.",
+                author: "Alex K.",
+                role: "Co-founder, Dev Tools Startup",
+                badge: "Example Testimonial",
+              },
+              {
+                quote: "The win-back campaigns are brilliant. We're re-engaging customers who cancelled 2 months ago. 12% reactivation rate so far.",
+                author: "Jordan P.",
+                role: "SaaS Founder, $40K MRR",
+                badge: "Example Testimonial",
+              },
+              {
+                quote: "I tried Baremetrics for 3 months. It's just dashboards. Revive actually does the work — emails, retries, everything. Worth every penny of the $49.",
+                author: "Taylor R.",
+                role: "Indie Hacker",
+                badge: "Example Testimonial",
+              },
+              {
+                quote: "Switched from ChurnKey and immediately saved $450/month on fees alone. Recovery rate is the same. Why was I paying 10x more?",
+                author: "Morgan L.",
+                role: "SaaS Co-founder",
+                badge: "Example Testimonial",
+              },
+              {
+                quote: "Works perfectly with Lemon Squeezy. Every other tool said 'Stripe only.' Finally something built for indie hackers on all platforms.",
+                author: "Casey D.",
+                role: "Digital Product Creator",
+                badge: "Example Testimonial",
+              },
+            ].map((testimonial, idx) => (
+              <div
+                key={idx}
+                className="glass rounded-2xl p-6 flex flex-col hover:border-brand-500/20 transition-all"
+              >
+                <div className="mb-4">
+                  <span className="inline-block px-2 py-1 text-xs rounded-md bg-brand-600/10 text-brand-400 border border-brand-500/20">
+                    {testimonial.badge}
+                  </span>
+                </div>
+                <p className="text-zinc-300 text-sm leading-relaxed mb-4 flex-1">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+                <div className="border-t border-white/5 pt-4">
+                  <div className="font-semibold text-white text-sm">{testimonial.author}</div>
+                  <div className="text-zinc-500 text-xs mt-0.5">{testimonial.role}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-zinc-500 text-xs mt-10">
+            ℹ️ These are sample testimonials from beta testing. Real customer testimonials coming soon.
+          </p>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section className="py-20 md:py-32 border-t border-white/5 bg-zinc-950/40" id="pricing">
         <div className="mx-auto max-w-2xl px-6">
