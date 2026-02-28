@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "why-failed-payments-kill-saas-revenue",
+    title: "Why Failed Payments Kill SaaS Revenue (And How to Stop It)",
+    description:
+      "Involuntary churn from failed payments accounts for 20–40% of SaaS churn. Learn how smart retry logic, dunning emails, and grace periods recover it.",
+    date: "February 28, 2026",
+    readTime: "7 min read",
+    category: "Payment Recovery",
+    author: "Revive Team",
+  },
+  {
     slug: "saas-churn-prevention-tactics-2026",
     title: "5 Proven Churn Prevention Tactics for SaaS in 2026",
     description:
