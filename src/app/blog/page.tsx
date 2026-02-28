@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "saas-mrr-expansion-tactics",
+    title: "5 SaaS MRR Expansion Tactics That Actually Work in 2026",
+    description:
+      "Most SaaS founders obsess over upsells and ignore the 5–9% of MRR leaking to failed payments. Here are 5 MRR expansion tactics that recover revenue you already earned.",
+    date: "February 28, 2026",
+    readTime: "10 min read",
+    category: "Growth & Retention",
+    author: "Revive Team",
+  },
+  {
     slug: "saas-churn-rate-vs-retention-rate",
     title: "Churn Rate vs Retention Rate: What Every SaaS Founder Gets Wrong",
     description:
