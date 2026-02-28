@@ -16,6 +16,15 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "stripe-dunning-guide-saas",
+    title: "The Complete Stripe Dunning Guide for SaaS Founders in 2026",
+    description:
+      "A practical Stripe dunning guide for SaaS founders: why 9-16% of cards fail monthly, how to set up retry logic and email sequences, and what actually recovers revenue.",
+    date: "February 28, 2026",
+    readTime: "9 min read",
+    category: "Payment Recovery",
+  },
+  {
     slug: "saas-mrr-expansion-tactics",
     title: "5 SaaS MRR Expansion Tactics That Actually Work in 2026",
     description:
