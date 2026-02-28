@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "saas-churn-prevention-tactics-2026",
+    title: "5 Proven Churn Prevention Tactics for SaaS in 2026",
+    description:
+      "Reduce SaaS churn by 30–50% with these five proven tactics: dunning automation, health scores, proactive CSM outreach, payment retry logic, and win-back campaigns.",
+    date: "February 28, 2026",
+    readTime: "9 min read",
+    category: "Growth & Retention",
+    author: "Revive Team",
+  },
+  {
     slug: "dunning-email-templates-7",
     title: "7 Dunning Email Templates That Recover Failed Payments",
     description:
