@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "saas-churn-rate-vs-retention-rate",
+    title: "Churn Rate vs Retention Rate: What Every SaaS Founder Gets Wrong",
+    description:
+      "Churn rate and retention rate look like mirrors of each other — they're not. Learn how they differ, why NRR matters more, and how failed payment recovery improves all three.",
+    date: "February 28, 2026",
+    readTime: "9 min read",
+    category: "Growth & Retention",
+    author: "Revive Team",
+  },
+  {
     slug: "stripe-dunning",
     title: "The Complete Guide to Stripe Dunning: How to Recover Failed Payments in 2026",
     description:
