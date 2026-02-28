@@ -175,6 +175,26 @@ const blogPosts = [
     category: "Comparisons",
     author: "Revive Team",
   },
+  {
+    slug: "mrr-expansion",
+    title: "How Payment Recovery Expands MRR for SaaS Businesses",
+    description:
+      "Payment failure is the most overlooked form of involuntary churn. Learn how smart payment recovery directly expands MRR by recovering 70–78% of failed payment revenue.",
+    date: "February 28, 2026",
+    readTime: "9 min read",
+    category: "Business Strategy",
+    author: "Revive Team",
+  },
+  {
+    slug: "smart-retry-logic",
+    title: "Stripe Smart Retries vs Custom Dunning Logic: What Actually Recovers More Revenue",
+    description:
+      "Honest comparison of Stripe Smart Retries vs custom dunning logic. With code examples and recovery rate data showing exactly what closes the gap from 40% to 78% recovery.",
+    date: "February 28, 2026",
+    readTime: "8 min read",
+    category: "Technical Guide",
+    author: "Revive Team",
+  },
 ];
 
 export default function BlogPage() {
