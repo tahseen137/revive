@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "mrr-churn-calculator-how-much-are-you-losing",
+    title: "How Much MRR Are You Losing to Churn? (Free Calculator)",
+    description:
+      "Interactive calculator shows your exact MRR loss from churn — including the recoverable slice from failed payments. Run your numbers.",
+    date: "February 28, 2026",
+    readTime: "8 min read",
+    category: "Growth & Retention",
+    author: "Revive Team",
+  },
+  {
     slug: "why-failed-payments-kill-saas-revenue",
     title: "Why Failed Payments Kill SaaS Revenue (And How to Stop It)",
     description:
