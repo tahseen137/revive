@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
@@ -119,6 +120,12 @@ export default function RootLayout({
         <FeedbackWidget />
         <Analytics />
         <SpeedInsights />
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="ab6dce1a-61d8-4ebb-bb85-dfce9de4365b"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
