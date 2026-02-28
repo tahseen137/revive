@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "saas-subscriber-lifecycle-trial-to-churn",
+    title: "The SaaS Subscriber Lifecycle: From Trial to Churn (and How to Keep Them)",
+    description:
+      "Map the full SaaS subscriber lifecycle — trial, new paid, active, at-risk, churned — with the biggest risk and best intervention at each stage.",
+    date: "February 28, 2026",
+    readTime: "10 min read",
+    category: "Growth & Retention",
+    author: "Revive Team",
+  },
+  {
     slug: "mrr-churn-calculator-how-much-are-you-losing",
     title: "How Much MRR Are You Losing to Churn? (Free Calculator)",
     description:
