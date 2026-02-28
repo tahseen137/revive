@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "stripe-dunning",
+    title: "The Complete Guide to Stripe Dunning: How to Recover Failed Payments in 2026",
+    description:
+      "Learn what Stripe dunning is, where native Stripe tools fall short, and how smart retry strategies recover the 20-40% of SaaS revenue lost to involuntary churn.",
+    date: "February 28, 2026",
+    readTime: "8 min read",
+    category: "Payment Recovery",
+    author: "Revive Team",
+  },
+  {
     slug: "saas-subscriber-lifecycle-trial-to-churn",
     title: "The SaaS Subscriber Lifecycle: From Trial to Churn (and How to Keep Them)",
     description:
