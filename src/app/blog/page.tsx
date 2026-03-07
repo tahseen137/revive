@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "saas-subscription-pause-strategy",
+    title: "Why SaaS Should Offer Pause (Not Just Cancel) for Failed Payments",
+    description:
+      "Offering a subscription pause instead of forcing cancellation recovers 2–3x more revenue from failed payments. Here's the psychology, the data, and the Stripe implementation guide.",
+    date: "March 7, 2026",
+    readTime: "7 min read",
+    category: "Retention Strategy",
+    author: "Revive Team",
+  },
+  {
     slug: "stripe-dunning-guide-saas",
     title: "The Complete Stripe Dunning Guide for SaaS Founders in 2026",
     description:
