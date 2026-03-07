@@ -33,11 +33,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://cloud.umami.is",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "frame-src https://js.stripe.com https://hooks.stripe.com",
-              "connect-src 'self' https://api.stripe.com https://vitals.vercel-analytics.com https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+              "connect-src 'self' https://api.stripe.com https://vitals.vercel-analytics.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://cloud.umami.is",
               "font-src 'self' data:",
             ].join('; '),
           },
