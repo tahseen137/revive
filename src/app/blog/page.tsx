@@ -16,6 +16,16 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: "saas-customer-retention-metrics-2026",
+    title: "SaaS Customer Retention Metrics That Actually Matter in 2026",
+    description:
+      "Churn rate is just the start. Learn the retention metrics that predict revenue loss before it happens — NRR, cohort analysis, involuntary churn signals, and benchmarks by stage.",
+    date: "March 7, 2026",
+    readTime: "8 min read",
+    category: "Retention Strategy",
+    author: "Revive Team",
+  },
+  {
     slug: "saas-subscription-pause-strategy",
     title: "Why SaaS Should Offer Pause (Not Just Cancel) for Failed Payments",
     description:
