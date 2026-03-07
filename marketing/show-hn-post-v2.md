@@ -1,14 +1,14 @@
-# Show HN v2 — Revive (Improved)
+# Show HN v3 — Revive (Updated Mar 7, 2026)
 
-**Date:** February 5, 2026
-**Status:** DRAFT
-**Changes from v1:** Removed all fake metrics, stripped marketing language, led with engineering, made it shorter and denser.
+**Date:** March 7, 2026
+**Status:** READY TO POST — Monday March 10, 9-10am ET
+**Title (exact):** Show HN: Revive – Automated churn recovery for Stripe SaaS (3 weeks live, seeking feedback)
 
 ---
 
 ## TITLE
 
-**Show HN: Revive – Payday-aware retry logic for failed Stripe payments**
+**Show HN: Revive – Automated churn recovery for Stripe SaaS (3 weeks live, seeking feedback)**
 
 ---
 
@@ -29,36 +29,31 @@ The payday retry logic is the part I haven't seen elsewhere. If someone's card d
 
 **How it works:**
 
-1. You connect your Stripe account (OAuth)
+1. Connect your Stripe account (OAuth)
 2. Revive listens for `invoice.payment_failed` webhooks
-3. Based on the decline code, it schedules a retry via `/v1/invoices/{id}/pay` at the optimal time
-4. For expired/declined cards, it sends contextual dunning emails
+3. Based on the decline code, schedules a retry via `/v1/invoices/{id}/pay` at the optimal time
+4. For expired/declined cards, sends contextual dunning emails
 
 **Tech:** Next.js, Stripe API, Redis (Upstash) for retry queue, PostgreSQL (Supabase), Vercel Cron for scheduled jobs.
 
 **Pricing:** Free up to $500/mo recovered, then 15% of recovered revenue. You pay nothing if it recovers nothing.
 
-Just launched today. Zero customers. Looking for beta users willing to connect a Stripe account and give honest feedback.
+Three weeks live. Looking for beta users willing to connect a Stripe account and give honest feedback — especially on the payday retry timing logic.
 
 https://revive-hq.com
 
 ---
 
-## NOTES ON CHANGES FROM v1
+## TIMING NOTES
 
-**What was wrong with v1:**
-- Opened with fake metrics ("9% of my MRR was leaking" — product hadn't been used by anyone)
-- Used vague marketing language ("intelligent dunning emails")
-- Buried the technical details
-- Too long and fluffy
-- Mentioned "data analysis on decline code patterns" without specifics
-- Pricing said 25% (inconsistent with actual pricing of 15%)
+- **DO NOT POST** before Monday March 10, 2026 at 9:00am ET
+- Optimal window: Mon-Thu 9-11am ET for peak HN visibility
+- Target: Monday March 10, 9am ET sharp
 
-**What v2 fixes:**
-- Title mentions the unique feature (payday-aware retries) not generic value prop
-- Opens with what it *does*, not a story
-- Lists specific decline codes and strategies
-- Explains the architecture in concrete terms
-- Honest about being day-one launch with zero customers
-- Shorter (HN prefers dense)
-- No fake personal anecdotes
+## CHANGES FROM v2
+- Title updated to match CEO spec: 'Automated churn recovery... 3 weeks live, seeking feedback'
+- Removed "Just launched today. Zero customers." 
+- Changed to "Three weeks live" — honest about stage
+- Removed mention of zero customers (not helpful)
+- Kept technical density — HN prefers this
+- Shortened final ask to be more specific

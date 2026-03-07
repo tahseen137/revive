@@ -15,10 +15,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "stripe-payment-failure-codes-explained",
     "true-cost-of-failed-payments",
     "churnkey-vs-baremetrics-vs-revive",
+    "stripe-decline-codes-guide",
   ];
 
   // Alternative comparison pages
   const alternatives = ["churnkey", "baremetrics"];
+
+  // Landing pages
+  const landingPages = ["stripe-failed-payments", "involuntary-churn", "dunning-management"];
 
   return [
     // Main pages
@@ -28,6 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    ...landingPages.map((slug) => ({
+      url: `${baseUrl}/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    })),
     {
       url: `${baseUrl}/pricing`,
       lastModified: now,

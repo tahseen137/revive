@@ -185,6 +185,16 @@ const blogPosts = [
     author: "Revive Team",
   },
   {
+    slug: "stripe-decline-codes-guide",
+    title: "Stripe Decline Code Guide: What Each Error Means + How to Fix It",
+    description:
+      "The top 15 Stripe decline codes decoded — insufficient_funds, do_not_honor, expired_card, authentication_required and more. Retry strategy and recovery playbook for each.",
+    date: "March 7, 2026",
+    readTime: "12 min read",
+    category: "Technical Reference",
+    author: "Revive Team",
+  },
+  {
     slug: "stripe-payment-failure-codes-explained",
     title: "Stripe Payment Failure Codes Explained: Complete Reference Guide",
     description:
