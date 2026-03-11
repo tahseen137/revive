@@ -260,6 +260,56 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as Stripe.Subscription;
         console.log(`[Webhook] Subscription cancelled: ${subscription.id}`);
         await saveSubscription(subscription);
+        
+        // Track churned customer for win-back campaigns
+        try {
+          const { createChurnedCustomer } = await import("@/lib/winback");
+          
+          const customerId = typeof subscription.customer === "string" 
+            ? subscription.customer 
+            : subscription.customer.id;
+          
+          // Fetch customer details
+          let customerEmail = "";
+          let customerName = "";
+          
+          try {
+            const customer = await stripe.customers.retrieve(customerId, {
+              stripeAccount: event.account || undefined,
+            });
+            if (customer && !customer.deleted) {
+              customerEmail = customer.email || "";
+              customerName = customer.name || customer.email || "";
+            }
+          } catch (e) {
+            console.error("Failed to fetch customer for churn tracking:", e);
+          }
+          
+          if (customerEmail) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const sub = subscription as any;
+            const planName = sub.items?.data?.[0]?.price?.nickname || subscription.metadata?.plan || "Unknown Plan";
+            const planAmount = sub.items?.data?.[0]?.price?.unit_amount || 0;
+            const currency = sub.items?.data?.[0]?.price?.currency || "usd";
+            
+            const churnedCustomer = await createChurnedCustomer({
+              stripeCustomerId: customerId,
+              stripeSubscriptionId: subscription.id,
+              connectedAccountId: event.account || "direct",
+              customerEmail,
+              customerName,
+              planName,
+              planAmount,
+              currency,
+              churnReason: "cancellation",
+            });
+            
+            console.log(`[Webhook] ⚠️  Created churned customer for win-back: ${churnedCustomer.id}`);
+          }
+        } catch (err: unknown) {
+          console.error("[Webhook] Failed to create churned customer:", err);
+          // Don't fail the webhook if churn tracking fails
+        }
         break;
       }
 

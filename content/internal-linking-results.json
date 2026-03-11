@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-02-28T14:23:17.694Z",
+  "updated": 18,
+  "skipped": 2,
+  "results": [
+    {
+      "id": 3281100,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3279338,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3278413,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3278412,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3277832,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3275020,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3274350,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3274348,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3273871,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3273759,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3273633,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3273628,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3273490,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3273489,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3265353,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3265352,
+      "status": "skipped",
+      "reason": "already has related"
+    },
+    {
+      "id": 3263627,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3263364,
+      "status": "updated",
+      "httpStatus": 200
+    },
+    {
+      "id": 3262403,
+      "status": "updated",
+      "httpStatus": 200
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FailedPaymentWall } from "@/components/FailedPaymentWall";
 
 export const metadata: Metadata = {
   title: "Dashboard | Revive",
@@ -17,5 +18,11 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      {/* Failed Payment Wall - blocks access when user has failed payment */}
+      <FailedPaymentWall pollInterval={60000} />
+      {children}
+    </>
+  );
 }

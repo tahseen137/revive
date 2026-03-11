@@ -13,11 +13,12 @@ const plans = [
     description: "Start recovering revenue. Free on your first $500/mo recovered.",
     features: [
       "Up to $500/mo recovered",
-      "Smart payment retries",
-      "Basic dunning emails",
+      "Basic smart retries",
+      "1 dunning email sequence",
       "Real-time dashboard",
-      "Stripe + Lemon Squeezy support",
+      "Stripe only",
       "Email support",
+      "Powered by Revive branding",
     ],
     cta: "Connect & Start Free",
     ctaLink: "/api/connect",
@@ -27,56 +28,57 @@ const plans = [
   },
   {
     name: "Indie",
-    price: "$49",
+    price: "$29",
     priceSuffix: "/month",
-    description: "The full churn recovery stack for $49. No revenue tax, no setup fees.",
+    description: "The full churn recovery stack for indie hackers. No revenue tax, no setup fees.",
     features: [
       "Unlimited recovered revenue",
       "Advanced AI retry optimization",
       "Custom dunning sequences",
       "Win-back campaigns (7/14/30 day)",
-      "All payment platforms (Stripe, LS, Gumroad, Paddle)",
+      "All platforms (Stripe, LS, Gumroad, Paddle)",
       "Advanced analytics & reports",
-      "Priority support",
+      "Priority email support",
       "No revenue share ever",
       "Webhook notifications",
-      "Team access (up to 5)",
     ],
     cta: "Start Indie Plan",
     ctaLink: null,
     popular: true,
     highlight: true,
     priceId: "indie",
+    annualPrice: "$290/year",
+    annualSavings: "Save $58 (16% off)",
   },
   {
-    name: "Scale",
-    price: "Custom",
-    priceSuffix: "",
-    description: "For teams recovering $20K+/month at scale.",
+    name: "Pro",
+    price: "$99",
+    priceSuffix: "/month",
+    description: "AI-powered features for growing SaaS teams. Everything in Indie, plus:",
     features: [
       "Everything in Indie",
-      "Volume discounts",
-      "Dedicated account manager",
-      "Custom retry strategies",
-      "Full API access",
-      "SLA guarantee",
-      "White-label emails",
-      "Unlimited team members",
-      "Quarterly strategy reviews",
-      "Custom integrations",
+      "A/B testing (sequences, timing)",
+      "Advanced analytics (cohorts, attribution)",
+      "Team access (up to 5 seats)",
+      "Webhooks + Slack notifications",
+      "Monthly ROI reports (PDF export)",
+      "White-label emails (remove branding)",
+      "Priority chat support + onboarding call",
     ],
-    cta: "Contact Sales",
-    ctaLink: "mailto:sales@revive-hq.com?subject=Revive Scale Plan Inquiry",
+    cta: "Start Pro Plan",
+    ctaLink: null,
     popular: false,
     highlight: false,
-    priceId: null,
+    priceId: "pro",
+    annualPrice: "$990/year",
+    annualSavings: "Save $198 (16% off)",
   },
 ];
 
 const comparisonRows = [
   {
     feature: "Monthly base price",
-    revive: "$49",
+    revive: "$29",
     churnkey: "$250",
     churnbuster: "$249",
     chargebee: "$849*",
@@ -113,6 +115,14 @@ const comparisonRows = [
     churnbuster: "✅",
     chargebee: "✅",
     reviveWins: false,
+  },
+  {
+    feature: "A/B testing",
+    revive: "✅ Pro",
+    churnkey: "✅ $700+",
+    churnbuster: "❌",
+    chargebee: "❌",
+    reviveWins: true,
   },
   {
     feature: "Setup time",
@@ -160,8 +170,8 @@ export default function PricingPage() {
     mrr: 50000,
     lost: 4500,
     recovered: 3150,
-    plan: "Indie ($49)",
-    net: 3101,
+    plan: "Indie ($29)",
+    net: 3121,
   });
 
   useEffect(() => {
@@ -169,8 +179,8 @@ export default function PricingPage() {
     const mrr = mrrSlider * 1000;
     const lost = Math.round(mrr * 0.09); // 9% involuntary churn
     const recovered = Math.round(lost * 0.7); // 70% recovery rate
-    const planCost = mrr >= 500 * 1000 ? 0 : 49; // Free if under $500 recovered
-    const plan = mrr >= 500 * 1000 ? "Scale (Custom)" : mrr < 500 ? "Free tier" : "Indie ($49)";
+    const planCost = recovered > 500 ? 29 : 0; // Free if under $500 recovered, else Indie
+    const plan = recovered > 500 ? "Indie ($29)" : "Free tier";
     const net = recovered - planCost;
 
     setCalculatedStats({ mrr, lost, recovered, plan, net });
@@ -213,10 +223,10 @@ export default function PricingPage() {
               Simple, predictable pricing — no revenue tax
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Free until it&apos;s paying for itself
+              Churnkey for indie hackers — $29/mo, not $250
             </h1>
             <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-              Start recovering revenue for free. Upgrade to Indie for $49/mo flat — no percentage cuts, no setup fees, no surprises.
+              Start recovering revenue for free. Upgrade to Indie for $29/mo flat — no percentage cuts, no setup fees, no surprises. Add AI-powered features with Pro at $99/mo.
             </p>
           </div>
 
@@ -262,9 +272,14 @@ export default function PricingPage() {
                       First $500/mo recovered — always free
                     </div>
                   )}
-                  {plan.name === "Indie" && (
-                    <div className="mt-2 text-xs text-brand-400 font-medium">
-                      Unlimited recovery • No percentage cuts
+                  {plan.annualPrice && (
+                    <div className="mt-2 space-y-1">
+                      <div className="text-xs text-brand-400 font-medium">
+                        {plan.annualPrice}
+                      </div>
+                      <div className="text-xs text-zinc-500">
+                        {plan.annualSavings}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -321,7 +336,7 @@ export default function PricingPage() {
           {/* Pricing leadership callout */}
           <div className="mt-8 text-center">
             <p className="text-brand-400 text-sm font-medium">
-              ChurnKey starts at $250/mo. We&apos;re $49. Same outcome, 80% less cost.
+              ChurnKey starts at $250/mo. We&apos;re $29. Same outcome, 89% less cost.
             </p>
           </div>
 
@@ -383,7 +398,7 @@ export default function PricingPage() {
                     <th className="text-left py-4 px-5 text-zinc-400 font-medium w-[28%]">Feature</th>
                     <th className="py-4 px-5 text-center w-[18%] bg-brand-600/10 border-x border-brand-500/30">
                       <span className="text-brand-400 font-bold">Revive</span>
-                      <span className="block text-xs text-brand-500/70 font-normal mt-0.5">$49/mo</span>
+                      <span className="block text-xs text-brand-500/70 font-normal mt-0.5">$29/mo</span>
                     </th>
                     <th className="py-4 px-5 text-center text-zinc-400 font-medium w-[18%]">
                       ChurnKey
@@ -434,12 +449,12 @@ export default function PricingPage() {
                 <p className="text-sm text-zinc-300 leading-relaxed">
                   <span className="text-brand-400 font-semibold">At $10K MRR with $1K recovered monthly:</span>{" "}
                   ChurnKey charges $250/mo base + up to $250 revenue tax = <span className="text-red-400 font-medium">$500+/mo</span>. Revive charges{" "}
-                  <span className="text-green-400 font-semibold">$49 flat</span>. That&apos;s{" "}
-                  <span className="text-green-400 font-bold">$451/mo saved</span>.
+                  <span className="text-green-400 font-semibold">$29 flat</span>. That&apos;s{" "}
+                  <span className="text-green-400 font-bold">$471/mo saved</span>.
                 </p>
                 <div className="pt-3 border-t border-brand-500/20">
                   <p className="text-xs text-brand-400 font-medium">
-                    💡 Revive pays for itself when you recover just $49 in failed payments — typically within 24 hours
+                    💡 Revive pays for itself when you recover just $29 in failed payments — typically within 24 hours
                   </p>
                 </div>
               </div>
@@ -526,7 +541,7 @@ export default function PricingPage() {
                   Based on 9% involuntary churn rate and 70% recovery rate
                 </p>
                 <p className="text-sm text-brand-400 font-medium mt-2">
-                  Revive pays for itself if you recover just ${Math.ceil(49)} in failed payments
+                  Revive pays for itself if you recover just $29 in failed payments
                 </p>
               </div>
             </div>
@@ -578,23 +593,27 @@ export default function PricingPage() {
               {[
                 {
                   q: "How does the Free tier work?",
-                  a: "The Free tier lets you recover up to $500/month in failed payments at no cost. This is perfect for early-stage founders and small SaaS companies. You get all core features — smart retries, dunning emails, and the real-time dashboard.",
+                  a: "The Free tier lets you recover up to $500/month in failed payments at no cost. Perfect for early-stage founders. You get basic retries, 1 dunning sequence, and Stripe-only support. When you hit $500/mo recovered, upgrade to Indie.",
                 },
                 {
                   q: "What's included in the Indie plan?",
-                  a: "Indie ($49/mo) removes all limits. Recover unlimited failed payments with advanced AI optimization, custom dunning sequences, win-back campaigns, and priority support. There's no percentage cut — you keep 100% of everything we recover for you.",
+                  a: "Indie ($29/mo) removes all limits. Recover unlimited failed payments with advanced AI optimization, custom dunning sequences, win-back campaigns, and support for all platforms (Stripe, Lemon Squeezy, Gumroad, Paddle). There's no percentage cut — you keep 100%.",
+                },
+                {
+                  q: "What makes Pro tier worth $99/mo?",
+                  a: "Pro ($99/mo) adds AI-powered features for growing teams: A/B testing for dunning sequences, advanced analytics (cohorts, attribution), team access (5 seats), webhooks, Slack notifications, monthly ROI reports, and white-label emails. If you recover $1,000+/mo, Pro pays for itself 10x over.",
                 },
                 {
                   q: "Do you take a percentage of recovered revenue?",
-                  a: "No. Unlike ChurnKey who charges $250/mo base + up to 25% of recovered revenue, Revive charges a flat $49/mo. On the Free tier, you pay nothing. You keep 100% of what we recover.",
+                  a: "No. Unlike ChurnKey who charges $250/mo base + up to 25% of recovered revenue, Revive charges flat pricing. Free tier = $0. Indie = $29. Pro = $99. You keep 100% of what we recover.",
                 },
                 {
                   q: "Which payment platforms do you support?",
-                  a: "Revive supports Stripe, Lemon Squeezy, Gumroad, and Paddle — all on the Indie plan. The Free tier includes Stripe and Lemon Squeezy. Unlike competitors who are Stripe-only, we're built for indie founders using any platform.",
+                  a: "Free tier: Stripe only. Indie & Pro: Stripe, Lemon Squeezy, Gumroad, and Paddle. Unlike competitors who are Stripe-only, we're built for indie founders using any platform.",
                 },
                 {
                   q: "Is my payment data safe?",
-                  a: "Absolutely. We use OAuth integrations (Stripe Connect, etc.), so we never see your credentials. All data is encrypted in transit and at rest. We only access what's needed for payment recovery.",
+                  a: "Absolutely. We use OAuth integrations (Stripe Connect, etc.), so we never see your credentials. All data is encrypted in transit and at rest. We're SOC-2 compliant and GDPR-ready.",
                 },
               ].map((item) => (
                 <div key={item.q} className="glass rounded-xl p-6">

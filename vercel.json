@@ -7,6 +7,29 @@
     {
       "path": "/api/cron/check-expiring-cards",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/winback",
+      "schedule": "0 10 * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/revive-payment-wall.js",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET" },
+        { "key": "Cache-Control", "value": "public, max-age=3600, s-maxage=86400" },
+        { "key": "Content-Type", "value": "application/javascript; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/api/payment-status",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
     }
   ]
 }
