@@ -14,6 +14,7 @@ import { getEmailTemplate } from "./email-templates";
 import { getDunningEmailType } from "./retry-engine";
 import { generateCardUpdateToken } from "./auth";
 import { sanitizeEmail } from "./sanitize";
+import { getPaymentUpdateUrl } from "./payment-url-helpers";
 
 interface SendEmailParams {
   to: string;
@@ -93,16 +94,8 @@ export async function sendDunningEmail(
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://revive-seven-eosin.vercel.app";
   const fromEmail = process.env.EMAIL_FROM || `billing@${appUrl.replace(/https?:\/\//, "")}`;
 
-  // Generate secure HMAC-based card update URL
-  let cardUpdateUrl: string;
-  try {
-    const token = generateCardUpdateToken(payment.id, payment.stripeCustomerId);
-    cardUpdateUrl = `${appUrl}/update-card/${token}`;
-  } catch {
-    // Fallback if CARD_UPDATE_SECRET not set (development)
-    console.warn("[Email] CARD_UPDATE_SECRET not configured — card update URL disabled");
-    cardUpdateUrl = `${appUrl}/update-payment`;
-  }
+  // Generate payment update URL (supports both Stripe and Paddle)
+  const cardUpdateUrl = getPaymentUpdateUrl(payment);
 
   const template = getEmailTemplate(emailType, {
     customerName: payment.customerName || "Valued Customer",

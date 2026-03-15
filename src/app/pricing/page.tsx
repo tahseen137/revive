@@ -370,7 +370,7 @@ export default function PricingPage() {
               <div className="mt-8 pt-6 border-t border-zinc-800 flex justify-center gap-8 text-xs text-zinc-500">
                 <div className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  <span>SOC-2 Compliant</span>
+                  <span>Bank-grade Encryption</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
@@ -378,7 +378,7 @@ export default function PricingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  <span>256-bit Encryption</span>
+                  <span>PCI-Compliant Infrastructure</span>
                 </div>
               </div>
             </div>
@@ -613,7 +613,7 @@ export default function PricingPage() {
                 },
                 {
                   q: "Is my payment data safe?",
-                  a: "Absolutely. We use OAuth integrations (Stripe Connect, etc.), so we never see your credentials. All data is encrypted in transit and at rest. We're SOC-2 compliant and GDPR-ready.",
+                  a: "Absolutely. We use OAuth integrations (Stripe Connect, etc.), so we never see your credentials. All data is encrypted in transit and at rest with bank-grade security. We're GDPR-ready and use PCI-compliant infrastructure via Stripe.",
                 },
               ].map((item) => (
                 <div key={item.q} className="glass rounded-xl p-6">
