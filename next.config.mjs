@@ -37,7 +37,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "frame-src https://js.stripe.com https://hooks.stripe.com",
-              "connect-src 'self' https://api.stripe.com https://vitals.vercel-analytics.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://cloud.umami.is",
+              "connect-src 'self' https://api.stripe.com https://vitals.vercel-analytics.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://cloud.umami.is https://api-gateway.umami.dev",
               "font-src 'self' data:",
             ].join('; '),
           },
