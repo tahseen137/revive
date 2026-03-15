@@ -99,7 +99,7 @@ function getStripe(): Stripe {
 ### Homepage (revive-hq.com) ✅
 - Clean, professional design with dark theme
 - Clear value proposition
-- Trust badges (SSL, SOC 2, Stripe Verified)
+- Trust badges (SSL, PCI-Compliant via Stripe, Stripe Verified)
 - Early access waitlist with email capture
 - Feature comparison table vs competitors
 

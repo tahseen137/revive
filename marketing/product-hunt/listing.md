@@ -93,7 +93,7 @@ Built by founders who were tired of watching revenue slip away. We're here to he
 - 🔌 3-minute setup (no code changes)
 - 📖 Webhook notifications (track recovery events)
 - 🎨 Customizable email templates (match your brand)
-- 🔒 SOC 2 compliant infrastructure
+- 🔒 Bank-grade security (PCI-compliant via Stripe)
 - 🌐 Works with all Stripe-supported countries
 
 **Business Intelligence:**
@@ -259,7 +259,7 @@ Built by founders, for founders. Let's stop leaving money on the table. 🙏
 "Great question! Stripe's default retries are basic and stop after ~4 attempts. Revive uses AI to learn optimal retry timing based on payment patterns, sends personalized recovery emails (not generic Stripe notifications), and continues recovery attempts over 7 days with smart scheduling. Plus, performance-based pricing means you only pay for results."
 
 **"Is my data secure?"**
-"Absolutely. We use OAuth (not API keys) so we never store your Stripe credentials. All payment data stays in Stripe's infrastructure. We're PCI compliant, SOC 2 certified, and your customers' payment info never touches our servers. Security is non-negotiable."
+"Absolutely. We use OAuth (not API keys) so we never store your Stripe credentials. All payment data stays in Stripe's infrastructure. We're PCI compliant via Stripe, use bank-grade security, and your customers' payment info never touches our servers. Security is non-negotiable."
 
 **"What's the catch with performance-based pricing?"**
 "No catch! Our incentives are perfectly aligned with yours. We only make money when we successfully recover failed payments. If we don't recover anything, you pay $0. The free tier (up to $500/mo recovered) is legitimately free forever — perfect for validating if this works for your business."

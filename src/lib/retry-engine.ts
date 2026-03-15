@@ -13,6 +13,7 @@
  * - Time-of-day optimization (10am local time when possible)
  * - Exponential backoff with jitter for generic failures
  * - Detailed logging for each retry decision
+ * - Multi-platform support: Stripe + Paddle
  */
 
 import Stripe from "stripe";
@@ -23,6 +24,7 @@ import {
   markPaymentRecovered,
 } from "./db";
 import { calculateApplicationFee, APPLICATION_FEE_PERCENT } from "./application-fee";
+import { isPaddlePayment, executePaddleRetry, type PaddleRetryResult } from "./paddle-retry-engine";
 
 // ============ Time Constants ============
 
@@ -438,8 +440,10 @@ export async function processRetryQueue(): Promise<{
     // Update status to retrying
     await updateFailedPayment(payment.id, { status: "retrying" });
     
-    // Execute the retry
-    const result = await executeRetry(payment);
+    // Execute the retry (Paddle or Stripe)
+    const result = isPaddlePayment(payment)
+      ? await executePaddleRetry(payment)
+      : await executeRetry(payment);
     results.push(result);
     
     const now = Date.now();
@@ -459,7 +463,9 @@ export async function processRetryQueue(): Promise<{
             attemptNumber: newRetryCount,
             timestamp: now,
             success: true,
-            stripePaymentIntentId: result.stripePaymentIntentId,
+            stripePaymentIntentId: 'stripePaymentIntentId' in result 
+              ? result.stripePaymentIntentId 
+              : (result as PaddleRetryResult).transactionId,
           },
         ],
       });

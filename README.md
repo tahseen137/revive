@@ -48,7 +48,7 @@ Revive automatically recovers failed payments from your Stripe account using:
 | **Dunning Email Sequences** | Behavior-triggered emails with 68% average open rate. |
 | **Payday Detection** | `insufficient_funds` failures retry on 1st, 15th, and Fridays. |
 | **Stripe Native Integration** | Connect in one click via OAuth. |
-| **Bank-Grade Security** | SOC 2 compliant. Encrypted at rest and in transit. |
+| **Bank-Grade Security** | PCI-compliant via Stripe. Encrypted at rest and in transit. |
 | **Real-Time Analytics** | See exactly how much revenue you've recovered. |
 
 ---
